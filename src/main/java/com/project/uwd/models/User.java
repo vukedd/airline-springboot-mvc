@@ -13,15 +13,29 @@ public class User {
 	private String email;
 	private String firstName;
 	private String lastName;
-	private LocalDate dateOfBirth;
-	private LocalDate dateOfRegistration;
+	private LocalDate dateOfBirth = null;
+	private LocalDate dateOfRegistration = null;
 	private Role role;
 	
 	private List<Reservation> reservations;
 	private LoyaltyCard loyaltyCard;
 	
-	public User(Long id, String username, String password, String email, String firstName, String lastName,
+	public User(String username, String password, String email, String firstName, String lastName,
 			LocalDate dateOfBirth, LocalDate dateOfRegistration, Role role) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.dateOfBirth = dateOfBirth;
+		this.dateOfRegistration = dateOfRegistration;
+		this.role = role;
+		this.reservations = new ArrayList<Reservation>();
+	}
+	
+	public User(Long id, String username, String password, String email, String firstName, String lastName,
+			LocalDate dateOfBirth, LocalDate dateOfRegistration, LoyaltyCard loyaltyCard, Role role) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -32,6 +46,8 @@ public class User {
 		this.dateOfBirth = dateOfBirth;
 		this.dateOfRegistration = dateOfRegistration;
 		this.role = role;
+		
+		this.loyaltyCard = loyaltyCard;
 		this.reservations = new ArrayList<Reservation>();
 	}
 
@@ -129,5 +145,13 @@ public class User {
 	
 	public void addReservation(Reservation reservation) {
 		this.reservations.add(reservation);
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", email=" + email
+				+ ", firstName=" + firstName + ", lastName=" + lastName + ", dateOfBirth=" + dateOfBirth
+				+ ", dateOfRegistration=" + dateOfRegistration + ", role=" + role + ", reservations=" + reservations
+				+ ", loyaltyCard=" + loyaltyCard + "]";
 	}
 }

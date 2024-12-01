@@ -47,8 +47,8 @@ public class LocationController {
 				+ "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n"
 				+ "    <title>Document</title>\r\n"
 				+ "</head>\r\n"
-				+ "<body>\r\n";
-		
+				+ "<body>\r\n"
+				+ "<a href='/user/register'>Register</a><hr>";
 		if (!status.equals("")) {
 			switch (status) {
 				case "error":
