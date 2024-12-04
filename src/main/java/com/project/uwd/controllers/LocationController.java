@@ -23,6 +23,7 @@ import com.project.uwd.services.impl.LocationServiceImpl;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/location")
@@ -134,7 +135,7 @@ public class LocationController {
 	
 	@GetMapping("/add")
 	@ResponseBody
-	public String getAddLocation(@RequestParam(name="status", defaultValue="") String status) {
+	public String getAddLocation(@RequestParam(required=false) String city, @RequestParam(required=false) String country, HttpSession session) {
 		Continent[] continents = Continent.values();
 		String retval = "<!DOCTYPE html>\r\n"
 				+ "<html lang=\"en\">\r\n"
@@ -145,20 +146,43 @@ public class LocationController {
 				+ "</head>\r\n"
 				+ "<body>\r\n"
 				+ "    <h1>Add new location</h1>\r\n";
-		
-		if (status.equals("error")) {
-			retval += "<p style='color:red'>Error while creating location</p>";
+		Location location = null;
+		boolean invalidTry = false;
+		if (session.getAttribute("location") != null) {
+			location = (Location)session.getAttribute("location");
+			invalidTry = true;
 		}
 		
 		retval += "    <form method='Post' action='/location/add'>\r\n"
-				+ "        <label>City:</label><br>\r\n"
-				+ "        <input type=\"text\" name=\"city\"><br>\r\n"
-				+ "        <label>Country:</label><br>\r\n"
-				+ "        <input type=\"text\" name=\"country\"><br>\r\n"
-				+ "        <label>Continent:</label><br>\r\n"
+// city
+				+ "        <label>City:</label><br>\r\n";
+		if (invalidTry) {
+			retval += "        <input type=\"text\" name=\"city\" value='" + location.getCity() + "'><br>\r\n";
+		} else { 
+			retval += "        <input type=\"text\" name=\"city\"><br>\r\n";
+		}
+		if (city != null && city.equals("failure")) {
+			retval += "<p style='color:red;font-size:12px;margin:0;pading:0;'>City must contain at least 3 characters</p>";
+		}
+// country
+		retval += "        <label>Country:</label><br>\r\n";
+			
+		if (invalidTry) {
+			retval += "        <input type=\"text\" name=\"country\" value='" + location.getCountry() + "'><br>\r\n";
+		} else { 
+			retval += "        <input type=\"text\" name=\"country\"><br>\r\n";
+		}
+		if (country != null && country.equals("failure")) {
+					retval += "<p style='color:red;font-size:12px;margin:0;pading:0;'>Country must contain at least 3 characters</p>";
+				}
+// continent
+		retval += "        <label>Continent:</label><br>\r\n"
 				+ "        <select name=\"continent\">\r\n";
 		
 		for (Continent continent : continents) {
+			if (location != null && location.getContinent().equals(continent)) {
+				retval += "            <option selected value='" + continent + "'>" + continent.name() + "</option>\r\n";
+			}
 			retval += "            <option value='" + continent + "'>" + continent.name() + "</option>\r\n";
 		}
 		retval += "        </select><br>\r\n"
@@ -171,25 +195,59 @@ public class LocationController {
 	}
 	
 	@PostMapping("/add")
-	public void postAddLocation(@ModelAttribute Location location, HttpServletResponse response,BindingResult result) throws IOException {
-		if (result.hasErrors()) {
-			response.sendRedirect("/location/add?status=error");
+	public void postAddLocation(@ModelAttribute Location location, @RequestParam(required=false) String city, @RequestParam(required=false) String country ,HttpServletResponse response,BindingResult result, HttpSession session) throws IOException {
+		StringBuilder queryParameter = new StringBuilder();
+
+		if (location.getCity().length() < 3) {
+			if (queryParameter.length() > 0) {
+				queryParameter.append("&city=failure");
+			} else {
+				queryParameter.append("?city=failure");
+			}
+		}
+
+		if (location.getCountry().length() < 3) {
+			if (queryParameter.length() > 0) {
+				queryParameter.append("&country=failure");
+			} else {
+				queryParameter.append("?country=failure");
+			}
+		}
+
+		if (location.getContinent() == null) {
+			if (queryParameter.length() > 0) {
+				queryParameter.append("&continent=failure");
+			} else {
+				queryParameter.append("?continent=failure");
+			}
+		}
+		
+		if (queryParameter.length() > 0) {
+			response.sendRedirect("/location/add" + queryParameter.toString());
+			session.setAttribute("location", location);
 			return;
 		}
 		
 		_locationService.addLocation(location);
-		
 		response.sendRedirect("/location/?status=added");
 		return;
 	}
 	
 	@GetMapping("/edit")
-	public void getEditLocation(@RequestParam(name="status", defaultValue="") String status, @RequestParam(name="id") Long id, HttpServletResponse response) throws IOException {
+	public void getEditLocation(@RequestParam(required=false) String city, @RequestParam(required=false) String country ,@RequestParam(name="status", defaultValue="") String status, @RequestParam(name="id") Long id, HttpServletResponse response, HttpSession session) throws IOException {
 		Location location = _locationService.getLocation(id);
 		if (location == null) {
 			response.sendRedirect("/location/");
 			return;
 		}
+		
+		Location locationSession = null;
+		boolean invalidTry = false;
+		if (session.getAttribute("location") != null) {
+			locationSession = (Location)session.getAttribute("location");
+			invalidTry = true;
+		}
+		
 		PrintWriter out = response.getWriter();
 		Continent[] continents = Continent.values();
 		out.write("<!DOCTYPE html>\r\n"
@@ -200,29 +258,48 @@ public class LocationController {
 				+ "    <title>Document</title>\r\n"
 				+ "</head>\r\n"
 				+ "<body>\r\n"
-				+ "    <h1>Add new location</h1>\r\n");
+				+ "    <h1>Edit location</h1>\r\n");
 		
 		if (status.equals("error")) {
-			out.write("<p style='color:red'>Error while creating location</p>");
+			out.write("<p style='color:red'>Error while editing location</p>");
 		}
 		
 		out.write("    <form method='Post' action='/location/edit?id=" + location.getId() + "'>\r\n"
-				+ "        <label>City:</label><br>\r\n"
-				+ "        <input type=\"text\" value='" + location.getCity() + "' name=\"city\"><br>\r\n"
-				+ "        <label>Country:</label><br>\r\n"
-				+ "        <input type=\"text\" name=\"country\" value='" + location.getCountry() + "'><br>\r\n"
-				+ "        <label>Continent:</label><br>\r\n"
+				+ "        <label>City:</label><br>\r\n");
+		if (invalidTry) {
+			out.write("        <input type=\"text\" name=\"city\" value='" + locationSession.getCity() + "'><br>\r\n");
+		} else { 
+			out.write("        <input type=\"text\" name=\"city\" value='" + location.getCity() + "'><br>\r\n");
+		}
+		if (city != null && city.equals("failure")) {
+			out.write("<p style='color:red;font-size:12px;margin:0;pading:0;'>City must contain at least 3 characters</p>");
+		}
+		out.write("        <label>Country:</label><br>\r\n");
+		if (invalidTry) {
+			out.write("        <input type=\"text\" name=\"country\" value='" + locationSession.getCountry() + "'><br>\r\n");
+		} else { 
+			out.write("        <input type=\"text\" name=\"country\" value='" + location.getCountry() + "'><br>\r\n");
+		}
+		if (country != null && country.equals("failure")) {
+			out.write("<p style='color:red;font-size:12px;margin:0;pading:0;'>Country must contain at least 3 characters</p>");
+		}
+		out.write("        <label>Continent:</label><br>\r\n"
 				+ "        <select name=\"continent\">\r\n");
 		
 		for (Continent continent : continents) {
-			if (continent.equals(location.getContinent())) {
+			if (locationSession != null && locationSession.getContinent().equals(continent)) {
+				out.write("            <option selected value='" + continent + "'>" + continent.name() + "</option>\r\n");
+			} else if (continent.equals(location.getContinent())) {
 				out.write("            <option selected value='" + continent + "'>" + continent + "</option>\r\n");
 			}
-			out.write("            <option value='" + continent + "'>" + continent + "</option>\r\n");
+			else {
+				out.write("            <option value='" + continent + "'>" + continent + "</option>\r\n");
+			}
 		}
 		out.write("        </select><br>\r\n"
 				+ "   	   <button type='submit'>Save changes</button>"
 				+ "   </form>\r\n"
+				+ "<a href='/location/details?id=" + location.getId() + "'>Go back</a>"
 				+ "</body>\r\n"
 				+ "</html>");
 		
@@ -230,9 +307,29 @@ public class LocationController {
 	}
 	
 	@PostMapping("/edit")
-	public void postEditLocation(@RequestParam Long id, @ModelAttribute Location location, HttpServletResponse response, BindingResult result) throws IOException {
+	public void postEditLocation(@RequestParam Long id, @ModelAttribute Location location, HttpServletResponse response, HttpSession session, BindingResult result) throws IOException {
 		if (result.hasErrors()) {
 			response.sendRedirect("/location/edit?id=" + id);
+		}
+		
+		StringBuilder queryParameter = new StringBuilder();
+
+		if (location.getCity().length() < 3) {
+			queryParameter.append("&city=failure");
+		}
+
+		if (location.getCountry().length() < 3) {
+			queryParameter.append("&country=failure");
+		}
+
+		if (location.getContinent() == null) {
+			queryParameter.append("&continent=failure");
+		}
+		
+		if (queryParameter.length() > 0) {
+			session.setAttribute("location", location);
+			response.sendRedirect("/location/edit?id=" + id + queryParameter.toString());
+			return;
 		}
 		
 		Location editResult = _locationService.editLocation(id, location);

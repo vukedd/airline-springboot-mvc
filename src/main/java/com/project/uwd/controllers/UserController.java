@@ -21,6 +21,7 @@ import com.project.uwd.services.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/user")
@@ -44,7 +45,15 @@ public class UserController {
 	public String getRegister(@RequestParam(required = false) String username,
 			@RequestParam(required = false) String email, @RequestParam(required = false) String firstName,
 			@RequestParam(required = false) String lastName, @RequestParam(required = false) String password,
-			@RequestParam(required = false) String dateOfBirth, @RequestParam(required = false) String status) {
+			@RequestParam(required = false) String dateOfBirth, @RequestParam(required = false) String status, HttpSession session) {
+		boolean invalidTry = false;
+		User user = null;
+		
+		if (session.getAttribute("registerFormData") != null) {
+			invalidTry = true;
+			user = (User)session.getAttribute("registerFormData");
+		}
+		
 		String retval = "<!DOCTYPE html>\r\n" + "<html lang=\"en\">\r\n" + "<head>\r\n"
 				+ "    <meta charset=\"UTF-8\">\r\n"
 				+ "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n"
@@ -54,45 +63,74 @@ public class UserController {
 		if (status != null && status.equals("success")) {
 			retval += "<p style='color:green'>User successfully registered!</p>";
 		}
-		retval += "    <form method=\"POST\" action=\"/user/register\">\r\n";
+		// first name
+		retval += "    <form method=\"POST\" action=\"/user/register\">\r\n" +
+				  "        <label>First Name:</label><br>\r\n";
+		
+		if (invalidTry) {
+			retval += "        <input type=\"text\" name=\"firstName\" value='" + user.getFirstName() + "'><br>\r\n";
+		} else {
+			retval += "        <input type=\"text\" name=\"firstName\"><br>\r\n";
+		}
 		if (firstName != null && firstName.equals("failure")) {
 			retval += "<p style='color:red;font-size:12px;margin:0;pading:0;'>First name must contain only letters</p>";
 		}
-		retval += "        <label>First Name:</label><br>\r\n"
-				+ "        <input type=\"text\" name=\"firstName\"><br>\r\n";
-
+		// last name
+		retval += "        <label>Last Name:</label><br>\r\n";
+		if (invalidTry) {
+			retval += "        <input type=\"text\" name=\"lastName\" value='" + user.getLastName() + "'><br>\r\n";
+		} else {
+			retval += "        <input type=\"text\" name=\"lastName\"><br>\r\n";
+		}	
 		if (lastName != null && lastName.equals("failure")) {
 			retval += "<p style='color:red;font-size:12px;margin:0;pading:0;'>Last name must contain only letters</p>";
 		}
-		retval += "        <label>Last Name:</label><br>\r\n"
-				+ "        <input type=\"text\" name=\"lastName\"><br>\r\n";
+		
+		// DOB
+		retval += "        <label>Date of birth:</label><br>\r\n";
+		if (invalidTry) {
+			retval += 		"        <input type=\"date\" name=\"dateOfBirth\" value='" + user.getDateOfBirth() + "' reqiured><br>\r\n";
+		} else {
+			retval += 		"        <input type=\"date\" name=\"dateOfBirth\" required><br>\r\n";
+		}	
 		if (dateOfBirth != null && dateOfBirth.equals("failure")) {
 			retval += "<p style='color:red;font-size:12px;margin:0;pading:0;'>Please select date of birth</p>";
 		}
-		retval += "        <label>Date of birth:</label><br>\r\n"
-				+ "        <input type=\"date\" name=\"dateOfBirth\"><br>\r\n";
+		
+		// Username
+		retval += "        <label>Username:</label><br>\r\n";
+		if (invalidTry) {
+			retval += "        <input type=\"text\" name=\"username\" value='" + user.getUsername() + "'><br>\r\n";
+		} else {
+			retval += "        <input type=\"text\" name=\"username\"><br>\r\n";
+		}	
 		if (username != null && username.equals("failure")) {
 			retval += "<p style='color:red;font-size:12px;margin:0;pading:0;'>Username must contain 5 to 20 alphanumerical characters</p>";
 		}
-		retval += "        <label>Username:</label><br>\r\n"
-				+ "        <input type=\"text\" name=\"username\"><br>\r\n";
+		// E-mail
+		retval += "        <label>Email:</label><br>\r\n";
+		if (invalidTry) {
+			retval += "        <input type=\"email\" name=\"email\" value='" + user.getEmail() + "'><br>\r\n";
+		} else {
+			retval += "        <input type=\"email\" name=\"email\"><br>\r\n";
+		}
 		if (email != null && email.equals("failure")) {
 			retval += "<p style='color:red;font-size:12px;margin:0;pading:0;'>Please enter a valid email!</p>";
 		}
-		retval += "        <label>Email:</label><br>\r\n" + "        <input type=\"email\" name=\"email\"><br>\r\n";
+		// Password
+		retval += "        <label>Password:</label><br>\r\n"
+				+ "        <input type=\"password\" name=\"password\"><br>\r\n";
 		if (password != null && password.equals("failure")) {
 			retval += "<p style='color:red;font-size:12px;margin:0;pading:0;'>Password must contain from 8 to 20 characters, at least one letter and at least one digit</p>";
 		}
-		retval += "        <label>Password:</label><br>\r\n"
-				+ "        <input type=\"password\" name=\"password\"><br>\r\n"
-				+ "        <button type=\"submit\">Register</button>\r\n" + "    </form>\r\n" + "</body>\r\n"
+		retval += "        <button type=\"submit\">Register</button>\r\n" + "    </form>\r\n" + "</body>\r\n"
 				+ "</html>";
 
 		return retval;
 	}
 
 	@PostMapping("/register")
-	public void postRegister(@ModelAttribute User user, BindingResult result, HttpServletResponse response)
+	public void postRegister(@ModelAttribute User user, BindingResult result, HttpServletResponse response, HttpSession session)
 			throws IOException {
 		StringBuilder queryParameter = new StringBuilder();
 		if (!user.getEmail().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
@@ -145,8 +183,10 @@ public class UserController {
 
 		if (queryParameter.length() > 0) {
 			response.sendRedirect("/user/register" + queryParameter.toString());
+			session.setAttribute("registerFormData", user);
 			return;
 		}
+		
 		_userService.addUser(user);
 		response.sendRedirect("/user/register?status=success");
 		return;
