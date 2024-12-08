@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Page Title</title>
+</head>
+<body>
+	<div th:if="${location} != null">
+		<p th:text="${location.continent}"></p>
+		<p th:text="${location.country}"></p>
+		<p th:text="${location.city}"></p>
+		<a th:href="@{/location/delete?id={id}(id=${location.id})}">Delete</a>
+		<a th:href="@{/location/edit?id={id}(id=${location.id})}">Edit</a>
+		<a th:href="@{/location/}">Show all locations</a>
+	</div>
+	<div th:unless="${location} != null">
+		<p>Location not found!</p>
+		<a th:href="@{/location/}">Show all locations</a>
+	</div>
+</body>
+</html>

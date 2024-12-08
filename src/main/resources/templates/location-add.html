@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Add new location</h1>
+    <form method='Post' th:action="@{/location/add}">
+        <label>City:</label><br>
+        <input type="text" name="city"><br>
+        <p th:if="${city} != null" style='color:red;font-size:12px;margin:0;padding:0;'>City must contain at least 3 characters</p>
+        
+        <label>Country:</label><br>
+        <input type="text" name="country"><br>
+        <p th:if="${country} != null" style='color:red;font-size:12px;margin:0;padding:0;'>Country must contain at least 3 characters</p>
+        
+        <label>Continent:</label><br>
+        <select name="continent">
+			<option th:each="continent : ${continents}" th:text="${continent}">
+        </select><br>
+        <button type='submit'>Add location</button>
+    </form>
+</body>
+</html>

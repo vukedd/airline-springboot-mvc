@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <a th:href='@{/location/}'>Show all locations</a>
+    <h2>Register</h2>
+
+    <!-- Success message when registration is successful -->
+    <p th:if="${status} != null and ${status} == 'success'" style='color:green'>User successfully registered!</p>
+
+    <form method="POST" th:action="@{/user/register}" th:object="${user}">
+        <!-- First Name -->
+        <label>First Name:</label><br>
+        <input type="text" name="firstName" th:value="${user.firstName}"><br>
+        <p th:if="${firstName} != null"style='color:red;font-size:12px;margin:0;padding:0;'>First name must contain only letters</p>
+
+        <!-- Last Name -->
+        <label>Last Name:</label><br>
+        <input type="text" name="lastName" th:value="${user.lastName}"><br>
+        <p th:if="${lastName} != null" style='color:red;font-size:12px;margin:0;padding:0;'>Last name must contain only letters</p>
+
+        <!-- Date of Birth -->
+        <label>Date of birth:</label><br>
+        <input type="date" name="dateOfBirth" th:value="${user.dateOfBirth}" required><br>
+        <p th:if="${dateOfBirth 	} != null" style='color:red;font-size:12px;margin:0;padding:0;'>Please select date of birth</p>
+
+        <!-- Username -->
+        <label>Username:</label><br>
+        <input type="text" name="username" th:value="${user.username}"><br>
+        <p th:if="${username} != null" style='color:red;font-size:12px;margin:0;padding:0;'>Username must contain 5 to 20 alphanumerical characters</p>
+
+        <!-- Email -->
+        <label>Email:</label><br>
+        <input type="email" name="email" th:value="${user.email}"><br>
+        <p th:if="${email} != null"style='color:red;font-size:12px;margin:0;padding:0;'>Please enter a valid email!</p>
+
+        <!-- Password -->
+        <label>Password:</label><br>
+        <input type="password" name="password"><br>
+        <p th:if="${password} != null" style='color:red;font-size:12px;margin:0;padding:0;'>Password must contain from 8 to 20 characters, at least one letter and at least one digit</p>
+
+        <button type="submit">Register</button>
+    </form>
+</body>
+</html>
