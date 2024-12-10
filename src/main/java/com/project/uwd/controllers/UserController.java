@@ -54,7 +54,11 @@ public class UserController {
 		}
 		
 		if (username != null) {
-			model.addAttribute("username", "failure");
+			if (username.equals("exists")) {
+				model.addAttribute("username", "exists");
+			} else {
+				model.addAttribute("username", "failure");
+			}
 		}
 		
 		if (firstName != null) {
@@ -167,8 +171,16 @@ public class UserController {
 				queryParameter.append("?email=failure");
 			}
 		}
-
-		if (!user.getUsername().matches("^[A-Za-z][A-Za-z0-9_]{5,20}$")) {
+		
+		if (_userService.usernameExistsCheck(user.getUsername()) == 1) {
+			if (queryParameter.length() > 0) {
+				queryParameter.append("&username=exists");
+			} else {
+				queryParameter.append("?username=exists");
+			}
+		}
+		
+		if (!user.getUsername().matches("^[A-Za-z][A-Za-z0-9_]{4,20}$")) {
 			if (queryParameter.length() > 0) {
 				queryParameter.append("&username=failure");
 			} else {
@@ -214,7 +226,8 @@ public class UserController {
 			return;
 		}
 		
-		_userService.addUser(user);
+		int res = _userService.addUser(user);
+		session.removeAttribute("registerFormData");
 		response.sendRedirect("/user/register?status=success");
 		return;
 	}

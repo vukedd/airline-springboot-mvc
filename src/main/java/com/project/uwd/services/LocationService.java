@@ -11,7 +11,7 @@ public interface LocationService {
 
 	List<Location> getLocations();
 	Location getLocation(Long id);
-	Location deleteLocation(Long id);
-	void addLocation(Location location);
-	Location editLocation(Long id, Location editLocation);
+	int deleteLocation(Long id);
+	int addLocation(Location location);
+	int editLocation(Long id, Location editLocation);
 }

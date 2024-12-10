@@ -3,6 +3,7 @@ package com.project.uwd.services.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.project.uwd.models.Location;
@@ -13,6 +14,7 @@ import com.project.uwd.services.LocationService;
 public class LocationServiceImpl implements LocationService {
 
 	@Autowired
+	@Qualifier("LocationRepositoryDBImpl")
 	private LocationRepository _locationRepository;
 	
 	@Override
@@ -26,17 +28,17 @@ public class LocationServiceImpl implements LocationService {
 	}
 
 	@Override
-	public Location deleteLocation(Long id) {
+	public int deleteLocation(Long id) {
 		return _locationRepository.deleteLocation(id);
 	}
 
 	@Override
-	public void addLocation(Location location) {
-		_locationRepository.addLocation(location);
+	public int addLocation(Location location) {
+		return _locationRepository.addLocation(location);
 	}
 
 	@Override
-	public Location editLocation(Long id, Location editLocation) {
+	public int editLocation(Long id, Location editLocation) {
 		return _locationRepository.editLocation(id, editLocation);
 	}
 	

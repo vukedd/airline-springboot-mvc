@@ -26,13 +26,13 @@
         <!-- Date of Birth -->
         <label>Date of birth:</label><br>
         <input type="date" name="dateOfBirth" th:value="${user.dateOfBirth}" required><br>
-        <p th:if="${dateOfBirth 	} != null" style='color:red;font-size:12px;margin:0;padding:0;'>Please select date of birth</p>
+        <p th:if="${dateOfBirth} != null" style='color:red;font-size:12px;margin:0;padding:0;'>Please select date of birth</p>
 
         <!-- Username -->
         <label>Username:</label><br>
         <input type="text" name="username" th:value="${user.username}"><br>
-        <p th:if="${username} != null" style='color:red;font-size:12px;margin:0;padding:0;'>Username must contain 5 to 20 alphanumerical characters</p>
-
+        <p th:if="${username} == 'failure'" style='color:red;font-size:12px;margin:0;padding:0;'>Username must contain 5 to 20 alphanumerical characters</p>
+        <p th:if="${username} == 'exists'" style='color:red;font-size:12px;margin:0;padding:0;'>Username already exists!</p>
         <!-- Email -->
         <label>Email:</label><br>
         <input type="email" name="email" th:value="${user.email}"><br>

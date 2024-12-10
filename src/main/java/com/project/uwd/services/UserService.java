@@ -6,5 +6,7 @@ import com.project.uwd.models.User;
 
 @Service
 public interface UserService {
-	void addUser(User user);
+	int addUser(User user);
+	User getUserByUsername(String username);
+	int usernameExistsCheck(String username);
 }

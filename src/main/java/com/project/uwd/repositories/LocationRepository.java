@@ -10,7 +10,7 @@ import com.project.uwd.models.Location;
 public interface LocationRepository {
 	List<Location> getLocations();
 	Location getLocation(Long id);
-	Location deleteLocation(Long id);
-	void addLocation(Location location);
-	Location editLocation(Long id, Location location);
+	int deleteLocation(Long id);
+	int addLocation(Location location);
+	int editLocation(Long id, Location location);
 }

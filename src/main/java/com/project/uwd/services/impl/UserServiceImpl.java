@@ -14,8 +14,18 @@ public class UserServiceImpl implements UserService{
 	UserRepository _userRepository;
 	
 	@Override
-	public void addUser(User user) {
-		_userRepository.addUser(user);
+	public int addUser(User user) {
+		return _userRepository.addUser(user);
+	}
+
+	@Override
+	public User getUserByUsername(String username) {
+		return _userRepository.getUserByUsername(username);
+	}
+
+	@Override
+	public int usernameExistsCheck(String username) {
+		return _userRepository.usernameExistsCheck(username);
 	}
 	
 }

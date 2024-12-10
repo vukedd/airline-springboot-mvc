@@ -118,19 +118,14 @@ public class LocationController {
 	
 	@GetMapping("/delete")
 	public void deleteLocation(@RequestParam("id") Long id, HttpServletResponse response) throws IOException {
-		Location location = _locationService.getLocation(id);
-		if (location == null) {
-			response.sendRedirect("/location/?status=error");
-			return;
-		}
 		
-		Location locationForDelete = _locationService.deleteLocation(id);
-		if (locationForDelete == null) {
+		int res = _locationService.deleteLocation(id);
+		System.out.println(res);
+		if (res == 1) {
+			response.sendRedirect("/location/?status=success");
+		} else {
 			response.sendRedirect("/location/?status=error");
-			return;
 		}
-		
-		response.sendRedirect("/location/?status=success");
 		return;
 	}
 	
@@ -238,8 +233,10 @@ public class LocationController {
 			return;
 		}
 		
-		_locationService.addLocation(location);
-		response.sendRedirect("/location/?status=added");
+		int res =_locationService.addLocation(location);
+		if (res == 1) {
+			response.sendRedirect("/location/?status=added");
+		}
 		return;
 	}
 	
@@ -355,13 +352,13 @@ public class LocationController {
 			return;
 		}
 		
-		Location editResult = _locationService.editLocation(id, location);
-		if (editResult == null) {
+		int res = _locationService.editLocation(id, location);
+		if (res != 1) {
 			response.sendRedirect("/location/?status=error");
 			return;
 		}
 		
-		response.sendRedirect("/location/details?id=" + editResult.getId() + "&status=success");
+		response.sendRedirect("/location/details?id=" + id + "&status=success");
 		return;
 	}
 }
