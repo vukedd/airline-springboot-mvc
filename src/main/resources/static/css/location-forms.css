@@ -1,0 +1,36 @@
+@media screen and (min-width:1080px) {
+	.form {
+		padding-top: 4%;
+	}
+}
+
+@media screen and (max-width:1080px) {
+	.form {
+		padding-top: 7%;
+	}
+}
+
+@media screen and (max-width:720px) {
+	.form {
+		padding-top: 15%;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.form {
+		padding-top: 15%;
+		padding-left: 0;
+		padding-right: 0;
+	}
+}
+
+.form {
+	padding-left: 10%;
+	padding-right: 10%;
+}
+
+.locations-body {
+	display: flex;
+	justify-content: start;
+	flex-wrap: wrap;
+}

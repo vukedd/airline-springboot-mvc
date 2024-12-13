@@ -35,7 +35,14 @@ public class LocationRepositoryImpl implements LocationRepository {
 	@Override
 	public Location getLocation(Long id) {
 		String sql = "SELECT * FROM Location WHERE LocationId = ?;";
-		Location location = jdbcTemplate.queryForObject(sql, rowMapper, id);
+
+		Location location;
+		try {
+			location = jdbcTemplate.queryForObject(sql, rowMapper, id);
+		} catch (EmptyResultDataAccessException e) {
+			location = null;
+		}
+
 		
 		return location;
 	}
