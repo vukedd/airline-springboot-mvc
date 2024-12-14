@@ -1,0 +1,22 @@
+@media (max-width: 1080px) {
+	.logInForm {
+		width: 100%;
+	}
+}
+
+@media (min-width: 1080px) {
+	.logInForm {
+		width: 25%;
+	}
+}
+
+.logInFormDiv {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.formDivs {
+	padding-bottom: 20px;
+}

@@ -15,22 +15,35 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
 	integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
 	crossorigin="anonymous"></script>
-<link href="/css/location-forms.css" rel="stylesheet">
+<link href="/css/body.css" rel="stylesheet">
+<link href="/css/location-details.css" rel="stylesheet">
 </head>
 <body>
-
 	<nav th:replace="~{fragments :: navbar}"></nav>
-<div class="form">
-	<div th:if="${location} != null">
-		<p th:text="${location.continent}"></p>
-		<p th:text="${location.country}"></p>
-		<p th:text="${location.city}"></p>
-		<a th:href="@{/location/delete?id={id}(id=${location.id})}">Delete</a>
-		<a th:href="@{/location/edit?id={id}(id=${location.id})}">Edit</a>
+	
+	<div class="form">
+		<div class="locationDetails" th:if="${location} != null">
+			<div class="locationDataDiv">
+				<div class="imageDiv">
+					<img src="/images/placeholder.jpeg" id="locationImage">
+				</div>
+				<div class="headerDiv">
+					<h3 th:text="${location.city}"></h3>
+					<span>Country: <span th:text="${location.country}"></span></span> <span>Continent:
+						<span th:text="${location.continent}"></span>
+					</span>
+					<div class="actionDiv">
+						<a class="btn btn-danger" th:href="@{/location/delete?id={id}(id=${location.id})}" role="button">Delete</a>
+						<a class="btn btn-dark" th:href="@{/location/edit?id={id}(id=${location.id})}" role="button">Edit</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div th:unless="${location} != null">
+			<p>Location not found!</p>
+			<a href="/location/">Show all locations</a>
+		</div>
 	</div>
-	<div th:unless="${location} != null">
-		<p>Location not found!</p>
-	</div>
-</div>
 </body>
 </html>

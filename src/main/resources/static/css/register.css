@@ -1,0 +1,24 @@
+@media (min-width: 1080px) {
+	.registerForm {
+		width: 25%;
+	}
+}
+
+@media (max-width: 1080px) {
+	.registerForm {
+		width: 100%;
+	}
+}
+
+.registerFormDiv {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+
+#registerHeader {
+	display: flex;
+	justify-content: center;
+}

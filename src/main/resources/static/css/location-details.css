@@ -1,0 +1,33 @@
+.locationDetails {
+	display: flex;
+	justify-content: start;
+	flex-direction:column;
+}
+
+.locationDataDiv {
+	display: flex;
+	justify-content: start;
+	flex-wrap: wrap;
+	padding-left: 0;
+}
+
+.headerDiv {
+	display: flex;
+	flex-direction: column;
+	margin-left: 10px;
+}
+
+.actionDiv {
+	margin-top: 5%;
+}
+
+@media (max-width: 1080px){
+	#locationImage {
+		width: 340px;
+		height: 220px;
+	}
+}
+
+#locationImage {
+
+}

@@ -10,7 +10,7 @@
 		class="navbar navbar-expand-lg bg-body-tertiary position-fixed pb-2 p-2 start-0 end-0 z-1 "
 		data-bs-theme="dark" id="navbar" th:fragment="navbar">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="#">Navbar</a>
+			<a class="navbar-brand" href="#">Rizzair</a>
 			<button class="navbar-toggler" type="button"
 				data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
 				aria-controls="navbarTogglerDemo02" aria-expanded="false"
@@ -19,9 +19,18 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarTogglerDemo02">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-					<li class="nav-item"><a class="nav-link" href="/location/">Locations</a></li>
+					<li class="nav-item dropdown">
+				        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				          Locations
+				        </a>
+				        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+				          <a class="dropdown-item" href="/location/">Show all locations</a>
+				          <a class="dropdown-item" href="/location/add">Add location</a>
+				        </div>
+				    </li>
 				</ul>
-				<a href="#" class="nav-link text-light">Log in</a>
+				
+				<a href="/login/" class="nav-link text-light">Log in</a>
 			</div>
 		</div>
 	</nav>
