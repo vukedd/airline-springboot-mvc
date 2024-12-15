@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -19,11 +20,18 @@
 	crossorigin="anonymous"></script>
 <link href="/css/body.css" rel="stylesheet">
 <link href="/css/register.css" rel="stylesheet">
+<link href="/css/navbar.css" rel="stylesheet">
 </head>
 <body>
 	<nav th:replace="~{fragments :: navbar}"></nav>
 	<div class="form">
 		<div class="registerFormDiv">
+			<div class="alert alert-success alert-dismissible fade show w-100" id="successAlert" role="alert" th:if="${status} == 'success'" >
+			  	You have registered succesfully!
+			  	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
+			    	<span aria-hidden="true">&times;</span>
+			 	</a>
+			</div>
 			<div>	    	
 				<h2 id="registerHeader">Register</h2>
 			</div>
@@ -61,7 +69,7 @@
 		        	<p th:if="${password} != null" style='color:red;font-size:12px;margin:0;padding:0;'>Password must contain from 8 to 20 characters, at least one letter and at least one digit</p>
 				  </div>
 				  <div>
-				  	<span>Already have an account?  </span><a href="/login/" style="color:black">Log in</a>
+				  	<span>Already have an account?  </span><a href="/auth/login" style="color:black">Log in</a>
 				  </div>
 				  <button type="submit" class="btn btn-dark mt-3">Register</button>
 				</form>

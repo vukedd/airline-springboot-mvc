@@ -1,35 +1,37 @@
 <!Doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-	crossorigin="anonymous">
-<script
-	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-	integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-	crossorigin="anonymous"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
-	integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
-	crossorigin="anonymous"></script>
-<link href="/css/body.css" rel="stylesheet">
-<link href="/css/log-in.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+	<link
+		href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+		rel="stylesheet"
+		integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+		crossorigin="anonymous">
+	<script
+		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+		integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+		integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+		crossorigin="anonymous"></script>
+	<link href="/css/body.css" rel="stylesheet">
+	<link href="/css/log-in.css" rel="stylesheet">
+	<link href="/css/navbar.css" rel="stylesheet">
 </head>
 <body>
 <nav th:replace="~{fragments :: navbar}"></nav>
 <div class="form">
 <div class="logInFormDiv">
 	<h1 id="loginHeader">Log in</h1>
-	<form class="logInForm">
+	<form method="POST" action="/auth/login" class="logInForm">
 	  <div class="form-group formDivs">
 	    <label for="username">Username: </label>
-	    <input type="text" class="form-control" id="username" placeholder="Enter username">
+	    <input type="text" class="form-control" id="username" placeholder="Enter username" name="username">
 	  </div>
 	  <div class="form-group formDivs">
 	    <label for="password">Password: </label>
-	    <input type="password" class="form-control" id="password" placeholder="Enter Password">
+	    <input type="password" class="form-control" id="password" placeholder="Enter Password" name="password">
 	  </div>
 	  <div class="form-group formDivs">
 	  	<span>You don't have an account yet?  </span><a href="/user/register" style="color:black">Register here</a>
