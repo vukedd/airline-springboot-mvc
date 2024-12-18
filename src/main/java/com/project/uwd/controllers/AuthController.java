@@ -30,7 +30,6 @@ public class AuthController {
 		User user = _authService.authenticateUser(username, password);
 		if (user != null) {
 			session.setAttribute("loggedIn", user);
-			System.out.println(user.getRole());
 		} else {
 			return "redirect:/auth/login";
 		}

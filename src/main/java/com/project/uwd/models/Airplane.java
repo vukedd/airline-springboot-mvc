@@ -49,4 +49,9 @@ public class Airplane {
 	public void setNumberOfRows(int numberOfRows) {
 		this.numberOfRows = numberOfRows;
 	}
+
+	@Override
+	public String toString() {
+		return "Airplane [id=" + id + ", name=" + name + ", numberOfColumns=" + numberOfColumns + ", numberOfRows=" + numberOfRows + "]";
+	}
 }

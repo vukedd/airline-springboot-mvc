@@ -24,28 +24,27 @@
 <body>
 	<nav th:replace="~{fragments :: navbar}"></nav>
 	<div class="form">
-    <h1>Add new location</h1>
-	    <form method='Post' th:action="@{/location/add}" th:object="${location}">
+    <h1>Add new airplane</h1>
+	    <form method='Post' th:action="@{/airplane/add}" th:object="${airplane}">
 			<div class="form-group">
-				<label for="city">City:</label> <input type="text" name="city"
-					class="form-control" id="city" placeholder="Enter city name" th:value="*{city}">
-				<p th:if="${city} != null"
-					style='color: red; font-size: 12px; margin: 0; padding: 0;'>City
-					must contain at least 3 characters</p>
+				<label for="name">Airplane name:</label> <input type="text" name="name"
+					class="form-control" id="name" placeholder="Enter airplane name" th:value="*{name}">
+				<p th:if="${name} != null"
+					style='color: red; font-size: 12px; margin: 0; padding: 0;'>Airplane name must contain at least 3 characters!</p>
 			</div>
 			<div class="form-group">
-				<label for="country">Country:</label> <input type="text" name="country"
-					class="form-control" id="country" placeholder="Enter country name:" th:value="*{country}">
-				<p th:if="${country} != null"
-					style='color: red; font-size: 12px; margin: 0; padding: 0;'>Country
-					must contain at least 3 characters</p>
+				<label for="numberOfColumns">Number of seat columns:</label> <input type="number" name="numberOfColumns"
+					class="form-control" id="numberOfColumns" placeholder="Enter number of seat columns:" th:value="*{numberOfColumns}" required>
+				<p th:if="${numberOfColumns} != null"
+					style='color: red; font-size: 12px; margin: 0; padding: 0;'>Airplane must have at least one column of seats!</p>
 			</div>
 			<div class="form-group">
-				<label>Continent:</label><br> <select name="continent" class="form-control">
-					<option th:each="continentIt : ${continents}" th:text="${continentIt}">
-				</select><br>
+				<label for="numberOfColumns">Number of seat rows:</label> <input type="number" name="numberOfRows"
+					class="form-control" id="numberOfRows" placeholder="Enter number of seat rows:" th:value="*{numberOfRows}" required>
+				<p th:if="${numberOfRows} != null"
+					style='color: red; font-size: 12px; margin: 0; padding: 0;'>Airplane must have at least one row of seats!</p>
 			</div>
-			<button type="submit" class="btn btn-primary">Submit</button>
+			<button type="submit" class="btn btn-primary mt-3">Submit</button>
 		</form>
     </div>
 </body>

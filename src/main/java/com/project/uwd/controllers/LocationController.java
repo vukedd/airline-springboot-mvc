@@ -134,6 +134,12 @@ public class LocationController {
 		Continent[] continents = Continent.values();
 		model.addAttribute("continents", continents);
 		
+		if (session.getAttribute("location") != null) {
+			model.addAttribute("location", session.getAttribute("location"));
+		} else {
+			model.addAttribute("location", new Location());
+		}
+		
 		if (city != null) {
 			model.addAttribute("city", "failure");
 		}
@@ -236,6 +242,7 @@ public class LocationController {
 		int res =_locationService.addLocation(location);
 		if (res == 1) {
 			response.sendRedirect("/location/?status=added");
+			session.removeAttribute("location");		
 		}
 		return;
 	}

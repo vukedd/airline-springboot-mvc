@@ -28,8 +28,26 @@
 				          <a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="dropdown-item" href="/location/add">Add location</a>
 				        </div>
 				    </li>
+				    <li class="nav-item dropdown">
+				        <a class="nav-link dropdown-toggle mt-2" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				          Airplanes
+				        </a>
+				        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+				          <a class="dropdown-item" href="/airplane/">Show all airplanes</a>
+				          <a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="dropdown-item" href="/airplane/add">Add airplane</a>
+				        </div>
+				    </li>
+				    <li class="nav-item dropdown">
+				        <a class="nav-link dropdown-toggle mt-2" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				          Airports
+				        </a>
+				        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+				          <a class="dropdown-item" href="/airport/">Show all airports</a>
+				          <a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="dropdown-item" href="/airport/add">Add airport</a>
+				        </div>
+				    </li>
 				</ul>
-				
+
 				<a th:if="${session.loggedIn} == null" href="/auth/login" class="nav-link text-light" style="margin-right:30px;margin-top:7px;">Log in</a>
 				<div class="btn-group" th:unless="${session.loggedIn} == null" id="authBtnNavbar">
 					  <a type="button" class="nav-link dropdown-toggle text-light" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${session.loggedIn.username}" style="margin-right: 30px;margin-top: 5px"></a>
