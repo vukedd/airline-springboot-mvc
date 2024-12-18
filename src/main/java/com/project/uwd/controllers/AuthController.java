@@ -40,6 +40,7 @@ public class AuthController {
 	@GetMapping("/logout")
 	public String postLogOut(HttpSession session) {
 		session.removeAttribute("loggedIn");
+		session.invalidate();
 		return "redirect:/auth/login";
 	}
 }

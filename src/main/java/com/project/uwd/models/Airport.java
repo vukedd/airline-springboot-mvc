@@ -2,10 +2,11 @@ package com.project.uwd.models;
 
 public class Airport {
 	private Long id;
-	private int code;
+	private String code;
 	private Location location;
+	private Long locationId;
 	
-	public Airport(Long id, int code, Location location) {
+	public Airport(Long id, String code, Location location) {
 		super();
 		this.id = id;
 		this.code = code;
@@ -24,11 +25,11 @@ public class Airport {
 		this.id = id;
 	}
 
-	public int getCode() {
+	public String getCode() {
 		return code;
 	}
 
-	public void setCode(int code) {
+	public void setCode(String code) {
 		this.code = code;
 	}
 
@@ -39,5 +40,17 @@ public class Airport {
 	public void setLocation(Location location) {
 		this.location = location;
 	}
-	
+
+	public Long getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+
+	@Override
+	public String toString() {
+		return "Airport [id=" + id + ", code=" + code + ", location=" + location.getCity() + ", locationId=" + locationId + "]";
+	}
 }

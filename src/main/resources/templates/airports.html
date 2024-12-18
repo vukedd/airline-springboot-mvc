@@ -18,55 +18,55 @@
 	crossorigin="anonymous"></script>
 <link href="/css/body.css" rel="stylesheet">
 <link href="/css/navbar.css" rel="stylesheet">
-<link href="/css/locations.css" rel="stylesheet">
+<link href="/css/airports.css" rel="stylesheet">
 </head>
 <body>
 <nav th:replace="~{fragments :: navbar}"></nav>
 
 <div class="form">
-	<div class="alert alert-success alert-dismissible fade show w-100" id="successAlert" role="alert" th:if="${actionStatus} != null and ${actionStatus} == 'locationAdded'" >
-	  	Location succesfully added!
+	<div class="alert alert-success alert-dismissible fade show w-100" id="successAlert" role="alert" th:if="${actionStatus} != null and ${actionStatus} == 'airportAdded'" >
+	  	Airport succesfully added!
 	  	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
 	    	<span aria-hidden="true">&times;</span>
 	 	</a>
 	</div>
-	<div class="alert alert-success alert-dismissible fade show w-100" id="successAlert" role="alert" th:if="${actionStatus} != null and ${actionStatus} == 'locationEdited'" >
-	  	Location succesfully edited!
+	<div class="alert alert-success alert-dismissible fade show w-100" id="successAlert" role="alert" th:if="${actionStatus} != null and ${actionStatus} == 'airportEdited'" >
+	  	Airport succesfully edited!
 	  	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
 	    	<span aria-hidden="true">&times;</span>
 	 	</a>
 	</div>
-	<div class="alert alert-success alert-dismissible fade show w-100" id="successAlert" role="alert" th:if="${actionStatus} != null and ${actionStatus} == 'locationDeleted'" >
-	  	Location succesfully deleted!
+	<div class="alert alert-success alert-dismissible fade show w-100" id="successAlert" role="alert" th:if="${actionStatus} != null and ${actionStatus} == 'airportDeleted'" >
+	  	Airport succesfully deleted!
 	  	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
 	    	<span aria-hidden="true">&times;</span>
 	 	</a>
 	</div>
-	<div class="alert alert-danger alert-dismissible fade show w-100" id="errorAlert" role="alert" th:if="${actionStatus} != null and ${actionStatus} == 'locationDeleteError'" >
-	  	An error occurred while deleting location
+	<div class="alert alert-danger alert-dismissible fade show w-100" id="errorAlert" role="alert" th:if="${actionStatus} != null and ${actionStatus} == 'airportDeleteError'" >
+	  	An error occurred while deleting airport
 	  	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
 	    	<span aria-hidden="true">&times;</span>
 	 	</a>
 	</div>
-	<div class="alert alert-danger alert-dismissible fade show w-100" id="errorAlert" role="alert" th:if="${actionStatus} != null and ${actionStatus} == 'locationAddError'" >
-	  	An error occurred while creating location
+	<div class="alert alert-danger alert-dismissible fade show w-100" id="errorAlert" role="alert" th:if="${actionStatus} != null and ${actionStatus} == 'airportAddError'" >
+	  	An error occurred while creating airport
 	  	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
 	    	<span aria-hidden="true">&times;</span>
 	 	</a>
 	</div>
-		<div class="alert alert-danger alert-dismissible fade show w-100" id="errorAlert" role="alert" th:if="${actionStatus} != null and ${actionStatus} == 'locationEditError'" >
-	  	An error occurred while editing location
+		<div class="alert alert-danger alert-dismissible fade show w-100" id="errorAlert" role="alert" th:if="${actionStatus} != null and ${actionStatus} == 'airportEditError'" >
+	  	An error occurred while editing airport
 	  	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
 	    	<span aria-hidden="true">&times;</span>
 	 	</a>
 	</div>
-	<h1>Locations</h1>
+	<h1>Airports</h1>
 	<div class="content-body">
-		<div class="card m-3" style="width: 18rem;" th:each="location : ${locations}">
-			  	<img src="/images/placeholder.jpeg" class="card-img-top" alt="">
+		<div class="card m-3" style="width: 18rem;" th:each="airport : ${airports}">
+			  	<img src="/images/airport-pic.jpg" class="card-img-top" alt="">
 			<div class="card-body">
-			    <h5 class="card-title" th:text="${location.city}">Card title</h5>
-			    <a th:href="@{/location/details?id={id}(id=${location.id})}" class="btn btn-primary">Show more</a>
+			    <h5 class="card-title" th:text="${airport.code}">Card title</h5>
+			    <a th:href="@{/airport/details?id={id}(id=${airport.id})}" class="btn btn-primary">Show more</a>
 		    </div>
 		</div>
 	</div>

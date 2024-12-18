@@ -1,0 +1,14 @@
+#hideAlertButton {
+	text-decoration:none;
+	font-size: 15px;
+}
+
+#successAlert {
+	display: flex;
+	justify-content: space-between;
+}
+
+#errorAlert {
+	display: flex;
+	justify-content: space-between;
+}

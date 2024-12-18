@@ -39,9 +39,23 @@ public class LocationController {
 	}
 	
 	@GetMapping("/")
-	public String getLocations(@RequestParam(value="status", defaultValue="") String status, Model model) {
+	public String getLocations(@RequestParam(required=false) String actionStatus, Model model) {
 		List<Location> locations = _locationService.getLocations();
 		model.addAttribute("locations", locations);
+		if (actionStatus != null) {
+			if (actionStatus.equals("locationAdded"))
+				model.addAttribute("actionStatus", "locationAdded");
+			else if (actionStatus.equals("locationEdited"))
+				model.addAttribute("actionStatus", "locationEdited");
+			else if (actionStatus.equals("locationDeleted"))
+				model.addAttribute("actionStatus", "locationDeleted");
+			else if (actionStatus.equals("locationDeleteError")) 
+				model.addAttribute("actionStatus", "locationDeleteError");
+			else if (actionStatus.equals("locationEditError")) 
+				model.addAttribute("actionStatus", "locationEditError");
+			else if (actionStatus.equals("locationAddError")) 
+				model.addAttribute("actionStatus", "locationAddError");
+		}
 //		String retval = "<!DOCTYPE html>\r\n"
 //				+ "<html lang=\"en\">\r\n"
 //				+ "<head>\r\n"
@@ -122,9 +136,9 @@ public class LocationController {
 		int res = _locationService.deleteLocation(id);
 		System.out.println(res);
 		if (res == 1) {
-			response.sendRedirect("/location/?status=success");
+			response.sendRedirect("/location/?actionStatus=locationDeleted");
 		} else {
-			response.sendRedirect("/location/?status=error");
+			response.sendRedirect("/location/?actionStatus=locationDeleteError");
 		}
 		return;
 	}
@@ -241,9 +255,13 @@ public class LocationController {
 		
 		int res =_locationService.addLocation(location);
 		if (res == 1) {
-			response.sendRedirect("/location/?status=added");
 			session.removeAttribute("location");		
+			response.sendRedirect("/location/?actionStatus=locationAdded");
+			return;
 		}
+		
+		session.removeAttribute("location");		
+		response.sendRedirect("/location/?actionStatus=locationAddError");
 		return;
 	}
 	
@@ -361,11 +379,11 @@ public class LocationController {
 		
 		int res = _locationService.editLocation(id, location);
 		if (res != 1) {
-			response.sendRedirect("/location/?status=error");
+			response.sendRedirect("/location/?actionStatus=locationEditError");
 			return;
 		}
 		
-		response.sendRedirect("/location/details?id=" + id + "&status=success");
+		response.sendRedirect("/location/?actionStatus=locationEdited");
 		return;
 	}
 }
