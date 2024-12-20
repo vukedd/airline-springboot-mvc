@@ -1,12 +1,18 @@
-@media screen and (min-width:1080px) {
+@media screen and (min-width:1440px) {
 	.form {
 		padding-top: 5%;
 	}
 }
 
+@media screen and (max-width:1440px) {
+	.form {
+		padding-top: 8%;
+	}
+}
+
 @media screen and (max-width:1080px) {
 	.form {
-		padding-top: 7%;
+		padding-top: 10%;
 	}
 }
 

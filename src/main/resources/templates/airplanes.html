@@ -24,49 +24,51 @@
 <nav th:replace="~{fragments :: navbar}"></nav>
 
 <div class="form">
-	<div class="alert alert-success alert-dismissible fade show w-100" id="successAlert" role="alert" th:if="${actionStatus} != null and ${actionStatus} == 'airplaneAdded'" >
-	  	Airplane succesfully added!
+<div class="alert alert-success alert-dismissible fade show w-100" id="successAlert" role="alert" th:if="${actionStatus} != null and ${actionStatus} == 'airplaneAdded'" >
+		<span th:text="#{airplane.add.success.alert}"></span>
 	  	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
 	    	<span aria-hidden="true">&times;</span>
 	 	</a>
 	</div>
 	<div class="alert alert-success alert-dismissible fade show w-100" id="successAlert" role="alert" th:if="${actionStatus} != null and ${actionStatus} == 'airplaneEdited'" >
-	  	Airplane succesfully edited!
+		<span th:text="#{airplane.edit.success.alert}"></span>
 	  	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
 	    	<span aria-hidden="true">&times;</span>
 	 	</a>
 	</div>
 	<div class="alert alert-success alert-dismissible fade show w-100" id="successAlert" role="alert" th:if="${actionStatus} != null and ${actionStatus} == 'airplaneDeleted'" >
-	  	Airplane succesfully deleted!
+		<span th:text="#{airplane.delete.success.alert}"></span>
 	  	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
 	    	<span aria-hidden="true">&times;</span>
 	 	</a>
 	</div>
 	<div class="alert alert-danger alert-dismissible fade show w-100" id="errorAlert" role="alert" th:if="${actionStatus} != null and ${actionStatus} == 'airplaneDeleteError'" >
-	  	An error occurred while deleting airplane
+		<span th:text="#{airplane.delete.failure.alert}"></span>
 	  	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
 	    	<span aria-hidden="true">&times;</span>
 	 	</a>
 	</div>
 	<div class="alert alert-danger alert-dismissible fade show w-100" id="errorAlert" role="alert" th:if="${actionStatus} != null and ${actionStatus} == 'airplaneAddError'" >
-	  	An error occurred while creating airplane
+		<span th:text="#{airplane.add.failure.alert}"></span>
 	  	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
 	    	<span aria-hidden="true">&times;</span>
 	 	</a>
 	</div>
 		<div class="alert alert-danger alert-dismissible fade show w-100" id="errorAlert" role="alert" th:if="${actionStatus} != null and ${actionStatus} == 'airplaneEditError'" >
-	  	An error occurred while editing airplane
+		<span th:text="#{airplane.edit.failure.alert}"></span>
 	  	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
 	    	<span aria-hidden="true">&times;</span>
 	 	</a>
 	</div>
-	<h1>Airplanes</h1>
+<div th:replace="~{fragments :: language-bar1}"></div>
+<div th:replace="~{fragments :: language-bar2}"></div>
+	<h1 th:text="#{airplane.head}"></h1>
 	<div class="content-body">
 		<div class="card m-3" style="width: 18rem;" th:each="airplane : ${airplanes}">
 			  	<img src="/images/placeholder.jpeg" class="card-img-top" alt="">
 			<div class="card-body">
-			    <h5 class="card-title" th:text="${airplane.name}">Card title</h5>
-			    <a th:href="@{/airplane/details?id={airplaneId}(airplaneId=${airplane.Id})}" class="btn btn-primary">Show more</a>
+			    <h5 class="card-title" th:text="${airplane.name}"></h5>
+			    <a th:href="@{/airplane/details?id={airplaneId}(airplaneId=${airplane.Id})}" class="btn btn-primary" th:text="#{show-more.msg}">Show more</a>
 		    </div>
 		</div>
 	</div>

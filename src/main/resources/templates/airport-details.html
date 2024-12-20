@@ -24,26 +24,28 @@
 	<nav th:replace="~{fragments :: navbar}"></nav>
 	
 	<div class="form">
-		<div class="airportDetails" th:if="${airport} != null">
+<div th:replace="~{fragments :: language-bar1}"></div>
+<div th:replace="~{fragments :: language-bar2}"></div>		
+<div class="airportDetails" th:if="${airport} != null">
 			<div class="airportDataDiv">
 				<div class="imageDiv">
 					<img src="/images/airport-pic.jpg" id="airportImage">
 				</div>
 				<div class="headerDiv">
 					<h3 th:text="${airport.code}"></h3>
-					<span>Airport country: <span th:text="${airport.location.country}"></span></span>
-					<span>Airport city: <span th:text="${airport.location.city}"></span></span>
+					<span><span th:text="#{airport.country.lbl}"> </span>  <span th:text="${airport.location.country}"></span></span>
+					<span><span th:text="#{airport.city.lbl}"> </span>  <span th:text="${airport.location.city}"></span></span>
 					<div class="actionDiv">
-						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-danger" th:href="@{/airport/delete?id={airportId}(airportId=${airport.id})}" role="button">Delete</a>
-						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-dark" th:href="@{/airport/edit?id={airportId}(airportId=${airport.id})}" role="button">Edit</a>
+						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-danger" th:href="@{/airport/delete?id={airportId}(airportId=${airport.id})}" role="button" th:text="#{delete.btn}"></a>
+						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-dark" th:href="@{/airport/edit?id={airportId}(airportId=${airport.id})}" role="button" th:text="#{edit.btn}"></a>
 					</div>
 				</div>
 			</div>
 		</div>
 
 		<div th:unless="${airport} != null">
-			<p>Airport not found!</p>
-			<a href="/airport/">Show all airports</a>
+			<p th:text="#{airport.not.found.msg}"></p>
+			<a href="/airport/" th:text="#{airport.show.all.link}"></a>
 		</div>
 	</div>
 </body>

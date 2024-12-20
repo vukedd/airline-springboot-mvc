@@ -24,28 +24,28 @@
 <body>
 	<nav th:replace="~{fragments :: navbar}"></nav>
 	<div class="form">
-    <h1>Add new location</h1>
+<div th:replace="~{fragments :: language-bar1}"></div>
+<div th:replace="~{fragments :: language-bar2}"></div>
+    <h1 th:text="#{location.add.head}"></h1>
 	    <form method='Post' th:action="@{/location/add}" th:object="${location}">
 			<div class="form-group">
-				<label for="city">City:</label> <input type="text" name="city"
-					class="form-control" id="city" placeholder="Enter city name" th:value="*{city}">
+				<label for="city" th:text="#{location.city.lbl}"></label> <input type="text" name="city"
+					class="form-control" id="city" th:placeholder="#{location.city.placeholder}" th:value="*{city}">
 				<p th:if="${city} != null"
-					style='color: red; font-size: 12px; margin: 0; padding: 0;'>City
-					must contain at least 3 characters</p>
+					style='color: red; font-size: 12px; margin: 0; padding: 0;' th:text="#{location.add.validation}"></p>
 			</div>
 			<div class="form-group">
-				<label for="country">Country:</label> <input type="text" name="country"
-					class="form-control" id="country" placeholder="Enter country name:" th:value="*{country}">
+				<label for="country" th:text="#{location.country.lbl}"></label> <input type="text" name="country"
+					class="form-control" id="country" th:placeholder="#{location.country.placeholder}" th:value="*{country}">
 				<p th:if="${country} != null"
-					style='color: red; font-size: 12px; margin: 0; padding: 0;'>Country
-					must contain at least 3 characters</p>
+					style='color: red; font-size: 12px; margin: 0; padding: 0;' th:text="#{location.country.validation}"></p>
 			</div>
 			<div class="form-group">
-				<label>Continent:</label><br> <select name="continent" class="form-control">
+				<label th:text="#{location.continent.lbl}"></label><br> <select name="continent" class="form-control">
 					<option th:each="continentIt : ${continents}" th:text="${continentIt}">
 				</select><br>
 			</div>
-			<button type="submit" class="btn btn-primary">Submit</button>
+			<button type="submit" class="btn btn-primary" th:text="#{location.submit.btn}"></button>
 		</form>
     </div>
 </body>

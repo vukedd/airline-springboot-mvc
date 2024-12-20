@@ -25,53 +25,55 @@
 <body>
 	<nav th:replace="~{fragments :: navbar}"></nav>
 	<div class="form">
+	<div class="alert alert-success alert-dismissible fade show w-100" id="successAlert" role="alert" th:if="${status} == 'success'" >
+  	<span th:text="#{register.success.alert}"></span>
+  		<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
+    		<span aria-hidden="true">&times;</span>
+ 		</a>
+	</div>
+<div th:replace="~{fragments :: language-bar1}"></div>
+<div th:replace="~{fragments :: language-bar2}"></div>
 		<div class="registerFormDiv">
-			<div class="alert alert-success alert-dismissible fade show w-100" id="successAlert" role="alert" th:if="${status} == 'success'" >
-			  	You have registered succesfully!
-			  	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
-			    	<span aria-hidden="true">&times;</span>
-			 	</a>
-			</div>
 			<div>	    	
-				<h2 id="registerHeader">Register</h2>
+				<h2 id="registerHeader" th:text="#{register.head}"></h2>
 			</div>
 			<div class="registerForm">
 				<form method="POST" th:action="@{/user/register}" th:object="${user}">
 				  <div class="form-group">
-				    <label for="firstName">First name:</label>
-				    <input type="text" class="form-control m-0" id="firstName" aria-describedby="firstName" placeholder="Enter first name" name="firstName" th:value="${user.firstName}">
-				    <p th:if="${firstName} != null"style='color:red;font-size:12px;margin:0;padding:0;'>First name must contain only letters</p>
+				    <label for="firstName" th:text="#{register.first.name}"></label>
+				    <input type="text" class="form-control m-0" id="firstName" aria-describedby="firstName" th:placeholder="#{register.first.name.placeholder}" name="firstName" th:value="${user.firstName}">
+				    <p th:if="${firstName} != null"style='color:red;font-size:12px;margin:0;padding:0;' th:text="#{first.name.validation}"></p>
 				  </div>
 				  <div class="form-group">
-				    <label for="lastName">Last name:</label>
-				    <input type="text" class="form-control" id="lastName" aria-describedby="lastName" placeholder="Enter last name" name="lastName" th:value="${user.lastName}">
-			        <p th:if="${lastName} != null" style='color:red;font-size:12px;margin:0;padding:0;'>Last name must contain only letters</p>
+				    <label for="lastName" th:text="#{register.last.name}"></label>
+				    <input type="text" class="form-control" id="lastName" aria-describedby="lastName" th:placeholder="#{register.last.name.placeholder}" name="lastName" th:value="${user.lastName}">
+			        <p th:if="${lastName} != null" style='color:red;font-size:12px;margin:0;padding:0;'th:text="#{last.name.validation}"></p>
 				  </div>
 				  <div class="form-group">
-				    <label for="dateOfBirth">Date of birth:</label>
-				    <input type="date" class="form-control" id="dateOfBirth" aria-describedby="dateOfBirth" placeholder="Enter date of birth" name="dateOfBirth" required>
+				    <label for="dateOfBirth" th:text="#{register.dob}"></label>
+				    <input type="date" class="form-control" id="dateOfBirth" aria-describedby="dateOfBirth" th:placeholder="#{register.dob.placeholder}" name="dateOfBirth" required>
 				  </div>
 				  <div class="form-group">
-				    <label for="email">Email address:</label>
-				    <input type="email" class="form-control" id="email" aria-describedby="email" placeholder="Enter email" name="email" th:value="${user.email}">
-				    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-				    <p th:if="${email} != null"style='color:red;font-size:12px;margin:0;padding:0;'>Please enter a valid email!</p>
+				    <label for="email" th:text="#{register.email}"></label>
+				    <input type="email" class="form-control" id="email" aria-describedby="email" th:placeholder="#{register.email.placeholder}" name="email" th:value="${user.email}">
+				    <small id="emailHelp" class="form-text text-muted" th:text="#{email.notice}"></small>
+				    <p th:if="${email} != null"style='color:red;font-size:12px;margin:0;padding:0;' th:text="#{email.validation}"></p>
 				  </div>
 				  <div class="form-group">
-				    <label for="lastName">Username:</label>
-				    <input type="text" class="form-control mb-0" id="username" aria-describedby="username" placeholder="Enter username" name="username" th:value="${user.username}">
-		        	<p th:if="${username} == 'failure'" style='color:red;font-size:12px;margin:0;padding:0;'>Username must contain 5 to 20 alphanumerical characters</p>
-		        	<p th:if="${username} == 'exists'" style='color:red;font-size:12px;margin:0;padding:0;'>Username already exists!</p>
+				    <label for="lastName" th:text="#{register.username}"></label>
+				    <input type="text" class="form-control mb-0" id="username" aria-describedby="username" th:placeholder="#{register.username.placeholder}" name="username" th:value="${user.username}">
+		        	<p th:if="${username} == 'failure'" style='color:red;font-size:12px;margin:0;padding:0;' th:text="#{username.validation1}"></p>
+		        	<p th:if="${username} == 'exists'" style='color:red;font-size:12px;margin:0;padding:0;' th:text="#{username.validation2}"></p>
 				  </div>
 				  <div class="form-group">
-				    <label for="password">Password:</label>
-				    <input type="password" class="form-control" id="password" placeholder="Enter password" name="password">
-		        	<p th:if="${password} != null" style='color:red;font-size:12px;margin:0;padding:0;'>Password must contain from 8 to 20 characters, at least one letter and at least one digit</p>
+				    <label for="password" th:text="#{register.password}"></label>
+				    <input type="password" class="form-control" id="password" th:placeholder="#{register.password.placeholder}" name="password">
+		        	<p th:if="${password} != null" style='color:red;font-size:12px;margin:0;padding:0;' th:text="#{password.validation}"></p>
 				  </div>
 				  <div>
-				  	<span>Already have an account?  </span><a href="/auth/login" style="color:black">Log in</a>
+				  	<span th:text="#{register.have.acc}">  </span><a href="/auth/login" style="color:black" th:text="#{register.log.in.link}"></a>
 				  </div>
-				  <button type="submit" class="btn btn-dark mt-3">Register</button>
+				  <button type="submit" class="btn btn-dark mt-3" th:text="#{register.btn}"></button>
 				</form>
 			</div>
 		</div>

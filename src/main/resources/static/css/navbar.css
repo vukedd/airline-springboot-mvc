@@ -22,3 +22,8 @@
 		display: inline;
 	}
 }
+
+#language-bar {
+	display: flex;
+	justify-content: end;
+}

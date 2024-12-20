@@ -20,46 +20,51 @@
 			<div class="collapse navbar-collapse pb-2" id="locationNavbar">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item dropdown">
-				        <a class="nav-link dropdown-toggle mt-2" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				          Locations
+				        <a class="nav-link dropdown-toggle mt-2" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="#{locations.menu}">
 				        </a>
 				        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-				          <a class="dropdown-item" href="/location/">Show all locations</a>
-				          <a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="dropdown-item" href="/location/add">Add location</a>
+				          <a class="dropdown-item" href="/location/" th:text="#{locations.all.item}"></a>
+				          <a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="dropdown-item" href="/location/add" th:text="#{locations.add.item}"></a>
 				        </div>
 				    </li>
 				    <li class="nav-item dropdown">
-				        <a class="nav-link dropdown-toggle mt-2" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				          Airplanes
+				        <a class="nav-link dropdown-toggle mt-2" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="#{airplanes.menu}">
 				        </a>
 				        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-				          <a class="dropdown-item" href="/airplane/">Show all airplanes</a>
-				          <a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="dropdown-item" href="/airplane/add">Add airplane</a>
+				          <a class="dropdown-item" href="/airplane/" th:text="#{airplanes.all.item}"></a>
+				          <a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="dropdown-item" href="/airplane/add" th:text="#{airplanes.add.item}"></a>
 				        </div>
 				    </li>
 				    <li class="nav-item dropdown">
-				        <a class="nav-link dropdown-toggle mt-2" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				          Airports
+				        <a class="nav-link dropdown-toggle mt-2" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="#{airports.menu}">
 				        </a>
 				        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-				          <a class="dropdown-item" href="/airport/">Show all airports</a>
-				          <a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="dropdown-item" href="/airport/add">Add airport</a>
+				          <a class="dropdown-item" href="/airport/" th:text="#{airports.all.item}"></a>
+				          <a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="dropdown-item" href="/airport/add" th:text="#{airports.add.item}"></a>
 				        </div>
 				    </li>
 				</ul>
 
-				<a th:if="${session.loggedIn} == null" href="/auth/login" class="nav-link text-light" style="margin-right:30px;margin-top:7px;">Log in</a>
+				<a th:if="${session.loggedIn} == null" href="/auth/login" class="nav-link text-light" style="margin-right:30px;margin-top:7px;" th:text="#{log.in}">Log in</a>
 				<div class="btn-group" th:unless="${session.loggedIn} == null" id="authBtnNavbar">
 					  <a type="button" class="nav-link dropdown-toggle text-light" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${session.loggedIn.username}" style="margin-right: 30px;margin-top: 5px"></a>
 					  <div class="dropdown-menu dropleft">
-					    	<a class="dropdown-item" href="#">Profile</a>
+					    	<a class="dropdown-item" href="#" th:text="#{profile.msg}">Profile</a>
 					    	<div class="dropdown-divider"></div>
-					    	<a class="dropdown-item" href="/auth/logout">Log out</a>
+					    	<a class="dropdown-item" href="/auth/logout" th:text="#{log.out}">Log out</a>
 					  </div>
 					  <a href="#" class="nav-link text-light" id="cartPc"><i class="bi bi-cart" style="font-size:20px; margin-right: 7px;"></i><span style="font-size:20px; margin-right:30px;">0</span></a>	
 				</div>
 			</div>
 		</div>
 	</nav>
+	
+	<div th:if="${idparam} != null" th:fragment="language-bar1" id="language-bar">
+		<a th:href="@{${currentLocation}(localeData='en')}">EN</a><span>|</span><a th:href="@{${currentLocation}(localeData='sr_RS')}">SR</a>
+	</div>
+	
+	<div th:if="${idparam} == null" th:fragment="language-bar2" id="language-bar">
+		<a th:href="@{${currentLocation}(localeData='en')}">EN</a><span>|</span><a th:href="@{${currentLocation}(localeData='sr_RS')}">SR</a>
+	</div>
 </body>
 </html>

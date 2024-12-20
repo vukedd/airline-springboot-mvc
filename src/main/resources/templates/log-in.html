@@ -22,21 +22,23 @@
 <body>
 <nav th:replace="~{fragments :: navbar}"></nav>
 <div class="form">
+<div th:replace="~{fragments :: language-bar1}"></div>
+<div th:replace="~{fragments :: language-bar2}"></div>
 <div class="logInFormDiv">
-	<h1 id="loginHeader">Log in</h1>
+	<h1 id="loginHeader" th:text="#{log.in.head}">Log in</h1>
 	<form method="POST" action="/auth/login" class="logInForm">
 	  <div class="form-group formDivs">
-	    <label for="username">Username: </label>
-	    <input type="text" class="form-control" id="username" placeholder="Enter username" name="username">
+	    <label for="username" th:text="#{log.in.username.lbl}">Username: </label>
+	    <input type="text" class="form-control" id="username" th:placeholder="#{log.in.username.placeholder}" name="username">
 	  </div>
 	  <div class="form-group formDivs">
-	    <label for="password">Password: </label>
-	    <input type="password" class="form-control" id="password" placeholder="Enter Password" name="password">
+	    <label for="password" th:text="#{log.in.password.lbl}">Password: </label>
+	    <input type="password" class="form-control" id="password" th:placeholder="#{log.in.password.placeholder}" name="password">
 	  </div>
 	  <div class="form-group formDivs">
-	  	<span>You don't have an account yet?  </span><a href="/user/register" style="color:black">Register here</a>
+	  	<span th:text="#{log.in.dont.have.acc}">You don't have an account yet?  </span><a href="/user/register" style="color:black" th:text="#{register.here}">Register here</a>
 	  </div>
-	  <button type="submit" class="btn btn-dark">Log in</button>
+	  <button type="submit" class="btn btn-dark" th:text="#{log.in.btn}">Log in</button>
 	</form>
 </div>
 </div>

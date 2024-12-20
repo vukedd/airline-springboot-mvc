@@ -40,6 +40,8 @@ public class LocationController {
 	
 	@GetMapping("/")
 	public String getLocations(@RequestParam(required=false) String actionStatus, Model model) {
+		String currentLocation = "/location/";
+		model.addAttribute("currentLocation", currentLocation);
 		List<Location> locations = _locationService.getLocations();
 		model.addAttribute("locations", locations);
 		if (actionStatus != null) {
@@ -126,7 +128,9 @@ public class LocationController {
 //		
 //		retval += "</body>\r\n"
 //				+ "</html>";
-		
+		String currentLocation = "/location/details?id=" + id;
+		model.addAttribute("currentLocation", currentLocation);
+		model.addAttribute("idparam", "1");
 		return "location-details";
 	}
 	
@@ -215,7 +219,6 @@ public class LocationController {
 //				+ "   </form>\r\n"
 //				+ "</body>\r\n"
 //				+ "</html>";
-//		
 		return "location-add";
 	}
 	
@@ -274,7 +277,7 @@ public class LocationController {
 //		}
 //		
 //		Location locationSession = null;
-//		boolean invalidTry = false;
+//		boolean invalidTry = false;	
 //		if (session.getAttribute("location") != null) {
 //			locationSession = (Location)session.getAttribute("location");
 //			invalidTry = true;
@@ -341,6 +344,7 @@ public class LocationController {
 		if (id != null) {
 			model.addAttribute("locationId", id);
 		}
+		
 		if (city != null) {
 			model.addAttribute("city", "failure");
 		}
@@ -348,6 +352,11 @@ public class LocationController {
 		if (country != null) {
 			model.addAttribute("country", "failure");
 		}
+		
+		String currentLocation = "/location/edit?id=" + id;
+		model.addAttribute("currentLocation", currentLocation);
+		model.addAttribute("idparam", "1");
+		
 		return "location-edit";
 	}
 	

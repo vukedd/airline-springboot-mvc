@@ -49,6 +49,10 @@ public class AirplaneController {
 		Airplane airplane = _airplaneService.getAirplaneById(id);
 		model.addAttribute("airplane", airplane);
 		
+		String currentLocation = "/airplane/details?id=" + id;
+		model.addAttribute("currentLocation", currentLocation);
+		model.addAttribute("idparam", "1");
+		
 		return "airplane-details";
 	}
 	
@@ -133,6 +137,10 @@ public class AirplaneController {
 		if (numberOfColumns != null) {
 			model.addAttribute("numberOfColumns", numberOfColumns);
 		}
+		
+		String currentLocation = "/airplane/edit?id=" + id;
+		model.addAttribute("currentLocation", currentLocation);
+		model.addAttribute("idparam", "1");
 		
 		return "airplane-edit";
 	}

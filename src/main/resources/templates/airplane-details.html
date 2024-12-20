@@ -24,25 +24,27 @@
 	<nav th:replace="~{fragments :: navbar}"></nav>
 	
 	<div class="form">
-		<div class="airplaneDetails" th:if="${airplane} != null">
+<div th:replace="~{fragments :: language-bar1}"></div>
+<div th:replace="~{fragments :: language-bar2}"></div>		
+<div class="airplaneDetails" th:if="${airplane} != null">
 			<div class="airplaneDataDiv">
 				<div class="imageDiv">
 					<img src="/images/placeholder.jpeg" id="airplaneImage">
 				</div>
 				<div class="headerDiv">
 					<h3 th:text="${airplane.name}"></h3>
-					<span>Number of seats: <span th:text="${airplane.numberOfColumns} * ${airplane.numberOfRows}"></span></span>
+					<span><span th:text="#{number.of.seats.lbl}"></span>  <span th:text="${airplane.numberOfColumns} * ${airplane.numberOfRows}"></span></span>
 					<div class="actionDiv">
-						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-danger" th:href="@{/airplane/delete?id={airplaneId}(airplaneId=${airplane.id})}" role="button">Delete</a>
-						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-dark" th:href="@{/airplane/edit?id={airplaneId}(airplaneId=${airplane.id})}" role="button">Edit</a>
+						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-danger" th:href="@{/airplane/delete?id={airplaneId}(airplaneId=${airplane.id})}" role="button" th:text="#{delete.btn}"></a>
+						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-dark" th:href="@{/airplane/edit?id={airplaneId}(airplaneId=${airplane.id})}" role="button" th:text="#{edit.btn}"></a>
 					</div>
 				</div>
 			</div>
 		</div>
 
 		<div th:unless="${airplane} != null">
-			<p>Airplane not found!</p>
-			<a href="/airplane/">Show all airplanes</a>
+			<p th:text="#{airplane.not.found.msg}">Airplane not found!</p>
+			<a href="/airplane/" th:text="#{airplane.show.all.link}">Show all airplanes</a>
 		</div>
 	</div>
 </body>

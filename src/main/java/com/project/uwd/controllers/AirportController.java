@@ -55,6 +55,10 @@ public class AirportController {
 		Airport airport = _airportService.getAirportById(id);
 		model.addAttribute("airport", airport);
 		
+		String currentLocation = "/airport/details?id=" + id;
+		model.addAttribute("currentLocation", currentLocation);
+		model.addAttribute("idparam", "1");
+		
 		return "airport-details";
 	}
 	
@@ -121,6 +125,10 @@ public class AirportController {
 		if (code != null) {
 			model.addAttribute("code", code);
 		}
+		
+		String currentLocation = "/airport/edit?id=" + id;
+		model.addAttribute("currentLocation", currentLocation);
+		model.addAttribute("idparam", "1");
 		
 		return "airport-edit";
 	}
