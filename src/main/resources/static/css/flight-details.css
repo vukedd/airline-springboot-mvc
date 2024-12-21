@@ -1,0 +1,36 @@
+.flightDetails {
+	display: flex;
+	justify-content: start;
+	flex-direction: column;
+}
+
+.flightDataDiv {
+	display: flex;
+	justify-content: start;
+	flex-wrap: wrap;
+	padding-left: 0;
+}
+
+.headerDiv {
+	display: flex;
+	flex-direction: column;
+	margin-left: 10px;
+}
+
+.actionDiv {
+	margin-top: 5%;
+}
+
+@media (max-width: 1080px){
+	#flightImage {
+		width: 400px;
+		height: 270px;
+	}
+}
+
+@media (min-width: 1080px){
+	#flightImage {
+		width: 550px;
+		height: 350px;
+	}
+}

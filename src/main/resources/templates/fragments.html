@@ -43,6 +43,14 @@
 				          <a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="dropdown-item" href="/airport/add" th:text="#{airports.add.item}"></a>
 				        </div>
 				    </li>
+				    <li class="nav-item dropdown">
+				        <a class="nav-link dropdown-toggle mt-2" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="#{flights.menu}">
+				        </a>
+				        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+				          <a class="dropdown-item" href="/flight/" th:text="#{flights.all.item}"></a>
+				          <a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="dropdown-item" href="/flight/add" th:text="#{flights.add.item}"></a>
+				        </div>
+				    </li>
 				</ul>
 
 				<a th:if="${session.loggedIn} == null" href="/auth/login" class="nav-link text-light" style="margin-right:30px;margin-top:7px;" th:text="#{log.in}">Log in</a>

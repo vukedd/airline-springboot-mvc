@@ -1,22 +1,32 @@
 package com.project.uwd.models;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 
 public class Flight {
 	private Long id;
+	private LocalDateTime dateTimeOfDeparture;
+	private LocalTime timeOfDeparture;
 	private LocalDate dateOfDeparture;
 	private int duration;
 	private double ticketPrice;
-	private Airport departure;
-	private Airport destination;
-	private Airplane airplane;
 	
-	public Flight(Long id, LocalDate dateOfDeparture, int duration, double ticketPrice, Airport departure,
+	private Airport departure;
+	private Long departureId;
+	
+	private Airport destination;
+	private Long destinationId;
+	
+	private Airplane airplane;
+	private Long airplaneId;
+	
+	public Flight(Long id, LocalDateTime dateTimeOfDeparture, int duration, double ticketPrice, Airport departure,
 			Airport destination, Airplane airplane) {
 		super();
 		this.id = id;
-		this.dateOfDeparture = dateOfDeparture;
+		this.dateTimeOfDeparture = dateTimeOfDeparture;
 		this.duration = duration;
 		this.ticketPrice = ticketPrice;
 		this.departure = departure;
@@ -36,12 +46,12 @@ public class Flight {
 		this.id = id;
 	}
 
-	public LocalDate getDateOfDeparture() {
-		return dateOfDeparture;
+	public LocalDateTime getDateTimeOfDeparture() {
+		return dateTimeOfDeparture;
 	}
 
-	public void setDateOfDeparture(LocalDate dateOfDeparture) {
-		this.dateOfDeparture = dateOfDeparture;
+	public void setDateTimeOfDeparture(LocalDateTime dateTimeOfDeparture) {
+		this.dateTimeOfDeparture = dateTimeOfDeparture;
 	}
 
 	public int getDuration() {
@@ -83,5 +93,55 @@ public class Flight {
 	public void setAirplane(Airplane airplane) {
 		this.airplane = airplane;
 	}
+
+	public Long getDepartureId() {
+		return departureId;
+	}
+
+	public void setDepartureId(Long departureId) {
+		this.departureId = departureId;
+	}
+
+	public Long getDestinationId() {
+		return destinationId;
+	}
+
+	public void setDestinationId(Long destinationId) {
+		this.destinationId = destinationId;
+	}
+
+	public Long getAirplaneId() {
+		return airplaneId;
+	}
+
+	public void setAirplaneId(Long airplaneId) {
+		this.airplaneId = airplaneId;
+	}
+
+	public LocalTime getTimeOfDeparture() {
+		return timeOfDeparture;
+	}
+
+	public void setTimeOfDeparture(LocalTime timeOfDeparture) {
+		this.timeOfDeparture = timeOfDeparture;
+	}
+
+	public LocalDate getDateOfDeparture() {
+		return dateOfDeparture;
+	}
+
+	public void setDateOfDeparture(LocalDate dateOfDeparture) {
+		this.dateOfDeparture = dateOfDeparture;
+	}
+
+	@Override
+	public String toString() {
+		return "Flight [id=" + id + ", dateTimeOfDeparture=" + dateTimeOfDeparture + ", timeOfDeparture="
+				+ timeOfDeparture + ", dateOfDeparture=" + dateOfDeparture + ", duration=" + duration + ", ticketPrice="
+				+ ticketPrice + ", departure=" + departure + ", departureId=" + departureId + ", destination="
+				+ destination + ", destinationId=" + destinationId + ", airplane=" + airplane + ", airplaneId="
+				+ airplaneId + "]";
+	}
+	
 	
 }
