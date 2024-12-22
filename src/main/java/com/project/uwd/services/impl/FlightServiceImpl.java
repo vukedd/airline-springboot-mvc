@@ -40,7 +40,7 @@ public class FlightServiceImpl implements FlightService{
 	@Override
 	public int createFlight(Flight flight) {
 		// TODO Auto-generated method stub
-		return 0;
+		return _flightRepository.createFlight(flight);
 	}
 
 }

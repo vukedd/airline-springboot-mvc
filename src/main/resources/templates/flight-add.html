@@ -29,38 +29,46 @@
     <h1 th:text="#{flight.add.head}"></h1>
 	    <form method='Post' th:action="@{/flight/add}" th:object="${flight}">
 			<div class="form-group">
-				<label th:text="#{flight.departure.lbl}"></label><br> <select name="departureId" class="form-control">
-					<option th:each="airportIt : ${airports}" th:text="${airportIt.code}" th:value="${airportIt.id}">
+				<label th:text="#{flight.departure.lbl}"></label><br> <select name="departureId" class="form-control" id="departureIdComboBox">
+					<option th:each="airportIt : ${airports}" th:text="${airportIt.code}" th:value="${airportIt.id}" th:selected="${flight.departureId} == ${airportIt.id}">
 				</select><br>
 			</div>
 			<div class="form-group">
-				<label th:text="#{flight.destination.lbl}"></label><br> <select name="destinationId" class="form-control">
-					<option th:each="airportIt : ${airports}" th:text="${airportIt.code}" th:value="${airportIt.id}">
+				<p th:if="${depDest} != null" style='color: red; font-size: 12px; margin: 0; padding: 0;' th:text="#{dep.dest.validation.lbl}"></p>
+				<label th:text="#{flight.destination.lbl}"></label><br> <select name="destinationId" class="form-control" id="destinationIdComboBox" th:selected="${flight.destination}">
+					<option th:each="airportIt : ${airports}" th:text="${airportIt.code}" th:value="${airportIt.id}"  th:selected="${flight.destinationId} == ${airportIt.id}">
 				</select><br>
-			</div>
+			</div>	
 			<div class="form-group">
 				<label th:text="#{flight.airplane.lbl}"></label><br> <select name="airplaneId" class="form-control">
 					<option th:each="airplaneIt : ${airplanes}" th:text="${airplaneIt.name}" th:value="${airplaneIt.id}">
 				</select><br>
 			</div>
+			
 		  <div class="form-group">
 		    <label for="dateOfDeparture" th:text="#{flight.departureDate.lbl}"></label><br>
-		    <input type="date" class="form-control" id="dateOfDeparture" aria-describedby="dateOfDeparture" name="dateOfDeparture" required>
+		    <input type="date" class="form-control" id="departureDatePicker" aria-describedby="dateOfDeparture" name="dateOfDeparture" th:value="${flight.dateOfDeparture}" required>
 		  </div>
+		  <p th:if="${departureDate} != null" style='color: red; font-size: 12px; margin: 0; padding: 0;' th:text="#{departure.date.validation.lbl}"></p>
+		  
 		  <div class="form-group">
 		    <label for="timeOfDeparture" th:text="#{flight.departureTime.lbl}"></label><br>
-		    <input type="time" class="form-control" id="timeOfDeparture" aria-describedby="timeOfDeparture" name="timeOfDeparture" required>
+		    <input type="time" class="form-control" id="departureTimePicker" aria-describedby="timeOfDeparture" name="timeOfDeparture" th:value="${flight.timeOfDeparture}" required>
 		  </div>
+		  <p th:if="${departureTime} != null" style='color: red; font-size: 12px; margin: 0; padding: 0;' th:text="#{departure.time.validation.lbl}"></p>
 		  <div class="form-group">
 		    <label for="duration" th:text="#{flight.duration.lbl}"></label><br>
-		    <input type="number" class="form-control" id="duration" aria-describedby="duration" th:placeholder="#{flight.duration.placeholder}" name="duration" value="0">
+		    <input type="number" class="form-control" id="durationInpt" aria-describedby="duration" th:placeholder="#{flight.duration.placeholder}" name="duration" th:value="${flight.duration} != null ? ${flight.duration} : 0">
 		  </div>
+		  <p th:if="${flightDuration} != null" style='color: red; font-size: 12px; margin: 0; padding: 0;' th:text="#{flight.duration.validation.lbl}" ></p>
 		  <div class="form-group">
-		    <label for="ticketPrice" th:text="#{flight.ticketPrice.lbl}"></label><br>
-		    <input type="text" class="form-control" id="ticketPrice" aria-describedby="ticketPrice" th:placeholder="#{flight.ticketPrice.placeholder}" name="ticketPrice">
-		  </div><br>
+		    <label for="ticketPrice" th:text="#{flight.ticketPrice.lbl} + ' $'"></label><br>
+		    <input type="number" class="form-control" id="priceInpt" aria-describedby="ticketPrice" th:placeholder="#{flight.ticketPrice.placeholder}" name="ticketPrice" th:value="${flight.ticketPrice} != null ? ${flight.ticketPrice} : 0">
+		  </div>
+		  <p th:if="${ticketPrice} != null" style='color: red; font-size: 12px; margin: 0; padding: 0;' th:text="#{ticket.price.validation.lbl}"></p>
+		  <br>
 			<button type="submit" class="btn btn-primary" th:text="#{flight.submit.btn}"></button>
 		</form>
-    </div>
+    </div>    
 </body>
 </html>

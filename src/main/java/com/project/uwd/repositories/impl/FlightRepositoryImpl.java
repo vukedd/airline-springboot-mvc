@@ -1,5 +1,6 @@
 package com.project.uwd.repositories.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,8 +89,16 @@ public class FlightRepositoryImpl implements FlightRepository {
 
 	@Override
 	public int createFlight(Flight flight) {
-		// TODO Auto-generated method stub
-		return 0;
+		String sql = "INSERT INTO Flight(DateOfDeparture, Duration, TicketPrice, DepartureId, DestinationId, AirplaneId) VALUES (?, ?, ?, ?, ?, ?);";
+		int res;
+		
+		try {
+			res = _jdbcTemplate.update(sql, LocalDateTime.of(flight.getDateOfDeparture(), flight.getTimeOfDeparture()), flight.getDuration(), flight.getTicketPrice(), flight.getDepartureId(), flight.getDestinationId(), flight.getAirplaneId());
+		} catch (Exception e) {
+			res = 0;
+		}
+		
+		return res;
 	}
 
 }

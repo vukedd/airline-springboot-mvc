@@ -18,6 +18,7 @@
 	crossorigin="anonymous"></script>
 <link href="/css/body.css" rel="stylesheet">
 <link href="/css/navbar.css" rel="stylesheet">
+<link href="/css/flights.css" rel="stylesheet">
 </head>
 <body>
 <nav th:replace="~{fragments :: navbar}"></nav>
@@ -25,6 +26,12 @@
 <div class="form">
 <div th:replace="~{fragments :: language-bar1}"></div>
 <div th:replace="~{fragments :: language-bar2}"></div>
+	<div class="alert alert-success alert-dismissible fade show w-100" id="successAlert" role="alert" th:if="${actionStatus} != null and ${actionStatus} == 'flightAdded'">
+	  	<span th:text="#{flight.add.success.alert}"></span>
+	  	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
+	    	<span aria-hidden="true">&times;</span>
+	 	</a>
+	</div>
 	<h1 th:text="#{flights.head}"></h1>
 	<div class="content-body">
 		<div class="card m-3" style="width: 18rem;" th:each="flight : ${flights}">
