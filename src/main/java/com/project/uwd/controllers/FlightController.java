@@ -55,7 +55,7 @@ public class FlightController {
 	@GetMapping("/add")
 	public String getAddFlightForm(@RequestParam(required=false) String depDest, @RequestParam(required=false) String departureDate, @RequestParam(required=false) String flightDuration, @RequestParam(required=false) String ticketPrice, HttpSession session, Model model) {
 		model.addAttribute("airports", _airportService.getAllAiports());
-		model.addAttribute("airplanes", _airplaneService.getAllAirplanes());
+		model.addAttribute("airplanes", _airplaneService.getAvailableAirplanes());
 		
 		if (depDest != null) {
 			model.addAttribute("depDest", depDest);
@@ -131,6 +131,15 @@ public class FlightController {
 		}
 		
 		return "redirect:/flight/?actionStatus=flightAdded";
+	}
+	
+	@GetMapping("/cancel")
+	public String cancelFlight(@RequestParam Long id) {
+		int res = _flightService.cancelFlight(id);
+		if (res == 1) {
+			return "redirect:/flight/?cancelled=true";
+		}
+		return "redirect:/flight/?cancelled=false";
 	}
 	
 //	boolean timeDifference = LocalDateTime.of(date, time).isAfter(LocalDateTime.now());

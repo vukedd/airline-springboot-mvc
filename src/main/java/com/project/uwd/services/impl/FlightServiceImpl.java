@@ -43,4 +43,9 @@ public class FlightServiceImpl implements FlightService{
 		return _flightRepository.createFlight(flight);
 	}
 
+	@Override
+	public int cancelFlight(Long id) {
+		return _flightRepository.cancelFlight(id);
+	}
+
 }

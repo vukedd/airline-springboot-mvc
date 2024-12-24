@@ -12,6 +12,7 @@ public class Flight {
 	private LocalDate dateOfDeparture;
 	private int duration;
 	private double ticketPrice;
+	private boolean cancelled;
 	
 	private Airport departure;
 	private Long departureId;
@@ -33,7 +34,7 @@ public class Flight {
 		this.destination = destination;
 		this.airplane = airplane;
 	}
-
+	
 	public Flight() {
 		super();
 	}
@@ -132,6 +133,14 @@ public class Flight {
 
 	public void setDateOfDeparture(LocalDate dateOfDeparture) {
 		this.dateOfDeparture = dateOfDeparture;
+	}
+	
+	public boolean isCancelled() {
+		return cancelled;
+	}
+
+	public void setCancelled(boolean cancelled) {
+		this.cancelled = cancelled;
 	}
 
 	@Override

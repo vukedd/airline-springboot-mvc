@@ -43,6 +43,7 @@
 					<div class="actionDiv">
 						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-danger" href="#" role="button" th:text="#{delete.btn}"></a>
 						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-dark" href="#" role="button" th:text="#{edit.btn}"></a>
+						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-dark" th:href="@{/flight/cancel?id={flightId}(flightId=${flight.id})}" role="button" th:text="#{cancel.btn}"></a>
 					</div>
 				</div>
 			</div>

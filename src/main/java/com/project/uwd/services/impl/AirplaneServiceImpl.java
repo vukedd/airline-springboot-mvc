@@ -40,4 +40,10 @@ public class AirplaneServiceImpl implements AirplaneService{
 		return _airplaneRepository.deleteAirplaneById(id);
 	}
 
+	@Override
+	public List<Airplane> getAvailableAirplanes() {
+		// TODO Auto-generated method stub
+		return _airplaneRepository.getAvailableAirplanes();
+	}
+
 }

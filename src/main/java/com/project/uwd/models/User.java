@@ -16,12 +16,13 @@ public class User {
 	private LocalDate dateOfBirth = null;
 	private LocalDate dateOfRegistration = null;
 	private Role role;
+	private boolean	blocked;
 	
 	private List<Reservation> reservations;
 	private LoyaltyCard loyaltyCard;
 	
 	public User(String username, String password, String email, String firstName, String lastName,
-			LocalDate dateOfBirth, LocalDate dateOfRegistration, Role role) {
+			LocalDate dateOfBirth, LocalDate dateOfRegistration,Role role) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -34,6 +35,24 @@ public class User {
 		this.reservations = new ArrayList<Reservation>();
 	}
 	
+	public User(Long id, String username, String password, String email, String firstName, String lastName,
+			LocalDate dateOfBirth, LocalDate dateOfRegistration, Role role, boolean blocked,
+			List<Reservation> reservations, LoyaltyCard loyaltyCard) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.dateOfBirth = dateOfBirth;
+		this.dateOfRegistration = dateOfRegistration;
+		this.role = role;
+		this.blocked = blocked;
+		this.reservations = reservations;
+		this.loyaltyCard = loyaltyCard;
+	}
+
 	public User(Long id, String username, String password, String email, String firstName, String lastName,
 			LocalDate dateOfBirth, LocalDate dateOfRegistration, LoyaltyCard loyaltyCard, Role role) {
 		super();
@@ -133,6 +152,14 @@ public class User {
 
 	public void setLoyaltyCard(LoyaltyCard loyaltyCard) {
 		this.loyaltyCard = loyaltyCard;
+	}
+
+	public boolean isBlocked() {
+		return blocked;
+	}
+
+	public void setBlocked(boolean blocked) {
+		this.blocked = blocked;
 	}
 
 	public List<Reservation> getReservations() {

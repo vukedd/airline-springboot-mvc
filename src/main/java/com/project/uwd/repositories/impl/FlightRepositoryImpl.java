@@ -36,7 +36,7 @@ public class FlightRepositoryImpl implements FlightRepository {
 	
 	@Override
 	public List<Flight> getAllFlights() {
-		String sql = "SELECT * FROM Flight;";
+		String sql = "SELECT * FROM Flight WHERE IsCancelled = 0 AND DateOfDeparture > current_date();";
 		List<Flight> flights;
 		
 		try {
@@ -89,11 +89,25 @@ public class FlightRepositoryImpl implements FlightRepository {
 
 	@Override
 	public int createFlight(Flight flight) {
-		String sql = "INSERT INTO Flight(DateOfDeparture, Duration, TicketPrice, DepartureId, DestinationId, AirplaneId) VALUES (?, ?, ?, ?, ?, ?);";
+		String sql = "INSERT INTO Flight(DateOfDeparture, Duration, TicketPrice, DepartureId, DestinationId, AirplaneId, IsCancelled) VALUES (?, ?, ?, ?, ?, ?, 0);";
 		int res;
 		
 		try {
 			res = _jdbcTemplate.update(sql, LocalDateTime.of(flight.getDateOfDeparture(), flight.getTimeOfDeparture()), flight.getDuration(), flight.getTicketPrice(), flight.getDepartureId(), flight.getDestinationId(), flight.getAirplaneId());
+		} catch (Exception e) {
+			res = 0;
+		}
+		
+		return res;
+	}
+
+	@Override
+	public int cancelFlight(Long id) {
+		String sql = "UPDATE Flight SET IsCancelled = 1 WHERE FlightId = ?;";
+		int res;
+		
+		try {
+			res = _jdbcTemplate.update(sql, id);
 		} catch (Exception e) {
 			res = 0;
 		}

@@ -13,4 +13,5 @@ public interface AirplaneRepository {
 	public int addAirplane(Airplane airplane);
 	public int editAirplane(Long id, Airplane airplane);
 	public int deleteAirplaneById(Long id);
+	public List<Airplane> getAvailableAirplanes();
 }

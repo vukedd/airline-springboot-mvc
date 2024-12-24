@@ -13,4 +13,5 @@ public interface FlightService {
 	public int deleteFlight(Long id);
 	public int editFlight(Long id, Flight flight);
 	public int createFlight(Flight flight);
+	public int cancelFlight(Long id);
 }

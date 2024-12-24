@@ -1,5 +1,6 @@
 package com.project.uwd.repositories.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +86,22 @@ public class AirplaneRepositoryImpl implements AirplaneRepository{
 		}
 		
 		return res;
+	}
+
+	@Override
+	public List<Airplane> getAvailableAirplanes() {
+		String sql = "SELECT Airplane.AirplaneId, Name, NumberOfColumns, NumberOfRows FROM Airplane "
+				+ "LEFT JOIN Flight ON Flight.AirplaneId = Airplane.AirplaneId "
+				+ "WHERE DateOfDeparture is null OR DateOfDeparture < current_date() OR (DateOfDeparture > current_date() AND IsCancelled = 1);";
+		List<Airplane> airplanes;
+		
+//		try {
+			airplanes = _jdbcTemplate.query(sql, _airplaneRowMapper);
+//		} catch (Exception e) {
+//			airplanes = null; 
+//		}
+		
+		return airplanes;
 	}
 
 }
