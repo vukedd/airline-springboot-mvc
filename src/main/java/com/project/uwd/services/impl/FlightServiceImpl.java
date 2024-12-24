@@ -1,5 +1,6 @@
 package com.project.uwd.services.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,11 @@ public class FlightServiceImpl implements FlightService{
 	@Override
 	public int cancelFlight(Long id) {
 		return _flightRepository.cancelFlight(id);
+	}
+
+	@Override
+	public List<Flight> searchFlight(String departure, String destination, LocalDate dateOfDeparture) {
+		return _flightRepository.searchFlights(departure, destination, dateOfDeparture);
 	}
 
 }

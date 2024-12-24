@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.project.uwd.helpers.CSVResourceProvider;
 import com.project.uwd.models.Location;
+import com.project.uwd.models.User;
 import com.project.uwd.models.enums.Continent;
+import com.project.uwd.models.enums.Role;
 import com.project.uwd.services.LocationService;
 import com.project.uwd.services.impl.LocationServiceImpl;
 
@@ -135,16 +137,20 @@ public class LocationController {
 	}
 	
 	@GetMapping("/delete")
-	public void deleteLocation(@RequestParam("id") Long id, HttpServletResponse response) throws IOException {
-		
-		int res = _locationService.deleteLocation(id);
-		System.out.println(res);
-		if (res == 1) {
-			response.sendRedirect("/location/?actionStatus=locationDeleted");
-		} else {
-			response.sendRedirect("/location/?actionStatus=locationDeleteError");
+	public void deleteLocation(@RequestParam("id") Long id, HttpServletResponse response, HttpSession session) throws IOException {
+		User user = (User) session.getAttribute("loggedIn");
+		if (user != null && user.getRole().compareTo(Role.Admin) == 0) {
+			int res = _locationService.deleteLocation(id);
+			System.out.println(res);
+			if (res == 1) {
+				response.sendRedirect("/location/?actionStatus=locationDeleted");
+			} else {
+				response.sendRedirect("/location/?actionStatus=locationDeleteError");
+			}
+			return;
 		}
-		return;
+	
+		response.sendRedirect("/");
 	}
 	
 	@GetMapping("/add")

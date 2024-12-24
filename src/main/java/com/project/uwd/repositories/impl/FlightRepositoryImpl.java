@@ -1,5 +1,6 @@
 package com.project.uwd.repositories.impl;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -113,6 +114,54 @@ public class FlightRepositoryImpl implements FlightRepository {
 		}
 		
 		return res;
+	}
+
+	@Override
+	public List<Flight> searchFlights(String departure, String destination, LocalDate dateOfDeparture) {
+		String sql;
+		List<Flight> flights;
+		String departureChecker = !departure.equals(null) ? departure + "%" : "%";
+		String destinationChecker = !destination.equals(null) ? destination + "%" : "%";
+
+		if (dateOfDeparture == null) {
+			sql = "SELECT *\r\n"
+					+ "FROM Flight f\r\n"
+					+ "LEFT JOIN Airport departure ON departure.AirportId = f.DepartureId\r\n"
+					+ "LEFT JOIN Location location1 ON departure.LocationId = location1.LocationId\r\n"
+					+ "LEFT JOIN Airport destination ON destination.AirportId = f.DestinationId\r\n"
+					+ "LEFT JOIN Location location2 ON destination.LocationId = location2.LocationId\r\n"
+					+ "WHERE (departure.AirportCode like ? OR location1.country like ? OR location1.city like ?) AND (destination.AirportCode like ? OR location2.country like ? OR location2.city like ?) AND IsCancelled = 0 AND DateOfDeparture > current_date();";
+			try {
+				flights = _jdbcTemplate.query(sql, _flightRowMapper, departureChecker, departureChecker, departureChecker, destinationChecker, destinationChecker, destinationChecker);
+			} catch (Exception e) {
+				flights = null;
+			}
+			
+		} else {
+			sql = "SELECT *\r\n"
+					+ "FROM Flight f\r\n"
+					+ "LEFT JOIN Airport departure ON departure.AirportId = f.DepartureId\r\n"
+					+ "LEFT JOIN Location location1 ON departure.LocationId = location1.LocationId\r\n"
+					+ "LEFT JOIN Airport destination ON destination.AirportId = f.DestinationId\r\n"
+					+ "LEFT JOIN Location location2 ON destination.LocationId = location2.LocationId\r\n"
+					+ "WHERE (departure.AirportCode like ? OR location1.country like ? OR location1.city like ?) AND (destination.AirportCode like ? OR location2.country like ? OR location2.city like ?) AND IsCancelled = 0 AND DateOfDeparture > current_date() and DateOfDeparture > ?;";
+			
+			try {
+				flights = _jdbcTemplate.query(sql, _flightRowMapper, departureChecker, departureChecker, departureChecker, destinationChecker, destinationChecker, destinationChecker, dateOfDeparture);
+			} catch (Exception e) {
+				flights = null;
+			}
+		}
+		
+		if (flights != null) {
+			for (Flight flight : flights) {
+				flight.setAirplane(_airplaneRepository.getAirplaneById(flight.getAirplaneId()));
+				flight.setDeparture(_airportRepository.getAirportById(flight.getDepartureId()));
+				flight.setDestination(_airportRepository.getAirportById(flight.getDestinationId()));
+			}
+		}
+		
+		return flights;
 	}
 
 }

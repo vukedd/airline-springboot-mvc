@@ -2,6 +2,7 @@ package com.project.uwd.controllers;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.project.uwd.models.Airplane;
+import com.project.uwd.models.User;
+import com.project.uwd.models.enums.Role;
 import com.project.uwd.services.AirplaneService;
 
 import jakarta.servlet.http.HttpSession;
@@ -58,26 +61,30 @@ public class AirplaneController {
 	
 	@GetMapping("/add")
 	public String getAddAirplane(@RequestParam(required=false) String name, @RequestParam(required=false) String numberOfRows, @RequestParam(required=false) String numberOfColumns, HttpSession session, Model model) {
-		
-		if (session.getAttribute("airplane") != null) {
-			model.addAttribute("airplane", session.getAttribute("airplane"));
-		} else {
-			model.addAttribute("airplane", new Airplane());
+		User user = (User) session.getAttribute("loggedIn");
+		if (user != null && user.getRole().compareTo(Role.Admin) == 0) {
+			if (session.getAttribute("airplane") != null) {
+				model.addAttribute("airplane", session.getAttribute("airplane"));
+			} else {
+				model.addAttribute("airplane", new Airplane());
+			}
+			
+			if (name != null) {
+				model.addAttribute("name", name);
+			}
+			
+			if (numberOfRows != null) {
+				model.addAttribute("numberOfRows", numberOfRows);
+			}
+			
+			if (numberOfColumns != null) {
+				model.addAttribute("numberOfColumns", numberOfColumns);
+			}
+			
+			return "airplane-add";
 		}
 		
-		if (name != null) {
-			model.addAttribute("name", name);
-		}
-		
-		if (numberOfRows != null) {
-			model.addAttribute("numberOfRows", numberOfRows);
-		}
-		
-		if (numberOfColumns != null) {
-			model.addAttribute("numberOfColumns", numberOfColumns);
-		}
-		
-		return "airplane-add";
+		return "redirect:/";
 	}
 	
 	@PostMapping("/add")
@@ -123,26 +130,31 @@ public class AirplaneController {
 
 	@GetMapping("/edit")
 	public String getEditAirplane(@RequestParam Long id, @RequestParam(required=false) String name, @RequestParam(required=false) String numberOfRows, @RequestParam(required=false) String numberOfColumns, HttpSession session,Model model) {
-		Airplane airplane = _airplaneService.getAirplaneById(id);
-		model.addAttribute("airplane", airplane);
-
-		if (name != null) {
-			model.addAttribute("name", name);
+		User user = (User) session.getAttribute("loggedIn");
+		if (user != null && user.getRole().compareTo(Role.Admin) == 0) {
+			Airplane airplane = _airplaneService.getAirplaneById(id);
+			model.addAttribute("airplane", airplane);
+	
+			if (name != null) {
+				model.addAttribute("name", name);
+			}
+			
+			if (numberOfRows != null) {
+				model.addAttribute("numberOfRows", numberOfRows);
+			}
+			
+			if (numberOfColumns != null) {
+				model.addAttribute("numberOfColumns", numberOfColumns);
+			}
+			
+			String currentLocation = "/airplane/edit?id=" + id;
+			model.addAttribute("currentLocation", currentLocation);
+			model.addAttribute("idparam", "1");
+			
+			return "airplane-edit";
 		}
 		
-		if (numberOfRows != null) {
-			model.addAttribute("numberOfRows", numberOfRows);
-		}
-		
-		if (numberOfColumns != null) {
-			model.addAttribute("numberOfColumns", numberOfColumns);
-		}
-		
-		String currentLocation = "/airplane/edit?id=" + id;
-		model.addAttribute("currentLocation", currentLocation);
-		model.addAttribute("idparam", "1");
-		
-		return "airplane-edit";
+		return "redirect:/";
 	}
 	
 	@PostMapping("/edit")
@@ -174,12 +186,17 @@ public class AirplaneController {
 	}
 
 	@GetMapping("/delete")
-	public String postDeleteAirplane(@RequestParam Long id) {
-		int res = _airplaneService.deleteAirplaneById(id);
-		if (res != 1) {
-			return "redirect:/airplane/?actionStatus=airplaneDeleteError";
+	public String postDeleteAirplane(@RequestParam Long id, HttpSession session) {
+		User user = (User) session.getAttribute("loggedIn");
+		if (user != null && user.getRole().compareTo(Role.Admin) == 0) {
+			int res = _airplaneService.deleteAirplaneById(id);
+			if (res != 1) {
+				return "redirect:/airplane/?actionStatus=airplaneDeleteError";
+			}
+			
+			return "redirect:/airplane/?actionStatus=airplaneDeleted";
 		}
 		
-		return "redirect:/airplane/?actionStatus=airplaneDeleted";
+		return "redirect:/";
 	}
 }

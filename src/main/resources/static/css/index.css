@@ -1,0 +1,25 @@
+.search-bar-container {
+  	margin-top: 50px;
+	width: 100%;
+}
+
+.search-bar {
+  	background-color: #f8f9fa;
+  	border-radius: 8px;
+  	padding: 20px;
+  	box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.search-bar input, .search-bar button {
+  	border-radius: 5px;
+}
+
+.search-bar button {
+  	background-color: #000000;
+  	color: white;
+  	font-weight: bold;
+}
+
+.search-bar button:hover {
+  	background-color: white;
+}

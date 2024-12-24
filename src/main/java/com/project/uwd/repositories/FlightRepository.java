@@ -1,5 +1,6 @@
 package com.project.uwd.repositories;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -14,4 +15,5 @@ public interface FlightRepository {
 	public int editFlight(Long id, Flight flight);
 	public int createFlight(Flight flight);
 	public int cancelFlight(Long id);
+	public List<Flight> searchFlights(String departure, String destination, LocalDate dateOfDeparture);
 }

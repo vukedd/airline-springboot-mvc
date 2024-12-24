@@ -1,5 +1,6 @@
 package com.project.uwd.services;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -14,4 +15,5 @@ public interface FlightService {
 	public int editFlight(Long id, Flight flight);
 	public int createFlight(Flight flight);
 	public int cancelFlight(Long id);
+	public List<Flight> searchFlight(String departure, String destination, LocalDate dateOfDeparture);
 }

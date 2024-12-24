@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Rizzair</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+	crossorigin="anonymous">
+<script
+	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+	integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+	integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+	crossorigin="anonymous"></script>
+<link href="/css/body.css" rel="stylesheet">
+<link href="/css/navbar.css" rel="stylesheet">
+<link href="/css/index.css" rel="stylesheet">
+</head>
+<body>
+<nav th:replace="~{fragments :: navbar}"></nav>
+<div class="form">
+	  <div class="container search-bar-container mt-0 mb-3 w-100">
+	  <div class="d-flex justify-content-center">
+	  	  <h2>Search flights</h2>
+	  </div>
+	    <form class="search-bar" method="POST" action="search">
+	      <div class="row gy-2 gx-3 align-items-center">
+	        <div class="col-12 col-md-3">
+	          <input type="text" class="form-control" name="departure" th:placeholder="#{search.bar.departure.ph}">
+	        </div>
+	        <div class="col-12 col-md-3">
+	          <input type="text" class="form-control" name="destination" th:placeholder="#{search.bar.destination.ph}">
+	        </div>
+	        <div class="col-12 col-md-3">
+	          <input type="date" class="form-control" name="dateOfDeparture">
+	        </div>
+	        <div class="col-12 col-md-2">
+	          <input type="number" class="form-control" name="numberOfSeats" th:placeholder="#{search.bar.passengers.ph}" min="1" max="10">
+	        </div>
+	        <div class="col-12 col-md-1 d-flex justify-content-center">
+	          <button type="submit" class="btn w-100" th:text="#{search.bar.btn}">Search</button>
+	        </div>
+	      </div>
+	    </form>
+	  </div>
+	<div class="content-body">
+		<div class="card m-3" style="width: 18rem;" th:each="flight : ${flights}">
+			  	<img src="/images/flight-pic.jpg" class="card-img-top" alt="">
+			<div class="card-body">
+			    <h5 class="card-title" th:text="${flight.departure.code} + '-' + ${flight.destination.code}"></h5>
+			    <p th:text="${flight.dateOfDeparture} + ' | ' + ${flight.timeOfDeparture}"></p>
+			    <a th:href="@{/flight/details?id={flightId}(flightId=${flight.id})}" class="btn btn-primary" th:text="#{show-more.msg}"></a>
+		    </div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

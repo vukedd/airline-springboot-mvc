@@ -21,6 +21,7 @@ public class FlightRowMapper implements RowMapper<Flight>{
 		flight.setDepartureId(rs.getLong(5));
 		flight.setDestinationId(rs.getLong(6));
 		flight.setAirplaneId(rs.getLong(7));
+		flight.setCancelled(rs.getInt(8) == 0 ? false : true);
 		
 		return flight;
 	}

@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.project.uwd.models.Flight;
+import com.project.uwd.models.User;
+import com.project.uwd.models.enums.Role;
 import com.project.uwd.services.AirplaneService;
 import com.project.uwd.services.AirportService;
 import com.project.uwd.services.FlightService;
@@ -54,33 +56,38 @@ public class FlightController {
 	
 	@GetMapping("/add")
 	public String getAddFlightForm(@RequestParam(required=false) String depDest, @RequestParam(required=false) String departureDate, @RequestParam(required=false) String flightDuration, @RequestParam(required=false) String ticketPrice, HttpSession session, Model model) {
-		model.addAttribute("airports", _airportService.getAllAiports());
-		model.addAttribute("airplanes", _airplaneService.getAvailableAirplanes());
-		
-		if (depDest != null) {
-			model.addAttribute("depDest", depDest);
+		User user = (User) session.getAttribute("loggedIn");
+		if (user != null && user.getRole().compareTo(Role.Admin) == 0) {
+			model.addAttribute("airports", _airportService.getAllAiports());
+			model.addAttribute("airplanes", _airplaneService.getAvailableAirplanes());
+			
+			if (depDest != null) {
+				model.addAttribute("depDest", depDest);
+			}
+			
+			if (departureDate != null) {
+				model.addAttribute("departureDate", departureDate);
+			}
+			
+			if (flightDuration != null) {
+				model.addAttribute("flightDuration", flightDuration);
+			}
+			
+			if (ticketPrice != null) {
+				model.addAttribute("ticketPrice", ticketPrice);
+			}
+			
+			if (session.getAttribute("flight") == null)
+				model.addAttribute("flight", new Flight());
+			else
+				model.addAttribute("flight", session.getAttribute("flight"));
+			
+			
+			
+			return "flight-add";
 		}
 		
-		if (departureDate != null) {
-			model.addAttribute("departureDate", departureDate);
-		}
-		
-		if (flightDuration != null) {
-			model.addAttribute("flightDuration", flightDuration);
-		}
-		
-		if (ticketPrice != null) {
-			model.addAttribute("ticketPrice", ticketPrice);
-		}
-		
-		if (session.getAttribute("flight") == null)
-			model.addAttribute("flight", new Flight());
-		else
-			model.addAttribute("flight", session.getAttribute("flight"));
-		
-		
-		
-		return "flight-add";
+		return "redirect:/";
 	}
 	
 	@PostMapping("/add")

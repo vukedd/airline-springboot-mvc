@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.project.uwd.models.Airport;
 import com.project.uwd.models.Location;
+import com.project.uwd.models.User;
+import com.project.uwd.models.enums.Role;
 import com.project.uwd.services.AirportService;
 import com.project.uwd.services.LocationService;
 
@@ -63,29 +65,40 @@ public class AirportController {
 	}
 	
 	@GetMapping("/delete")
-	public String deleteAirport(@RequestParam Long id) {
-		int res = _airportService.deleteAirport(id);
-		if (res != 1) {
-			return "redirect:/airport/?actionStatus=airportDeleteError";
+	public String deleteAirport(@RequestParam Long id, HttpSession session) {
+		User user = (User) session.getAttribute("loggedIn");
+		if (user != null && user.getRole().compareTo(Role.Admin) == 0) {
+			int res = _airportService.deleteAirport(id);
+			if (res != 1) {
+				return "redirect:/airport/?actionStatus=airportDeleteError";
+			}
+			return "redirect:/airport/?actionStatus=airportDeleted";
 		}
-		return "redirect:/airport/?actionStatus=airportDeleted";
+		
+		return "redirect:/";
 	}
 	
 	@GetMapping("/add")
 	public String getAddAirport(@RequestParam(required=false) String code, HttpSession session, Model model) {
-		List<Location> locations = _locationService.getLocations();
-		model.addAttribute("locations", locations);
-		
-		if (session.getAttribute("airport") == null) {
-			model.addAttribute("airport", new Airport());
-		} else {
-			model.addAttribute("airport", session.getAttribute("airport"));
+		User user = (User) session.getAttribute("loggedIn");
+		if (user != null && user.getRole().compareTo(Role.Admin) == 0) {
+
+			List<Location> locations = _locationService.getLocations();
+			model.addAttribute("locations", locations);
+			
+			if (session.getAttribute("airport") == null) {
+				model.addAttribute("airport", new Airport());
+			} else {
+				model.addAttribute("airport", session.getAttribute("airport"));
+			}
+			
+			if (code != null) {
+				model.addAttribute("code", code);
+			}
+			return "airport-add";
 		}
 		
-		if (code != null) {
-			model.addAttribute("code", code);
-		}
-		return "airport-add";
+		return "redirect:/";
 	}
 	
 	@PostMapping("/add")
@@ -116,21 +129,26 @@ public class AirportController {
 	
 	@GetMapping("/edit")
 	public String getEditAirport(@RequestParam Long id, @RequestParam(required=false) String code, HttpSession session, Model model) {
-		List<Location> locations = _locationService.getLocations();
-		model.addAttribute("locations", locations);
-		
-		Airport airport = _airportService.getAirportById(id);
-		model.addAttribute("airport", airport);
-		
-		if (code != null) {
-			model.addAttribute("code", code);
+		User user = (User) session.getAttribute("loggedIn");
+		if (user != null && user.getRole().compareTo(Role.Admin) == 0) {
+			List<Location> locations = _locationService.getLocations();
+			model.addAttribute("locations", locations);
+			
+			Airport airport = _airportService.getAirportById(id);
+			model.addAttribute("airport", airport);
+			
+			if (code != null) {
+				model.addAttribute("code", code);
+			}
+			
+			String currentLocation = "/airport/edit?id=" + id;
+			model.addAttribute("currentLocation", currentLocation);
+			model.addAttribute("idparam", "1");
+			
+			return "airport-edit";
 		}
 		
-		String currentLocation = "/airport/edit?id=" + id;
-		model.addAttribute("currentLocation", currentLocation);
-		model.addAttribute("idparam", "1");
-		
-		return "airport-edit";
+		return "redirect:/";
 	}
 	
 	@PostMapping("/edit")
