@@ -19,20 +19,27 @@
 <link href="/css/body.css" rel="stylesheet">
 <link href="/css/navbar.css" rel="stylesheet">
 <link href="/css/flight-details.css" rel="stylesheet">
+<link href="/css/flights.css" rel="stylesheet">
 </head>
 <body>
 	<nav th:replace="~{fragments :: navbar}"></nav>
 	
 	<div class="form">
 <div th:replace="~{fragments :: language-bar1}"></div>
-<div th:replace="~{fragments :: language-bar2}"></div>		
+<div th:replace="~{fragments :: language-bar2}"></div>
+<div class="alert alert-danger alert-dismissible fade show w-100" id="errorAlert" role="alert" th:if="${booked} != null and ${booked} == 'false'" >
+	 <span th:text="#{flight.booking.error}"></span>
+  	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
+    	<span aria-hidden="true">&times;</span>
+ 	</a>
+</div>
 <div class="flightDetails" th:if="${flight} != null">
 			<div class="flightDataDiv">
 				<div class="imageDiv">
 					<img src="/images/flight-pic.jpg" id="flightImage">
 				</div>
 				<div class="headerDiv">
-					<h3 th:text="${flight.departure.code} + '-' + ${flight.destination.code}"></h3>
+					<h1 th:text="${flight.departure.code} + '-' + ${flight.destination.code}"></h1>
 					<span><span th:text="#{flight.departure.lbl}"></span><a th:href="@{/airport/details?id={airportId}(airportId=${flight.departure.id})}" th:text="'  ' + ${flight.departure.code}"></a><span th:text="'/'"></span><a th:href="@{/location/details?id={locationId}(locationId=${flight.departure.location.id})}" th:text="${flight.departure.location.city}"></a></span>
 					<span><span th:text="#{flight.destination.lbl}"></span><a th:href="@{/airport/details?id={airportId}(airportId=${flight.destination.id})}" th:text="'  ' + ${flight.destination.code}"></a><span th:text="'/'"></span><a th:href="@{/location/details?id={locationId}(locationId=${flight.destination.location.id})}" th:text="${flight.destination.location.city}"></a></span>
 					<span><span th:text="#{flight.departureDate.lbl}"></span><span th:text="' ' + ${flight.dateOfDeparture}"></span></span>
@@ -44,6 +51,13 @@
 						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-danger" href="#" role="button" th:text="#{delete.btn}"></a>
 						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-dark" href="#" role="button" th:text="#{edit.btn}"></a>
 						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-dark" th:href="@{/flight/cancel?id={flightId}(flightId=${flight.id})}" role="button" th:text="#{cancel.btn}"></a>
+						<form action="/flight/book" method="POST" th:if="(${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Tourist') or ${session.loggedIn} == null" class="flightReservationForm">
+							<span class="mt-5" th:text="#{tickets.no}"></span><br>
+							<input type="hidden" th:value="${flight.id}" name="flightId">
+							<input type="number" th:if="${session.numberOfTickets != null}" min="0" max="10" class="mb-3" required name="numberOfTickets" th:value="${session.numberOfTickets}">
+							<input type="number" th:unless="${session.numberOfTickets != null}" min="0" max="10" class="mb-3" required name="numberOfTickets" value="1"><br>
+							<button class="btn btn-dark" type="submit" role="button" th:text="#{book.btn}"></button>
+						</form>
 					</div>
 				</div>
 			</div>

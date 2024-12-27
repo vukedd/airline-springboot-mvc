@@ -8,6 +8,7 @@ public class Ticket {
 	private String firstName;
 	private String lastName;
 	private Flight flight;
+	private Long flightId;
 	
 	public Ticket() {
 		super();
@@ -79,5 +80,13 @@ public class Ticket {
 	
 	public void setFlight(Flight flight) {
 		this.flight = flight;
+	}
+
+	public Long getFlightId() {
+		return flightId;
+	}
+
+	public void setFlightId(Long flightId) {
+		this.flightId = flightId;
 	}
 }

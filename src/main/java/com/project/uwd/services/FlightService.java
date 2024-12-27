@@ -16,4 +16,5 @@ public interface FlightService {
 	public int createFlight(Flight flight);
 	public int cancelFlight(Long id);
 	public List<Flight> searchFlight(String departure, String destination, LocalDate dateOfDeparture);
+	public int numberOfAvailableSpotsByFlight(Long flightId);
 }

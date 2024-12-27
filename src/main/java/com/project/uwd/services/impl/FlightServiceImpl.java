@@ -54,4 +54,9 @@ public class FlightServiceImpl implements FlightService{
 		return _flightRepository.searchFlights(departure, destination, dateOfDeparture);
 	}
 
+	@Override
+	public int numberOfAvailableSpotsByFlight(Long flightId) {
+		return _flightRepository.numberOfAvailableSpotsByFlight(flightId);
+	}
+
 }

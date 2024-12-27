@@ -34,7 +34,11 @@ public class AuthController {
 			return "redirect:/auth/login";
 		}
 		
-		return "redirect:/location/";
+		if (session.getAttribute("forceAuthenticationFlightBooking") != null && (boolean)session.getAttribute("forceAuthenticationFlightBooking") == true) {
+			return "redirect:/flight/details?id=" + session.getAttribute("flightId");
+		}
+		
+		return "redirect:/";
 	}
 	
 	@GetMapping("/logout")

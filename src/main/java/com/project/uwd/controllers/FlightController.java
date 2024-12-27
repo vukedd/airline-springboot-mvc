@@ -3,6 +3,8 @@ package com.project.uwd.controllers;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.project.uwd.models.Flight;
+import com.project.uwd.models.Ticket;
 import com.project.uwd.models.User;
 import com.project.uwd.models.enums.Role;
 import com.project.uwd.services.AirplaneService;
@@ -48,9 +51,12 @@ public class FlightController {
 	}
 	
 	@GetMapping("/details")
-	public String getFlightDetails(@RequestParam Long id, Model model) {
+	public String getFlightDetails(@RequestParam Long id, @RequestParam(required=false) String booked, Model model, HttpSession session) {
+		if (booked != null) {
+			model.addAttribute("booked", booked);
+		}
 		model.addAttribute("flight", _flightService.getFlightById(id));
-		model.addAttribute("currentLocation", "/flight/details?id=" + id);
+		
 		return "flight-details";
 	}
 	
@@ -146,9 +152,50 @@ public class FlightController {
 		if (res == 1) {
 			return "redirect:/flight/?cancelled=true";
 		}
+		
 		return "redirect:/flight/?cancelled=false";
 	}
 	
+	@PostMapping("/book")
+	public String bookFlight(@RequestParam int numberOfTickets, @RequestParam Long flightId, HttpSession session) {
+		boolean numberOfTicketsValidation = true;
+		if (session.getAttribute("loggedIn") == null) {
+			session.setAttribute("flightId", flightId);
+			session.setAttribute("forceAuthenticationFlightBooking", true);
+			session.setAttribute("numberOfTickets", numberOfTickets);
+			
+			return "redirect:/auth/login";
+		}
+		
+		if (numberOfTickets < 0 || numberOfTickets > 11) {
+			numberOfTicketsValidation = false;
+		}
+		
+		if (numberOfTicketsValidation && _flightService.numberOfAvailableSpotsByFlight(flightId) - numberOfTickets >= 0) {
+			ArrayList<Ticket> shoppingCart;
+			if (session.getAttribute("ShoppingCart") == null)
+				shoppingCart = new ArrayList<Ticket>();
+			else
+				shoppingCart = (ArrayList<Ticket>)session.getAttribute("ShoppingCart");
+			
+			for (int i = 0; i < numberOfTickets; i++) {
+				Ticket ticket = new Ticket();
+				ticket.setFlightId(flightId);
+				shoppingCart.add(ticket);
+			}
+			
+			session.setAttribute("cartSize", shoppingCart.size());
+			session.setAttribute("ShoppingCart", shoppingCart);
+			
+			return "redirect:/flight/details?id=" + flightId;
+		}
+		
+		session.setAttribute("numberOfTickets", numberOfTickets);
+		session.setAttribute("flightId", flightId);
+
+		return "redirect:/flight/details?id=" + flightId + "&booked=false";
+	}
+
 //	boolean timeDifference = LocalDateTime.of(date, time).isAfter(LocalDateTime.now());
 //	if (timeDifference) {
 //		int flightTime = 0;
