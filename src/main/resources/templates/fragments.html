@@ -16,7 +16,7 @@
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<a class="navbar-brand" href="/">Rizzair</a>
-			<a href="#" class="nav-link text-light" id="cartPhone"><i class="bi bi-cart" style="font-size:20px; margin-right: 7px;"></i><span th:if="${session.ShoppingCart} == null" style="font-size:20px; margin-right:25px;">0</span><span th:unless="${session.ShoppingCart} == null" style="font-size:20px; margin-right:25px;" th:text="${session.cartSize}"></span></a>	
+			<a href="/cart" class="nav-link text-light" id="cartPhone"><i class="bi bi-cart" style="font-size:20px; margin-right: 7px;"></i><span th:if="${session.ShoppingCart} == null" style="font-size:20px; margin-right:25px;">0</span><span th:unless="${session.ShoppingCart} == null" style="font-size:20px; margin-right:25px;" th:text="${session.cartSize}"></span></a>	
 			<div class="collapse navbar-collapse pb-2" id="locationNavbar">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item dropdown">
@@ -61,18 +61,18 @@
 					    	<div class="dropdown-divider"></div>
 					    	<a class="dropdown-item" href="/auth/logout" th:text="#{log.out}">Log out</a>
 					  </div>
-					  <a href="#" class="nav-link text-light" id="cartPc"><i class="bi bi-cart" style="font-size:20px; margin-right: 7px;"></i><span th:if="${session.ShoppingCart} == null" style="font-size:20px; margin-right:25px;">0</span><span th:unless="${session.ShoppingCart} == null" style="font-size:20px; margin-right:25px;" th:text="${session.cartSize}"></span></a>	
+					  <a href="/cart" class="nav-link text-light" id="cartPc"><i class="bi bi-cart" style="font-size:20px; margin-right: 7px;"></i><span th:if="${session.ShoppingCart} == null" style="font-size:20px; margin-right:25px;">0</span><span th:unless="${session.ShoppingCart} == null" style="font-size:20px; margin-right:25px;" th:text="${session.cartSize}"></span></a>	
 				</div>
 			</div>
 		</div>
 	</nav>
 	
 	<div th:if="${idparam} != null" th:fragment="language-bar1" id="language-bar">
-		<a th:href="@{${currentLocation}(localeData='en')}">EN</a><span>|</span><a th:href="@{${currentLocation}(localeData='sr_RS')}">SR</a>
+		<a th:href="@{${currentElement}(localeData='en')}">EN</a><span>|</span><a th:href="@{${currentElement}(localeData='sr_RS')}">SR</a>
 	</div>
 	
 	<div th:if="${idparam} == null" th:fragment="language-bar2" id="language-bar">
-		<a th:href="@{${currentLocation}(localeData='en')}">EN</a><span>|</span><a th:href="@{${currentLocation}(localeData='sr_RS')}">SR</a>
+		<a th:href="@{${currentElement}(localeData='en')}">EN</a><span>|</span><a th:href="@{${currentElement}(localeData='sr_RS')}">SR</a>
 	</div>
 </body>
 </html>

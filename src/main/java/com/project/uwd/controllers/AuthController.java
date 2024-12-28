@@ -1,5 +1,7 @@
 package com.project.uwd.controllers;
 
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +31,7 @@ public class AuthController {
 	public String postLogIn(@RequestParam String username, @RequestParam String password, HttpSession session) {
 		User user = _authService.authenticateUser(username, password);
 		if (user != null) {
+			session.setAttribute("FlightTicketTracker", new HashMap<Long, Integer>());
 			session.setAttribute("loggedIn", user);
 		} else {
 			return "redirect:/auth/login";

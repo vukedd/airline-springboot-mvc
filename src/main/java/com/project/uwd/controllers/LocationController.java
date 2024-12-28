@@ -131,7 +131,7 @@ public class LocationController {
 //		retval += "</body>\r\n"
 //				+ "</html>";
 		String currentLocation = "/location/details?id=" + id;
-		model.addAttribute("currentLocation", currentLocation);
+		model.addAttribute("currentElement", currentLocation);
 		model.addAttribute("idparam", "1");
 		return "location-details";
 	}

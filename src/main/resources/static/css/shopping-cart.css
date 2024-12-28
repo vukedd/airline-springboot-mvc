@@ -1,0 +1,31 @@
+body {
+    background-color: #f9f9f9;
+    color: #000;
+}
+
+.table-header {
+    background-color: #000;
+    color: #fff;
+}
+
+.table th, .table td {
+    vertical-align: middle;
+}
+
+.remove-link {
+    color: #000;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.remove-link:hover {
+    text-decoration: underline;
+}
+
+.summary {
+    border-top: 2px solid #000;
+}
+
+.summary-row {
+    font-weight: bold;
+}

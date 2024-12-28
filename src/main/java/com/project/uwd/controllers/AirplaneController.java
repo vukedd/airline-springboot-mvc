@@ -52,8 +52,8 @@ public class AirplaneController {
 		Airplane airplane = _airplaneService.getAirplaneById(id);
 		model.addAttribute("airplane", airplane);
 		
-		String currentLocation = "/airplane/details?id=" + id;
-		model.addAttribute("currentLocation", currentLocation);
+		String currentElement = "/airplane/details?id=" + id;
+		model.addAttribute("currentElement", currentElement);
 		model.addAttribute("idparam", "1");
 		
 		return "airplane-details";

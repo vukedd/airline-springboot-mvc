@@ -4,7 +4,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.project.uwd.models.Flight;
+import com.project.uwd.models.ShoppingCart;
 import com.project.uwd.models.Ticket;
 import com.project.uwd.models.User;
 import com.project.uwd.models.enums.Role;
@@ -55,7 +58,10 @@ public class FlightController {
 		if (booked != null) {
 			model.addAttribute("booked", booked);
 		}
+		model.addAttribute("idparam", 1);
+		model.addAttribute("currentElement", "/flight/details?id=" + id);
 		model.addAttribute("flight", _flightService.getFlightById(id));
+		model.addAttribute("availableSeats", _flightService.numberOfAvailableSpotsByFlight(id));
 		
 		return "flight-details";
 	}
@@ -171,21 +177,42 @@ public class FlightController {
 			numberOfTicketsValidation = false;
 		}
 		
-		if (numberOfTicketsValidation && _flightService.numberOfAvailableSpotsByFlight(flightId) - numberOfTickets >= 0) {
-			ArrayList<Ticket> shoppingCart;
+		int ticketCount = 0;
+
+		Object test = session.getAttribute("FlightTicketTracker");
+		if (session.getAttribute("FlightTicketTracker") != null && ((Map<Long, Integer>)session.getAttribute("FlightTicketTracker")).containsKey(flightId)) {
+			ticketCount = ((int)((Map<Long, Integer>)session.getAttribute("FlightTicketTracker")).get(flightId)) + numberOfTickets;
+		} else
+			ticketCount = 0;
+		
+		if (numberOfTicketsValidation && _flightService.numberOfAvailableSpotsByFlight(flightId) -  ticketCount >= 0) {
+			ShoppingCart cart = new ShoppingCart();
 			if (session.getAttribute("ShoppingCart") == null)
-				shoppingCart = new ArrayList<Ticket>();
+				cart = new ShoppingCart();
 			else
-				shoppingCart = (ArrayList<Ticket>)session.getAttribute("ShoppingCart");
+				cart = (ShoppingCart)session.getAttribute("ShoppingCart");
 			
-			for (int i = 0; i < numberOfTickets; i++) {
-				Ticket ticket = new Ticket();
-				ticket.setFlightId(flightId);
-				shoppingCart.add(ticket);
+			cart.addCartItem(_flightService.getFlightById(flightId), numberOfTickets);
+			
+			session.setAttribute("cartSize", cart.getTotalNumberOfItems());
+			session.setAttribute("ShoppingCart", cart);
+			
+			Map<Long, Integer> flightTicketTracker;
+			
+			if (session.getAttribute("FlightTicketTracker") == null) {
+				flightTicketTracker = new HashMap<Long, Integer>();
+				flightTicketTracker.put(flightId, numberOfTickets);
+				
+				session.setAttribute("FlightTicketTracker", flightTicketTracker);
+			} else {
+				flightTicketTracker = (Map<Long, Integer>)session.getAttribute("FlightTicketTracker");
+				
+				if (flightTicketTracker.containsKey(flightId)) {
+					flightTicketTracker.put(flightId, flightTicketTracker.get(flightId) + numberOfTickets);
+				} else {
+					flightTicketTracker.put(flightId, numberOfTickets);
+				}
 			}
-			
-			session.setAttribute("cartSize", shoppingCart.size());
-			session.setAttribute("ShoppingCart", shoppingCart);
 			
 			return "redirect:/flight/details?id=" + flightId;
 		}

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.Objects;
 
 public class Flight {
 	private Long id;
@@ -151,6 +152,22 @@ public class Flight {
 				+ destination + ", destinationId=" + destinationId + ", airplane=" + airplane + ", airplaneId="
 				+ airplaneId + "]";
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(airplane, airplaneId, cancelled, dateOfDeparture, dateTimeOfDeparture, departure,
+				departureId, destination, destinationId, duration, id, ticketPrice, timeOfDeparture);
+	}
+
+	@Override
+	public boolean equals(Object obj) { 
+		if (obj instanceof Flight && this.id == ((Flight)obj).id) {
+			return true;
+		}
+		
+		return false;
+	}
+	
 	
 	
 }

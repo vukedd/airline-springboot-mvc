@@ -166,7 +166,11 @@ public class FlightRepositoryImpl implements FlightRepository {
 
 	@Override
 	public int numberOfAvailableSpotsByFlight(Long flightId) {
-		String sql = "SELECT ifnull((airplane.numberOfRows * airplane.numberOfColumns) - count(*), 0) 'Available spots' FROM Airplane, Flight, Ticket WHERE Airplane.airplaneId = Flight.airplaneId and Flight.flightId = Ticket.flightId and Flight.flightId = ?;";
+		String sql = "SELECT airplane.numberOfRows * airplane.numberOfColumns - count(ticketId) 'Free seats'\r\n"
+				+ "FROM Airplane\r\n"
+				+ "LEFT JOIN Flight ON Airplane.airplaneId = Flight.airplaneId\r\n"
+				+ "LEFT JOIN Ticket ON Flight.flightId = Ticket.flightId\r\n"
+				+ "WHERE Flight.flightId = ?;";
 		Integer numberOfFreeSeats;
 		try {
 			numberOfFreeSeats = _jdbcTemplate.queryForObject(sql, new Object[] {flightId}, Integer.class);

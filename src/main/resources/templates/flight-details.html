@@ -46,6 +46,7 @@
 					<span><span th:text="#{flight.departureTime.lbl}"></span><span th:text="' ' + ${flight.timeOfDeparture}"></span></span>
 					<span><span th:text="#{flight.flightDuration.lbl}"></span><span th:text="' ' + ${flight.duration} + ' min.'"></span></span>
 					<span><span th:text="#{flight.airplane.lbl}"></span><a th:href="@{/airplane/details?id={airplaneId}(airplaneId=${flight.airplane.id})}" th:text="' ' + ${flight.airplane.name}"></a></span>
+					<span><span th:text="#{flight.available.seats.lbl}"></span><span th:text="${availableSeats}"></span></span>
 					
 					<div class="actionDiv">
 						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-danger" href="#" role="button" th:text="#{delete.btn}"></a>
