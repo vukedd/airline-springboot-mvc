@@ -15,6 +15,6 @@ public interface FlightRepository {
 	public int editFlight(Long id, Flight flight);
 	public int createFlight(Flight flight);
 	public int cancelFlight(Long id);
-	public List<Flight> searchFlights(String departure, String destination, LocalDate dateOfDeparture);
+	public List<Flight> searchFlights(String departure, String destination, LocalDate dateOfDeparture, int numberOfSeats);
 	public int numberOfAvailableSpotsByFlight(Long flightId);
 }

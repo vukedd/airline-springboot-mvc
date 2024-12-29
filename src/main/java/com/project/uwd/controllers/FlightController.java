@@ -214,7 +214,7 @@ public class FlightController {
 				}
 			}
 			
-			return "redirect:/flight/details?id=" + flightId;
+			return "redirect:/cart";
 		}
 		
 		session.setAttribute("numberOfTickets", numberOfTickets);

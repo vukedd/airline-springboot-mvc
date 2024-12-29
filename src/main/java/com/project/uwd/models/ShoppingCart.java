@@ -88,4 +88,16 @@ public class ShoppingCart {
 		
 		return isDeleted;
 	}
+	
+	public Flight getCartItemById(Long flightId) {
+		Flight flight = null;
+		for (Flight flightIter : this.items.keySet()) {
+			if (flightIter.getId() == flightId) {
+				flight = flightIter;
+				break;
+			}
+		}
+		
+		return flight;
+	}
 }

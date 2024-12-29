@@ -28,7 +28,7 @@ public class IndexController {
 	
 	@PostMapping("search")
 	public String searchFlights(@RequestParam(required=false) String departure, @RequestParam(required=false) String destination, @RequestParam(required=false) LocalDate dateOfDeparture, @RequestParam(required=false, defaultValue="0") int numberOfSeats, Model model) {
-		model.addAttribute("flights", _flightService.searchFlight(departure, destination, dateOfDeparture));
+		model.addAttribute("flights", _flightService.searchFlight(departure, destination, dateOfDeparture, numberOfSeats));
 		return "index";
 	}
 }

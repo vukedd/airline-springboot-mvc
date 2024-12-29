@@ -25,7 +25,7 @@
 <div class="form">
 	  <div class="container search-bar-container mt-0 mb-3 w-100">
 	  <div class="d-flex justify-content-center">
-	  	  <h2>Search flights</h2>
+	  	  <h2 th:text="#{index.head}"></h2>
 	  </div>
 	    <form class="search-bar" method="POST" action="search">
 	      <div class="row gy-2 gx-3 align-items-center">
@@ -39,21 +39,28 @@
 	          <input type="date" class="form-control" name="dateOfDeparture">
 	        </div>
 	        <div class="col-12 col-md-2">
-	          <input type="number" class="form-control" name="numberOfSeats" th:placeholder="#{search.bar.passengers.ph}" min="1" max="10">
+	          <input type="number" class="form-control" name="numberOfSeats" th:placeholder="#{search.bar.passengers.ph}" min="1">
 	        </div>
 	        <div class="col-12 col-md-1 d-flex justify-content-center">
 	          <button type="submit" class="btn w-100" th:text="#{search.bar.btn}">Search</button>
+	        </div>
+	        <div>
+	        	<input type="checkbox" name="similairFlights">
+	        	<label ></label>
 	        </div>
 	      </div>
 	    </form>
 	  </div>
 	<div class="content-body">
-		<div class="card m-3" style="width: 18rem;" th:each="flight : ${flights}">
+		<div class="card m-3" style="width: 20rem;" th:each="flight : ${flights}">
 			  	<img src="/images/flight-pic.jpg" class="card-img-top" alt="">
 			<div class="card-body">
 			    <h5 class="card-title" th:text="${flight.departure.code} + '-' + ${flight.destination.code}"></h5>
 			    <p th:text="${flight.dateOfDeparture} + ' | ' + ${flight.timeOfDeparture}"></p>
-			    <a th:href="@{/flight/details?id={flightId}(flightId=${flight.id})}" class="btn btn-primary" th:text="#{show-more.msg}"></a>
+			    <div class="d-flex justify-content-space-around flex-column p-1">
+			    	<span class="fw-bold pe-4 pt-1" th:text="${flight.ticketPrice} + '0 RSD per seat'"></span>
+			    	<a th:href="@{/flight/details?id={flightId}(flightId=${flight.id})}" class="btn btn-primary mt-1 w-100"><i class="bi bi-info-circle"></i></a>
+			    </div>
 		    </div>
 		</div>
 	</div>

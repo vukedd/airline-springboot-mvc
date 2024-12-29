@@ -2,6 +2,7 @@ package com.project.uwd.repositories.impl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,7 +118,7 @@ public class FlightRepositoryImpl implements FlightRepository {
 	}
 
 	@Override
-	public List<Flight> searchFlights(String departure, String destination, LocalDate dateOfDeparture) {
+	public List<Flight> searchFlights(String departure, String destination, LocalDate dateOfDeparture, int numberOfSeats) {
 		String sql;
 		List<Flight> flights;
 		String departureChecker = !departure.equals(null) ? departure + "%" : "%";
@@ -153,15 +154,23 @@ public class FlightRepositoryImpl implements FlightRepository {
 			}
 		}
 		
+		List<Flight> flightsWithEnoughSeats = new ArrayList<Flight>();
+		
 		if (flights != null) {
 			for (Flight flight : flights) {
 				flight.setAirplane(_airplaneRepository.getAirplaneById(flight.getAirplaneId()));
-				flight.setDeparture(_airportRepository.getAirportById(flight.getDepartureId()));
-				flight.setDestination(_airportRepository.getAirportById(flight.getDestinationId()));
+				
+				if (numberOfAvailableSpotsByFlight(flight.getId()) - numberOfSeats >= 0) {
+					flight.setDeparture(_airportRepository.getAirportById(flight.getDepartureId()));
+					flight.setDestination(_airportRepository.getAirportById(flight.getDestinationId()));
+					flightsWithEnoughSeats.add(flight);
+				}
+				
+				
 			}
 		}
 		
-		return flights;
+		return flightsWithEnoughSeats;
 	}
 
 	@Override

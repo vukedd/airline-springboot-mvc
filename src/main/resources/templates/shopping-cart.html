@@ -23,6 +23,12 @@
 <body>
 <nav th:replace="~{fragments :: navbar}"></nav>
 <div class="form">
+<div class="alert alert-danger alert-dismissible fade show w-100" id="errorAlert" role="alert" th:if="${status} != null and ${status} == 'error'" >
+	 <span th:text="#{cart.increment.error}"></span>
+  	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
+    	<span aria-hidden="true">&times;</span>
+ 	</a>
+</div>
 <div class="container my-5" th:if="${session.ShoppingCart} != null">
     <h1 class="text-center mb-4" th:text="#{cart.head}"></h1>
     <table class="table table-bordered">
@@ -45,7 +51,14 @@
                     </div>
                 </div>
             </td>
-            <td th:text="${entry.value}"></td>
+            <td>
+            	<input type="hidden" th:value="${entry.key.id}" id="item-id">
+            	<span class="quantity-container">
+            		<a th:href="@{/cart/decrement?id={key}(key=${entry.key.id})}">-</a>
+            		<span th:text="${entry.value}"></span>
+            		<a th:href="@{/cart/increment?id={key}(key=${entry.key.id})}">+</a>
+            	</span>
+            </td>
             <td th:text="${entry.key.ticketPrice} *  ${entry.value} + ' RSD'"></td>
         </tr>
         </tbody>
@@ -60,5 +73,6 @@
 	<a th:text="#{back.to.index}" href="/"></a>
 </div>
 </div>
+<script src="/js/shopping-cart.js"></script>
 </body>
 </html>

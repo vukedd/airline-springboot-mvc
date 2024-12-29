@@ -50,8 +50,8 @@ public class FlightServiceImpl implements FlightService{
 	}
 
 	@Override
-	public List<Flight> searchFlight(String departure, String destination, LocalDate dateOfDeparture) {
-		return _flightRepository.searchFlights(departure, destination, dateOfDeparture);
+	public List<Flight> searchFlight(String departure, String destination, LocalDate dateOfDeparture, int numberOfSeats) {
+		return _flightRepository.searchFlights(departure, destination, dateOfDeparture, numberOfSeats);
 	}
 
 	@Override
