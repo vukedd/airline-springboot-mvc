@@ -32,6 +32,12 @@
 	    	<span aria-hidden="true">&times;</span>
 	 	</a>
 	</div>
+	<div class="alert alert-success alert-dismissible fade show w-100" id="successAlert" role="alert" th:if="${actionStatus} != null and ${actionStatus} == 'flightDeleted'">
+	  	<span th:text="#{flight.delete.success.alert}"></span>
+	  	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
+	    	<span aria-hidden="true">&times;</span>
+	 	</a>
+	</div>
 	<h1 th:text="#{flights.head}"></h1>
 	<div class="content-body">
 		<div class="card m-3" style="width: 20rem;" th:each="flight : ${flights}">

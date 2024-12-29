@@ -42,16 +42,16 @@
 	          <input type="number" class="form-control" name="numberOfSeats" th:placeholder="#{search.bar.passengers.ph}" min="1">
 	        </div>
 	        <div class="col-12 col-md-1 d-flex justify-content-center">
-	          <button type="submit" class="btn w-100" th:text="#{search.bar.btn}">Search</button>
+	          <button type="submit" class="btn w-100" th:text="#{search.bar.btn}"></button>
 	        </div>
-	        <div>
-	        	<input type="checkbox" name="similairFlights">
-	        	<label ></label>
-	        </div>
+<!-- 	        <div>
+	        	<input type="checkbox" name="similarFlights">
+	        	<label th:text="#{similar.flights.search}"></label>
+	        </div> -->
 	      </div>
 	    </form>
 	  </div>
-	<div class="content-body">
+	<div class="content-body" th:if="${flights} != null">
 		<div class="card m-3" style="width: 20rem;" th:each="flight : ${flights}">
 			  	<img src="/images/flight-pic.jpg" class="card-img-top" alt="">
 			<div class="card-body">
@@ -63,6 +63,9 @@
 			    </div>
 		    </div>
 		</div>
+	</div>
+	<div class="content-body d-flex justify-content-center mt-4" th:unless="${flights} != null">
+		<h1 th:text="#{no.flights.found.search.msg}" style="text-align:center"></h1>	
 	</div>
 </div>
 </body>

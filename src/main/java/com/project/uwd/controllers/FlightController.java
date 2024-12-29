@@ -45,7 +45,9 @@ public class FlightController {
 	public String getFlights(@RequestParam(required=false) String actionStatus, Model model) {
 		if (actionStatus != null) {
 			if (actionStatus.equals("flightAdded")) {
-				model.addAttribute("actionStatus", "flightAdded");
+				model.addAttribute("actionStatus", actionStatus);
+			} else if (actionStatus.equals("flightDeleted")) {
+				model.addAttribute("actionStatus", actionStatus);
 			}
 		}
 		
@@ -54,9 +56,15 @@ public class FlightController {
 	}
 	
 	@GetMapping("/details")
-	public String getFlightDetails(@RequestParam Long id, @RequestParam(required=false) String booked, Model model, HttpSession session) {
+	public String getFlightDetails(@RequestParam Long id, @RequestParam(required=false) String booked, @RequestParam(required=false) String actionStatus, Model model, HttpSession session) {
 		if (booked != null) {
 			model.addAttribute("booked", booked);
+		}
+		
+		if (actionStatus != null) {
+			if (actionStatus.equals("deleteError")) {
+				model.addAttribute("actionStatus", actionStatus);
+			}
 		}
 		model.addAttribute("idparam", 1);
 		model.addAttribute("currentElement", "/flight/details?id=" + id);
@@ -221,6 +229,20 @@ public class FlightController {
 		session.setAttribute("flightId", flightId);
 
 		return "redirect:/flight/details?id=" + flightId + "&booked=false";
+	}
+	
+	@GetMapping("/delete")
+	public String deleteFlight(@RequestParam Long id, HttpSession session) {
+		if (session.getAttribute("loggedIn") != null && ((User)session.getAttribute("loggedIn")).getRole().equals(Role.Admin)) {
+			int rowsAffected = _flightService.deleteFlight(id);
+			if (rowsAffected == 0) {
+				return "redirect:/flight/details?id=" + id + "&actionStatus=deleteError";
+			} else if (rowsAffected == 1) {
+				return "redirect:/flight/?actionStatus=flightDeleted";
+			}
+		}
+		
+		return "redirect:/";
 	}
 
 //	boolean timeDifference = LocalDateTime.of(date, time).isAfter(LocalDateTime.now());

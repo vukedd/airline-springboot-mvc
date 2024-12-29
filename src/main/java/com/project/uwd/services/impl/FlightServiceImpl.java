@@ -28,8 +28,7 @@ public class FlightServiceImpl implements FlightService{
 
 	@Override
 	public int deleteFlight(Long id) {
-		// TODO Auto-generated method stub
-		return 0;
+		return _flightRepository.deleteFlight(id);
 	}
 
 	@Override
@@ -50,8 +49,8 @@ public class FlightServiceImpl implements FlightService{
 	}
 
 	@Override
-	public List<Flight> searchFlight(String departure, String destination, LocalDate dateOfDeparture, int numberOfSeats) {
-		return _flightRepository.searchFlights(departure, destination, dateOfDeparture, numberOfSeats);
+	public List<Flight> searchFlight(String departure, String destination, LocalDate dateOfDeparture, int numberOfSeats, boolean similarFlights) {
+		return _flightRepository.searchFlights(departure, destination, dateOfDeparture, numberOfSeats, similarFlights);
 	}
 
 	@Override

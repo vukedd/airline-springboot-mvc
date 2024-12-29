@@ -79,8 +79,16 @@ public class FlightRepositoryImpl implements FlightRepository {
 
 	@Override
 	public int deleteFlight(Long id) {
-		// TODO Auto-generated method stub
-		return 0;
+		String sql = "DELETE FROM Flight\r\n"
+				+ "WHERE FlightId = ? AND FlightId NOT IN (SELECT FlightId FROM Ticket);";
+		int res;
+		try {
+			res = _jdbcTemplate.update(sql, id);
+		} catch (Exception e) {
+			res = 0;
+		}
+		
+		return res;
 	}
 
 	@Override
@@ -118,7 +126,7 @@ public class FlightRepositoryImpl implements FlightRepository {
 	}
 
 	@Override
-	public List<Flight> searchFlights(String departure, String destination, LocalDate dateOfDeparture, int numberOfSeats) {
+	public List<Flight> searchFlights(String departure, String destination, LocalDate dateOfDeparture, int numberOfSeats, boolean similarFlights) {
 		String sql;
 		List<Flight> flights;
 		String departureChecker = !departure.equals(null) ? departure + "%" : "%";
@@ -139,19 +147,34 @@ public class FlightRepositoryImpl implements FlightRepository {
 			}
 			
 		} else {
-			sql = "SELECT *\r\n"
-					+ "FROM Flight f\r\n"
-					+ "LEFT JOIN Airport departure ON departure.AirportId = f.DepartureId\r\n"
-					+ "LEFT JOIN Location location1 ON departure.LocationId = location1.LocationId\r\n"
-					+ "LEFT JOIN Airport destination ON destination.AirportId = f.DestinationId\r\n"
-					+ "LEFT JOIN Location location2 ON destination.LocationId = location2.LocationId\r\n"
-					+ "WHERE (departure.AirportCode like ? OR location1.country like ? OR location1.city like ?) AND (destination.AirportCode like ? OR location2.country like ? OR location2.city like ?) AND IsCancelled = 0 AND DateOfDeparture > current_date() and DateOfDeparture > ?;";
+//			if (similarFlights != true) {
+//				sql = "SELECT *\r\n"
+//						+ "FROM Flight f\r\n"
+//						+ "LEFT JOIN Airport departure ON departure.AirportId = f.DepartureId\r\n"
+//						+ "LEFT JOIN Location location1 ON departure.LocationId = location1.LocationId\r\n"
+//						+ "LEFT JOIN Airport destination ON destination.AirportId = f.DestinationId\r\n"
+//						+ "LEFT JOIN Location location2 ON destination.LocationId = location2.LocationId\r\n"
+//						+ "WHERE (departure.AirportCode like ? OR location1.country like ? OR location1.city like ?) AND (destination.AirportCode like ? OR location2.country like ? OR location2.city like ?) AND IsCancelled = 0 AND DateOfDeparture > current_date() AND DateOfDeparture > ?;";
+//				try {
+//					flights = _jdbcTemplate.query(sql, _flightRowMapper, departureChecker, departureChecker, departureChecker, destinationChecker, destinationChecker, destinationChecker, dateOfDeparture);
+//				} catch (Exception e) {
+//					flights = null;
+//				}
+//			} else {
+				sql = "SELECT *\r\n"
+						+ "FROM Flight f\r\n"
+						+ "LEFT JOIN Airport departure ON departure.AirportId = f.DepartureId\r\n"
+						+ "LEFT JOIN Location location1 ON departure.LocationId = location1.LocationId\r\n"
+						+ "LEFT JOIN Airport destination ON destination.AirportId = f.DestinationId\r\n"
+						+ "LEFT JOIN Location location2 ON destination.LocationId = location2.LocationId\r\n"
+						+ "WHERE (departure.AirportCode like ? OR location1.country like ? OR location1.city like ?) AND (destination.AirportCode like ? OR location2.country like ? OR location2.city like ?) AND f.isCancelled = 0 AND (DATEDIFF(?, f.dateOfDeparture) <= 2 AND DATEDIFF(?, f.dateOfDeparture) >= -2);;";
 			
-			try {
-				flights = _jdbcTemplate.query(sql, _flightRowMapper, departureChecker, departureChecker, departureChecker, destinationChecker, destinationChecker, destinationChecker, dateOfDeparture);
-			} catch (Exception e) {
-				flights = null;
-			}
+				try {
+					flights = _jdbcTemplate.query(sql, _flightRowMapper, departureChecker, departureChecker, departureChecker, destinationChecker, destinationChecker, destinationChecker, dateOfDeparture, dateOfDeparture);
+				} catch (Exception e) {
+					flights = null;
+				}
+//			}
 		}
 		
 		List<Flight> flightsWithEnoughSeats = new ArrayList<Flight>();
