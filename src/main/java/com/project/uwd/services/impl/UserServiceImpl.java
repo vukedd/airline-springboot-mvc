@@ -27,5 +27,10 @@ public class UserServiceImpl implements UserService{
 	public int usernameExistsCheck(String username) {
 		return _userRepository.usernameExistsCheck(username);
 	}
+
+	@Override
+	public User getUserById(Long id) {
+		return _userRepository.getUserById(id);
+	}
 	
 }

@@ -9,4 +9,5 @@ public interface UserRepository {
 	int addUser(User user);
 	User getUserByUsername(String username);
 	int usernameExistsCheck(String username);
+	public User getUserById(Long id);
 }

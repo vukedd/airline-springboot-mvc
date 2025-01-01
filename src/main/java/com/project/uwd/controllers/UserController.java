@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.project.uwd.helpers.CSVResourceProvider;
 import com.project.uwd.models.User;
+import com.project.uwd.services.ReservationService;
 import com.project.uwd.services.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,7 +30,10 @@ import jakarta.servlet.http.HttpSession;
 public class UserController {
 
 	@Autowired
-	UserService _userService;
+	UserService _userService;	
+	
+	@Autowired
+	ReservationService _reservationService;
 	
 	@GetMapping("/")
 	@ResponseBody
@@ -230,5 +234,18 @@ public class UserController {
 		session.removeAttribute("registerFormData");
 		response.sendRedirect("/user/register?status=success");
 		return;
+	}
+
+	@GetMapping("/profile")
+	public String getUserProfile(HttpSession session, Model model) {
+		if (session.getAttribute("loggedIn") == null) {
+			return "redirect:/";
+		}
+		
+		User loggedInUser = (User)session.getAttribute("loggedIn");
+		
+		model.addAttribute("reservations", _reservationService.getUserReservations(loggedInUser.getId()));
+		
+		return "user-profile";
 	}
 }

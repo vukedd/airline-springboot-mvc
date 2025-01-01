@@ -1,0 +1,141 @@
+@media (min-width:1080px) {
+	.ticket-container {
+		width: 50%;
+	}
+}
+
+@media (max-width:1080px) {
+	.ticket-container {
+		width: 100%;
+	}
+}
+
+body {
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+#profile-picture-img {
+	height: 100px;
+	width: 100px;
+	border-radius:100px;
+	border: 3px solid black;
+	margin-bottom: 20px;
+}
+
+.profile-data {
+	margin-top: 20px;
+	margin-left: 5%;
+	margin-right: 5%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.reservation-card {
+    margin: 0 auto;
+}
+
+.ticket-container {
+    margin: 0 auto;
+}
+
+#personal-info-container {
+	display:flex;
+	width: 100%;
+	flex-direction: column;
+	align-items: center;
+	padding: 20px;
+	border-radius: 20px;
+}
+
+.data-text {
+	font-size: 25px;
+}
+
+.profile {
+	padding-top: 70px;
+	margin-left: 20px;
+}
+
+.content-card {
+	display:flex;
+	justify-content: center;
+    background: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.reservation-card {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background: white;
+    border-radius: 8px;
+    box-shadow: 3px 3px 6px 3px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.reservation-text {
+	font-size: 20px;
+}
+
+.reservations {
+	margin-left: 20px;
+}
+
+.ticket-container {
+	width: 100%;
+}
+
+.ticket-card {
+	background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%;
+}
+
+.ticket-details {
+	display: flex;
+	flex-direction: column;
+	border-top:1px solid lightGray;
+}
+
+.content-card, .reservation-card, .ticket-container, .ticket-card {
+    max-width: 100%;
+    width: 100%;
+}
+
+.boarding-pass {
+	height: 350px;
+	font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #ffffff 50%, lightGray 50%);
+    border: 1px solid #000;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.boarding-pass h4 {
+    color: #0056b3;
+    font-weight: bold;
+}
+
+.boarding-pass .badge {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+}
+
+.boarding-pass .details p {
+    margin: 0.5rem 0;
+    font-size: 1.1rem;
+}   

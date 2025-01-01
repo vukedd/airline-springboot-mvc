@@ -7,6 +7,7 @@ public class Ticket {
 	private String passportNumber;
 	private String firstName;
 	private String lastName;
+	
 	private Flight flight;
 	private Long flightId;
 	

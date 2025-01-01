@@ -61,4 +61,18 @@ public class UserRepositoryImpl implements UserRepository{
 		return (int)res;
 	}
 
+	@Override
+	public User getUserById(Long id) {
+		User user = null;
+		String sql = "SELECT * FROM User WHERE UserId = ?;";
+		
+		try {
+			user = jdbcTemplate.queryForObject(sql, rowMapper, id);
+		} catch (Exception e) {
+			System.out.println("Error");
+		}
+		
+		return user;
+	}
+
 }

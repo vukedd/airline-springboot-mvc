@@ -9,4 +9,5 @@ public interface UserService {
 	int addUser(User user);
 	User getUserByUsername(String username);
 	int usernameExistsCheck(String username);
+	User getUserById(Long id);
 }
