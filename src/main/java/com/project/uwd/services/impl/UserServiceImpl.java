@@ -1,5 +1,7 @@
 package com.project.uwd.services.impl;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +33,16 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public User getUserById(Long id) {
 		return _userRepository.getUserById(id);
+	}
+
+	@Override
+	public boolean editUserData(Long id, String username, String firstName, String lastName, LocalDate dateOfBirth, String email) {
+		return _userRepository.editUserData(id, username, firstName, lastName, dateOfBirth, email);
+	}
+
+	@Override
+	public int emailExistsCheck(String email) {
+		return _userRepository.emailExistsCheck(email);
 	}
 	
 }

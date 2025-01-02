@@ -75,4 +75,31 @@ public class UserRepositoryImpl implements UserRepository{
 		return user;
 	}
 
+	@Override
+	public boolean editUserData(Long id, String username, String firstName, String lastName, LocalDate dateOfBirth, String email) {
+		boolean successfullyChanged = false;
+		String sql = "UPDATE User SET Username = ?, FirstName = ?, LastName = ?, Email = ?, DateOfBirth = ? WHERE UserId = ?";
+		
+		int rowsAffected = 0;
+		try {
+			rowsAffected = jdbcTemplate.update(sql, username, firstName, lastName, email, dateOfBirth, id);
+		} catch (Exception e){
+			System.out.println("Error while editing user data!");
+		}
+		
+		if (rowsAffected == 1) {
+			successfullyChanged = true;
+		}
+		
+		return successfullyChanged;
+	}
+
+	@Override
+	public int emailExistsCheck(String email) {
+		String sql = "SELECT COUNT(*) FROM User WHERE email = ?;";
+		int res = jdbcTemplate.queryForObject(sql, Integer.class, email);
+		
+		return (int)res;
+	}
+
 }

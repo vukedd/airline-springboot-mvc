@@ -22,13 +22,20 @@
 </head>
 <body>
 <nav th:replace="~{fragments :: navbar}"></nav>
+	<div class="d-flex justify-content-center"  th:if="${edit} != null and ${edit} == 'success'">
+		<div class="alert alert-success alert-dismissible fade show w-75 z-100" id="successAlert" role="alert">
+			<span th:text="#{edit.success.msg}"></span>
+		  	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
+		    	<span aria-hidden="true">&times;</span>
+		 	</a>
+		</div>
+	</div>
 	<div class="profile">
 	    <div class="content-card row">
 	        <div class="col-md-4 text-center">
 	            <img src="/images/pfp-placeholder.jpg" class="rounded-circle img-fluid mb-3" style="width:100px;height:100px;">
 	            <h3 th:text="'@' + ${session.loggedIn.username}"></h3>
 	        </div>
-	
 	        <div class="col-md-8">
 	            <h5 th:text="#{basic.information}"></h5>
 	            <ul class="list-unstyled row">
@@ -39,7 +46,7 @@
 	                <li class="col-10"><strong th:text="#{profile.date.of.registration}"></strong><span th:text="${session.loggedIn.dateOfRegistration}"></span></li>
 	            </ul>
 	            <div class="mt-3">
-	                <a class="btn btn-dark" th:text="#{edit.personal.info.btn}"></a>
+	                <a class="btn btn-dark" th:text="#{edit.personal.info.btn}" href="/user/edit"></a>
 	                <a class="btn btn-dark" th:text="#{change.password.btn}"></a>
 	            </div>
 	        </div>

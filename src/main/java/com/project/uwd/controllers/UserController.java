@@ -237,7 +237,7 @@ public class UserController {
 	}
 
 	@GetMapping("/profile")
-	public String getUserProfile(HttpSession session, Model model) {
+	public String getUserProfile(@RequestParam(required=false) String edit , HttpSession session, Model model) {
 		if (session.getAttribute("loggedIn") == null) {
 			return "redirect:/";
 		}
@@ -246,6 +246,98 @@ public class UserController {
 		
 		model.addAttribute("reservations", _reservationService.getUserReservations(loggedInUser.getId()));
 		
+		if (edit != null)
+			model.addAttribute("edit", edit);
+		
 		return "user-profile";
+	}
+
+	@GetMapping("/edit")
+	public String getUserInfoEdit(@RequestParam(required=false) String username, @RequestParam(required=false) String firstName, @RequestParam(required=false) String lastName, @RequestParam(required=false) String email, HttpSession session, Model model) {
+		if (session.getAttribute("loggedIn") == null) {
+			return "redirect:/auth/login";
+		}
+		
+		if (username != null) 
+			model.addAttribute("username", username);
+		
+		if (firstName != null) 
+			model.addAttribute("firstName", firstName);
+		
+		if (lastName != null)
+			model.addAttribute("lastName", lastName);
+		
+		if (email != null)
+			model.addAttribute("email", email);
+		
+		return "user-edit";
+	}
+	
+	@PostMapping("/edit")
+	public String postUserInfoEdit(@RequestParam(required=false) Long id, @RequestParam(required=false) String username ,@RequestParam(required=false) String firstName, @RequestParam(required=false) String lastName, @RequestParam(required=false) String email, @RequestParam(required=false) LocalDate dateOfBirth, HttpSession session) {
+		StringBuilder sb = new StringBuilder();
+		
+		if (id == null) {
+			return "redirect:/user/profile";
+		}
+		
+		if (username == null || (username.length() < 2 || username.length() > 20)) {
+			if (sb.length() > 0) {
+				sb.append("&username=error");
+			} else {
+				sb.append("?username=error");
+			}
+		}
+		
+		if (!((User)session.getAttribute("loggedIn")).getUsername().equals(username) && _userService.usernameExistsCheck(username) > 0) {
+			if (sb.length() > 0) {
+				sb.append("&username=exists");
+			} else {
+				sb.append("?username=exists");
+			}
+		}
+		
+		if (firstName == null || (firstName.length() < 2 || firstName.length() > 20)) {
+			if (sb.length() > 0) {
+				sb.append("&firstName=error");
+			} else {
+				sb.append("?firstName=error");
+			}
+		}
+		
+		if (firstName == null || (lastName.length() < 2 || lastName.length() > 20)) {
+			if (sb.length() > 0) {
+				sb.append("&lastName=error");
+			} else {
+				sb.append("?lastName=error");
+			}
+		}
+		
+		if (email == null || !email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+			if (sb.length() > 0) {
+				sb.append("&email=error");
+			} else {
+				sb.append("?email=error");
+			}
+		}
+		
+		if (!((User)session.getAttribute("loggedIn")).getEmail().equals(email) && _userService.emailExistsCheck(email) > 0) {
+			if (sb.length() > 0) {
+				sb.append("&email=exists");
+			} else {
+				sb.append("?email=exists");
+			}
+		}
+		
+		if (sb.length() > 0) {
+			return "redirect:/user/edit" + sb.toString();
+		}
+		
+		if (!_userService.editUserData(id, username, firstName, lastName, dateOfBirth, email)) {
+			return "redirect:/user/profile?edit=failure";
+		}
+		
+		session.setAttribute("loggedIn", _userService.getUserById(id));
+		return "redirect:/user/profile?edit=success";
 	}
 }
