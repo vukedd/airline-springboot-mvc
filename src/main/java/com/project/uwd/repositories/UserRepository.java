@@ -14,4 +14,5 @@ public interface UserRepository {
 	int emailExistsCheck(String email);
 	public User getUserById(Long id);
 	public boolean editUserData(Long id, String username, String firstName, String lastName, LocalDate dateOfBirth, String email);
+	public boolean editUserPassword(Long id, String newPassword);
 }

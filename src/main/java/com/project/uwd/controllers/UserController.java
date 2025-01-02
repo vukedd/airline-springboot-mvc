@@ -237,9 +237,9 @@ public class UserController {
 	}
 
 	@GetMapping("/profile")
-	public String getUserProfile(@RequestParam(required=false) String edit , HttpSession session, Model model) {
+	public String getUserProfile(@RequestParam(required=false) String edit, @RequestParam(required=false) String password , HttpSession session, Model model) {
 		if (session.getAttribute("loggedIn") == null) {
-			return "redirect:/";
+			return "redirect:/auth/login";
 		}
 		
 		User loggedInUser = (User)session.getAttribute("loggedIn");
@@ -248,6 +248,9 @@ public class UserController {
 		
 		if (edit != null)
 			model.addAttribute("edit", edit);
+		
+		if (password != null)
+			model.addAttribute("password", password);
 		
 		return "user-profile";
 	}
@@ -339,5 +342,63 @@ public class UserController {
 		
 		session.setAttribute("loggedIn", _userService.getUserById(id));
 		return "redirect:/user/profile?edit=success";
+	}
+	
+	@GetMapping("/password")
+	public String getUserPasswordEdit(@RequestParam(required=false) String oldPassword, @RequestParam(required=false) String password, @RequestParam(required=false) String newPassword, HttpSession session, Model model) {
+		if (session.getAttribute("loggedIn") != null) {
+			model.addAttribute("oldPassword", oldPassword);
+			model.addAttribute("password", password);
+			model.addAttribute("newPassword", newPassword);
+			return "user-password-edit";
+		}
+		
+		
+		return "redirect:/auth/login";
+	}
+
+	@PostMapping("/password")
+	public String postUserPasswordEdit(@RequestParam(required=false) String oldPassword, @RequestParam(required=false) String newPassword, @RequestParam(required=false) String newPasswordConfirmation, HttpSession session) {
+		if (session.getAttribute("loggedIn") == null) {
+			return "redirect:/auth/login";
+		}
+		
+		boolean isNewPasswordValid = true;
+		StringBuilder sb = new StringBuilder();
+		User user = (User)session.getAttribute("loggedIn");
+		
+		if (!oldPassword.equals(user.getPassword())) {
+			if (sb.length() > 0)
+				sb.append("&oldPassword=error");
+			else
+				sb.append("?oldPassword=error");
+		}
+			
+		if (!newPassword.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,20}$")) {
+			if (sb.length() > 0)
+				sb.append("&password=error");
+			else
+				sb.append("?password=error");
+			
+			isNewPasswordValid = false;
+		}
+		
+		if (isNewPasswordValid && !newPassword.equals(newPasswordConfirmation)) {
+			if (sb.length() > 0)
+				sb.append("&newPassword=error");
+			else
+				sb.append("?newPassword=error");
+		}
+		
+		if (sb.length() > 0)
+			return "redirect:/user/password" + sb.toString();
+		
+		boolean isEdited = _userService.editUserPassword(user.getId(), newPasswordConfirmation);
+		
+		if (!isEdited)
+			return "redirect:/user/profile";
+		
+		session.setAttribute("loggedIn", _userService.getUserById(user.getId()));
+		return "redirect:/user/profile?password=success";
 	}
 }

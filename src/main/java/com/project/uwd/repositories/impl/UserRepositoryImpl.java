@@ -102,4 +102,22 @@ public class UserRepositoryImpl implements UserRepository{
 		return (int)res;
 	}
 
+	@Override
+	public boolean editUserPassword(Long id, String newPassword) {
+		boolean successfullyChanged = false;
+		String sql = "UPDATE User SET password = ? WHERE UserId = ?;";
+		
+		int rowsAffected = 0;
+		try {
+			rowsAffected = jdbcTemplate.update(sql, newPassword, id);
+		} catch (Exception e) {
+			System.out.println("Error while editing user password!");
+		}
+		
+		if (rowsAffected == 1) {
+			successfullyChanged = true;
+		}
+		
+		return successfullyChanged;
+	}
 }

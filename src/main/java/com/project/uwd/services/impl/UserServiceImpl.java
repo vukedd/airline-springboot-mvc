@@ -44,5 +44,10 @@ public class UserServiceImpl implements UserService{
 	public int emailExistsCheck(String email) {
 		return _userRepository.emailExistsCheck(email);
 	}
+
+	@Override
+	public boolean editUserPassword(Long id, String newPassword) {
+		return _userRepository.editUserPassword(id, newPassword);
+	}
 	
 }

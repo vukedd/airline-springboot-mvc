@@ -57,8 +57,9 @@
 	                    <label for="dob" class="form-label" th:text="#{user.dob}"></label>
 	                    <input type="date" class="form-control" id="dob" name="dateOfBirth" required th:value="${session.loggedIn.dateOfBirth}">
 	                </div>
-	                <div class="d-grid">
-	                    <button type="submit" class="btn btn-dark" th:text="#{user.edit.submit}"></button>
+	                <div class="d-flex flex-row">
+	                    <a class="btn btn-danger w-50 me-1" th:text="#{password.edit.cancel}" href="/user/profile"></a>
+	                    <button type="submit" class="btn btn-dark w-50" th:text="#{user.edit.submit}"></button>
 	                </div>
 	            </form>
 	        </div>

@@ -14,4 +14,5 @@ public interface UserService {
 	int emailExistsCheck(String email);
 	User getUserById(Long id);
 	boolean editUserData(Long id, String username, String firstName, String lastName, LocalDate dateOfBirth,String email);
+	boolean editUserPassword(Long id, String newPassword);
 }
