@@ -20,6 +20,7 @@ public class User {
 	
 	private List<Reservation> reservations;
 	private LoyaltyCard loyaltyCard;
+	private Long loyaltyCardId;
 	
 	public User(String username, String password, String email, String firstName, String lastName,
 			LocalDate dateOfBirth, LocalDate dateOfRegistration,Role role) {
@@ -172,6 +173,14 @@ public class User {
 	
 	public void addReservation(Reservation reservation) {
 		this.reservations.add(reservation);
+	}
+	
+	public Long getLoyaltyCardId() {
+		return loyaltyCardId;
+	}
+
+	public void setLoyaltyCardId(Long loyaltyCardId) {
+		this.loyaltyCardId = loyaltyCardId;
 	}
 
 	@Override

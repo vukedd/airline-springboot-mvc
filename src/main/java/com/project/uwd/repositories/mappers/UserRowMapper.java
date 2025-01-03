@@ -23,6 +23,7 @@ public class UserRowMapper implements RowMapper<User>{
 		user.setDateOfBirth(rs.getDate(7).toLocalDate());
 		user.setDateOfRegistration(rs.getDate(8).toLocalDate());
 		user.setRole(Role.values()[rs.getInt(9)]);
+		user.setLoyaltyCardId(rs.getLong(10));
 		return user;
 	}
 
