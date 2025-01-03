@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.project.uwd.helpers.CSVResourceProvider;
+import com.project.uwd.models.LoyaltyCardRequest;
 import com.project.uwd.models.User;
+import com.project.uwd.services.LoyaltyCardRequestService;
 import com.project.uwd.services.ReservationService;
 import com.project.uwd.services.UserService;
 
@@ -30,7 +32,10 @@ import jakarta.servlet.http.HttpSession;
 public class UserController {
 
 	@Autowired
-	UserService _userService;	
+	UserService _userService;
+	
+	@Autowired
+	LoyaltyCardRequestService _loyaltyCardRequestService;
 	
 	@Autowired
 	ReservationService _reservationService;
@@ -251,6 +256,10 @@ public class UserController {
 		
 		if (password != null)
 			model.addAttribute("password", password);
+		
+		List<LoyaltyCardRequest> cardRequests = _loyaltyCardRequestService.getLoyaltyCardRequestsById(loggedInUser.getId());
+		
+		model.addAttribute("cardRequests", cardRequests);
 		
 		return "user-profile";
 	}

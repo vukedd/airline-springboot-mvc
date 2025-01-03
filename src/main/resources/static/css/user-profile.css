@@ -2,10 +2,26 @@
 	.ticket-container {
 		width: 50%;
 	}
+	
+	.card-text-container {
+		width: 40%;
+	}
+	
+	.card-request-list-container {
+		width: 40%;
+	}
 }
 
 @media (max-width:1080px) {
 	.ticket-container {
+		width: 100%;
+	}
+	
+	.card-text-container {
+		width: 100%;
+	}
+	
+	.card-request-list-container {
 		width: 100%;
 	}
 }
@@ -83,6 +99,34 @@ body {
 .profile {
 	padding-top: 100px;
 	margin-left: 20px;
+}
+
+.loyalty-card-container {
+	display: flex;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	padding-bottom: 50px;
+	padding-top: 50px;
+}
+
+.card-text-container {
+	margin-left: 5%;
+	margin-right: 5%;
+}
+
+.card-request-list-container {
+	margin-left: 5%;
+	margin-right: 5%;
+}
+
+.request-list {
+	border: 1px solid black;
+	overflow: auto;
+	height: 200px;
+}
+
+.list-item {
+	border: 1px solid black;	
 }
 
 .content-card {

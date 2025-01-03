@@ -5,6 +5,7 @@ import com.project.uwd.models.enums.Status;
 public class LoyaltyCardRequest {
 	public Long id;
 	public User requestedBy;
+	public Long requestedById;
 	public Status status;
 	
 	public LoyaltyCardRequest(Long id, User requestedBy, Status status) {
@@ -40,5 +41,13 @@ public class LoyaltyCardRequest {
 
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+
+	public Long getRequestedById() {
+		return requestedById;
+	}
+
+	public void setRequestedById(Long requestedById) {
+		this.requestedById = requestedById;
 	}
 }

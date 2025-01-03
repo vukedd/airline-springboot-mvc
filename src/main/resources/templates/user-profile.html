@@ -60,6 +60,31 @@
 	        </div>
 	    </div>
 	</div>
+	<div class="loyalty-card-container mt-3" th:if="${session.loggedIn.loyaltyCard} == null and ${session.loggedIn.role.name} == 'Tourist'">
+		<div class="card-text-container">
+		    <div class="card shadow-sm">
+		        <div class="card-body">
+		            <h3 class="card-title mb-3" th:text="#{no.loyalty.card.msg}"></h3>
+		            <p class="card-text" th:text="#{no.loyalty.card.paragraph}"></p>
+		            <a class="btn btn-dark mt-3" href="/loyaltyCardRequest/submit" th:text="#{no.loyalty.btn}"></a>
+		        </div>
+		    </div>
+		</div>
+		<div class="card-request-list-container">
+		    <div class="card shadow-sm">
+		        <div class="card-body">
+		            <h3 class="card-title mb-3" th:text="#{requests.header}"></h3>
+		            <div class="request-list list-group">
+		                <div th:each="cardRequest, iter: ${cardRequests}" class="list-item list-group-item d-flex justify-content-between align-items-center">
+		                    <span th:text="#{request.label} + ' ' + (${iter.index + 1})"></span>
+		                    <span th:if="${cardRequest.status.name} == 'InProcess'" class="badge bg-primary rounded-pill" th:text="#{card.req.status.inProcess}"></span>
+		                    <span th:if="${cardRequest.status.name} == 'Denied'" class="badge bg-danger rounded-pill" th:text="#{card.req.status.denied}"></span>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+	</div>
 	<div class="reservations mt-3" th:if="${reservations.size()} > 0">
 		<div class="content-card row" th:each="reservation, iter: ${reservations}">
 			<h1 style="text-align:center;" th:text="#{reservation.header}"></h1>
@@ -70,17 +95,17 @@
 			      </button>
 			    </h2>
 			    <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-									<div th:each="reservation, iterator: ${reservations}" th:if="${iterator.index} < 1" class="reservation-card">
-					<span class="reservation-text"><strong th:text="#{total.reservation.price.lbl}"></strong><span th:text="${reservation.totalPrice} + ' RSD'"></span></span>
-					<span class="reservation-text"><strong th:text="#{reservation.date.lbl} + ' '"></strong><span th:text="${reservation.date}"></span></span>
-					<div class="ticket-container">
-					    <div class="container mt-5">
-					        <div class="row justify-content-center mt-1 mb-1" th:each="ticket, iterator: ${reservation.tickets}">
-					            <div class="col-md-8">
-					                <div class="card boarding-pass">
-					                    <div class="row g-0">
-					                        <div class="col-md-6 border-end">
-					                            <div class="p-4">
+					<div th:each="reservation, iterator: ${reservations}" th:if="${iterator.index} < 1" class="reservation-card">
+						<span class="reservation-text"><strong th:text="#{total.reservation.price.lbl}"></strong><span th:text="${reservation.totalPrice} + ' RSD'"></span></span>
+						<span class="reservation-text"><strong th:text="#{reservation.date.lbl} + ' '"></strong><span th:text="${reservation.date}"></span></span>
+						<div class="ticket-container">
+						    <div class="container mt-5">
+						        <div class="row justify-content-center mt-1 mb-1" th:each="ticket, iterator: ${reservation.tickets}">
+						            <div class="col-md-8">
+						                <div class="card boarding-pass">
+						                    <div class="row g-0">
+						                        <div class="col-md-6 border-end">
+						                            <div class="p-4">
 					                                <h4 class="text-uppercase text-dark">Rizzair</h4>
 					                                <p class="badge bg-secondary text-uppercase">Boarding Pass</p>
 					                                <div class="d-flex justify-content-between align-items-center mt-4">
@@ -124,9 +149,6 @@
 			</div>
 			<div>
 		</div>
-	</div>
-	<div class="reservations mt-3" th:unless="${reservations.size()} > 0">
-		<h2 th:text="#{no.reservations.msg}" style="text-align:center"></h2>
 	</div>
 </body>
 </html>
