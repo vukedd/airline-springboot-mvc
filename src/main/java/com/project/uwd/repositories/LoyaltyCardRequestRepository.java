@@ -12,7 +12,7 @@ import jakarta.annotation.PostConstruct;
 
 @Repository
 public interface LoyaltyCardRequestRepository {
-	
 	public boolean createLoyaltyCardRequest(Long userId);
 	public List<LoyaltyCardRequest> getLoyaltyCardRequestsById(Long userId);
+	public boolean isLoyaltyCardRequestAlreadySent(Long userId);
 }

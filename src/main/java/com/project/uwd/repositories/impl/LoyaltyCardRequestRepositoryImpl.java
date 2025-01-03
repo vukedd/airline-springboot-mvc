@@ -32,10 +32,12 @@ public class LoyaltyCardRequestRepositoryImpl implements LoyaltyCardRequestRepos
 		boolean successfullyAdded = false;
 		
 		String sql = "INSERT INTO LoyaltyCardRequest(UserId, Status) VALUES (?, ?)";
-		try {
-			rowsAffected = _jdbcTemplate.update(sql, userId, Status.InProcess.ordinal());
-		} catch (Exception e) {
-			System.out.println("Error while submiting request!");
+		if (!isLoyaltyCardRequestAlreadySent(userId)) {
+			try {
+				rowsAffected = _jdbcTemplate.update(sql, userId, Status.InProcess.ordinal());
+			} catch (Exception e) {
+				System.out.println("Error while submiting request!");
+			}
 		}
 		
 		if (rowsAffected > 0)
@@ -56,6 +58,24 @@ public class LoyaltyCardRequestRepositoryImpl implements LoyaltyCardRequestRepos
 		}
 		
 		return loyaltyCardRequests;
+	}
+
+	@Override
+	public boolean isLoyaltyCardRequestAlreadySent(Long userId) {
+		int countOfUnproccessedRequests = 0;
+		
+		String sql = "SELECT COUNT(*) FROM LoyaltyCardRequest WHERE UserId = ? and Status = 2;";
+		try {
+			countOfUnproccessedRequests = _jdbcTemplate.queryForObject(sql, Integer.class, userId);
+		} catch (Exception e) {
+			System.out.println("Loyalty card request validation was unsuccessfull!");
+		}
+		
+		if (countOfUnproccessedRequests == 0) {
+			return false;
+		}
+		
+		return true;
 	}
 
 }

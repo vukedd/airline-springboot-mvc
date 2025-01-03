@@ -242,7 +242,7 @@ public class UserController {
 	}
 
 	@GetMapping("/profile")
-	public String getUserProfile(@RequestParam(required=false) String edit, @RequestParam(required=false) String password , HttpSession session, Model model) {
+	public String getUserProfile(@RequestParam(required=false) String edit, @RequestParam(required=false) String password, @RequestParam(required=false) String loyaltyCardRequest, HttpSession session, Model model) {
 		if (session.getAttribute("loggedIn") == null) {
 			return "redirect:/auth/login";
 		}
@@ -256,6 +256,10 @@ public class UserController {
 		
 		if (password != null)
 			model.addAttribute("password", password);
+		
+		if (loyaltyCardRequest != null) {
+			model.addAttribute("loyaltyCardRequest", loyaltyCardRequest);
+		}
 		
 		List<LoyaltyCardRequest> cardRequests = _loyaltyCardRequestService.getLoyaltyCardRequestsById(loggedInUser.getId());
 		
