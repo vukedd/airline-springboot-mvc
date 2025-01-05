@@ -1,169 +1,250 @@
 <!Doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<title>Profile</title>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-	<link
-		href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-		rel="stylesheet"
-		integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-		crossorigin="anonymous">
-	<script
-		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-		integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-		crossorigin="anonymous"></script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
-		integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
-		crossorigin="anonymous"></script>
-	<link href="/css/log-in.css" rel="stylesheet">
-	<link href="/css/navbar.css" rel="stylesheet">
-	<link href="/css/user-profile.css" rel="stylesheet">
+<title>Profile</title>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+	crossorigin="anonymous">
+<script
+	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+	integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+	integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+	crossorigin="anonymous"></script>
+<link href="/css/log-in.css" rel="stylesheet">
+<link href="/css/navbar.css" rel="stylesheet">
+<link href="/css/user-profile.css" rel="stylesheet">
 </head>
 <body>
-<nav th:replace="~{fragments :: navbar}"></nav>
-	<div class="d-flex justify-content-center"  th:if="${edit} != null and ${edit} == 'success'">
-		<div class="alert alert-success alert-dismissible fade show w-75 z-100" id="successAlert" role="alert">
-			<span th:text="#{edit.success.msg}"></span>
-		  	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
-		    	<span aria-hidden="true">&times;</span>
-		 	</a>
+	<nav th:replace="~{fragments :: navbar}"></nav>
+	<div class="d-flex justify-content-center"
+		th:if="${edit} != null and ${edit} == 'success'">
+		<div
+			class="alert alert-success alert-dismissible fade show w-75 z-100"
+			id="successAlert" role="alert">
+			<span th:text="#{edit.success.msg}"></span> <a class="close" href="#"
+				data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
+				<span aria-hidden="true">&times;</span>
+			</a>
 		</div>
 	</div>
-	<div class="d-flex justify-content-center"  th:if="${loyaltyCardRequest} != null and ${loyaltyCardRequest} == 'error'">
-		<div class="alert alert-danger alert-dismissible fade show w-75 z-100" id="successAlert" role="alert">
-			<span th:text="#{request.error.msg}"></span>
-		  	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
-		    	<span aria-hidden="true">&times;</span>
-		 	</a>
+	<div class="d-flex justify-content-center"
+		th:if="${loyaltyCardRequest} != null and ${loyaltyCardRequest} == 'error'">
+		<div class="alert alert-danger alert-dismissible fade show w-75 z-100"
+			id="successAlert" role="alert">
+			<span th:text="#{request.error.msg}"></span> <a class="close"
+				href="#" data-bs-dismiss="alert" aria-label="Close"
+				id="hideAlertButton"> <span aria-hidden="true">&times;</span>
+			</a>
 		</div>
 	</div>
-		<div class="d-flex justify-content-center"  th:if="${loyaltyCardRequest} != null and ${loyaltyCardRequest} == 'success'">
-		<div class="alert alert-success alert-dismissible fade show w-75 z-100" id="successAlert" role="alert">
-			<span th:text="#{request.success.msg}"></span>
-		  	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
-		    	<span aria-hidden="true">&times;</span>
-		 	</a>
+	<div class="d-flex justify-content-center"
+		th:if="${loyaltyCardRequest} != null and ${loyaltyCardRequest} == 'success'">
+		<div
+			class="alert alert-success alert-dismissible fade show w-75 z-100"
+			id="successAlert" role="alert">
+			<span th:text="#{request.success.msg}"></span> <a class="close"
+				href="#" data-bs-dismiss="alert" aria-label="Close"
+				id="hideAlertButton"> <span aria-hidden="true">&times;</span>
+			</a>
 		</div>
 	</div>
-	<div class="d-flex justify-content-center"  th:if="${password} != null and ${password} == 'success'">
-		<div class="alert alert-success alert-dismissible fade show w-75 z-100" id="successAlert" role="alert">
-			<span th:text="#{password.success.msg}"></span>
-		  	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
-		    	<span aria-hidden="true">&times;</span>
-		 	</a>
+	<div class="d-flex justify-content-center"
+		th:if="${password} != null and ${password} == 'success'">
+		<div
+			class="alert alert-success alert-dismissible fade show w-75 z-100"
+			id="successAlert" role="alert">
+			<span th:text="#{password.success.msg}"></span> <a class="close"
+				href="#" data-bs-dismiss="alert" aria-label="Close"
+				id="hideAlertButton"> <span aria-hidden="true">&times;</span>
+			</a>
 		</div>
 	</div>
 	<div class="profile">
-	    <div class="content-card row">
-	        <div class="col-md-4 text-center">
-	            <img src="/images/pfp-placeholder.jpg" class="rounded-circle img-fluid mb-3" style="width:100px;height:100px;">
-	            <h3 th:text="'@' + ${session.loggedIn.username}"></h3>
-	        </div>
-	        <div class="col-md-8">
-	            <h5 th:text="#{basic.information}"></h5>
-	            <ul class="list-unstyled row">
-	                <li class="col-10"><strong th:text="#{profile.first.name}"></strong><span th:text="${session.loggedIn.firstName}"></span></li>
-	                <li class="col-10"><strong th:text="#{profile.last.name}"></strong><span th:text="${session.loggedIn.lastName}"></span></li>
-	                <li class="col-10"><strong th:text="#{profile.email}"></strong><span th:text="${session.loggedIn.email}"></span></li>
-	                <li class="col-10"><strong th:text="#{profile.date.of.birth}"></strong><span th:text="${session.loggedIn.dateOfBirth}"></span></li>
-	                <li class="col-10"><strong th:text="#{profile.date.of.registration}"></strong><span th:text="${session.loggedIn.dateOfRegistration}"></span></li>
-	            </ul>
-	            <div class="mt-3">
-	                <a class="btn btn-dark" th:text="#{edit.personal.info.btn}" href="/user/edit"></a>
-	                <a class="btn btn-dark" th:text="#{change.password.btn}" href="/user/password"></a>
-	            </div>
-	        </div>
-	    </div>
+		<div class="content-card row">
+			<div class="col-md-4 text-center">
+				<img src="/images/pfp-placeholder.jpg"
+					class="rounded-circle img-fluid mb-3"
+					style="width: 100px; height: 100px;">
+				<h3 th:text="'@' + ${session.loggedIn.username}"></h3>
+			</div>
+			<div class="col-md-8">
+				<h5 th:text="#{basic.information}"></h5>
+				<ul class="list-unstyled row">
+					<li class="col-10"><strong th:text="#{profile.first.name}"></strong><span
+						th:text="${session.loggedIn.firstName}"></span></li>
+					<li class="col-10"><strong th:text="#{profile.last.name}"></strong><span
+						th:text="${session.loggedIn.lastName}"></span></li>
+					<li class="col-10"><strong th:text="#{profile.email}"></strong><span
+						th:text="${session.loggedIn.email}"></span></li>
+					<li class="col-10"><strong th:text="#{profile.date.of.birth}"></strong><span
+						th:text="${session.loggedIn.dateOfBirth}"></span></li>
+					<li class="col-10"><strong
+						th:text="#{profile.date.of.registration}"></strong><span
+						th:text="${session.loggedIn.dateOfRegistration}"></span></li>
+				</ul>
+				<div class="mt-3">
+					<a class="btn btn-dark" th:text="#{edit.personal.info.btn}"
+						href="/user/edit"></a> <a class="btn btn-dark"
+						th:text="#{change.password.btn}" href="/user/password"></a>
+				</div>
+			</div>
+		</div>
 	</div>
-	<div class="loyalty-card-container mt-3" th:if="${session.loggedIn.loyaltyCard} == null and ${session.loggedIn.role.name} == 'Tourist'">
+	<div class="loyalty-card-container mt-3"
+		th:if="${session.loggedIn.loyaltyCard} == null and ${session.loggedIn.role.name} == 'Tourist'">
 		<div class="card-text-container">
-		    <div class="card shadow-sm">
-		        <div class="card-body">
-		            <h3 class="card-title mb-3" th:text="#{no.loyalty.card.msg}"></h3>
-		            <p class="card-text" th:text="#{no.loyalty.card.paragraph}"></p>
-		            <a class="btn btn-dark mt-3" href="/loyaltyCardRequest/submit" th:text="#{no.loyalty.btn}"></a>
-		        </div>
-		    </div>
+			<div class="card shadow-sm">
+				<div class="card-body">
+					<h3 class="card-title mb-3" th:text="#{no.loyalty.card.msg}"></h3>
+					<p class="card-text" th:text="#{no.loyalty.card.paragraph}"></p>
+					<a class="btn btn-dark mt-3" href="/loyaltyCardRequest/submit"
+						th:text="#{no.loyalty.btn}"></a>
+				</div>
+			</div>
 		</div>
 		<div class="card-request-list-container">
-		    <div class="card shadow-sm">
-		        <div class="card-body">
-		            <h3 class="card-title mb-3" th:text="#{requests.header}"></h3>
-		            <div class="request-list list-group">
-		                <div th:each="cardRequest, iter: ${cardRequests}" class="list-item list-group-item d-flex justify-content-between align-items-center">
-		                    <span th:text="#{request.label} + ' ' + (${iter.index + 1})"></span>
-		                    <span th:if="${cardRequest.status.name} == 'InProcess'" class="badge bg-primary rounded-pill" th:text="#{card.req.status.inProcess}"></span>
-		                    <span th:if="${cardRequest.status.name} == 'Denied'" class="badge bg-danger rounded-pill" th:text="#{card.req.status.denied}"></span>
-		                </div>
-		            </div>
-		        </div>
-		    </div>
-		</div>
-	</div>
-	<div class="reservations mt-3" th:if="${reservations.size()} > 0">
-		<div class="content-card row" th:each="reservation, iter: ${reservations}">
-			<h1 style="text-align:center;" th:text="#{reservation.header}"></h1>
-			<div class="accordion accordion-flush" id="accordionFlushExample">
-			  <div class="accordion-item">
-			    <h2 class="accordion-header">
-			      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne" th:text="'Reservation ' + ${iter.index + 1}" style="z-index:0;">
-			      </button>
-			    </h2>
-			    <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-					<div th:each="reservation, iterator: ${reservations}" th:if="${iterator.index} < 1" class="reservation-card">
-						<span class="reservation-text"><strong th:text="#{total.reservation.price.lbl}"></strong><span th:text="${reservation.totalPrice} + ' RSD'"></span></span>
-						<span class="reservation-text"><strong th:text="#{reservation.date.lbl} + ' '"></strong><span th:text="${reservation.date}"></span></span>
-						<div class="ticket-container">
-						    <div class="container mt-5">
-						        <div class="row justify-content-center mt-1 mb-1" th:each="ticket, iterator: ${reservation.tickets}">
-						            <div class="col-md-8">
-						                <div class="card boarding-pass">
-						                    <div class="row g-0">
-						                        <div class="col-md-6 border-end">
-						                            <div class="p-4">
-					                                <h4 class="text-uppercase text-dark">Rizzair</h4>
-					                                <p class="badge bg-secondary text-uppercase">Boarding Pass</p>
-					                                <div class="d-flex justify-content-between align-items-center mt-4">
-					                                    <span class="fs-1 text-dark fw-bold" th:text="${ticket.flight.departure.code}"></span>
-					                                    <span class="fs-1 text-dark fw-bold" th:text="${ticket.flight.destination.code}"></span>
-					                                </div>
-					                                <hr class="my-3">
-					                                <div class="details">
-					                                    <p><strong th:text="#{ticket.name.lbl}"></strong> <span class="text-dark" th:text="${ticket.firstName} + ', ' + ${ticket.lastName}"></span></p>
-					                                    <p><strong th:text="#{seat.number.lbl}"></strong> <span class="text-dark" th:text="${ticket.columnNumber} * ${ticket.rowNumber}"></span></p>
-					                             		<p><strong th:text="#{dop.lbl}"></strong> <span class="text-dark" th:text="${ticket.flight.dateOfDeparture} + ' | ' + ${ticket.flight.timeOfDeparture}"></span></p>
-					                                </div>
-					                            </div>
-					                        </div>
-					                        
-					                        <div class="col-md-6">
-					                            <div class="p-4">
-					                                <h4 class="text-uppercase text-dark">Rizzair</h4>
-					                                <p class="badge bg-secondary text-uppercase">Boarding Pass</p>
-					                                <div class="d-flex justify-content-between align-items-center mt-4">
-					                                    <span class="fs-1 text-dark fw-bold" th:text="${ticket.flight.departure.code}"></span>
-					                                    <span class="fs-1 text-dark fw-bold" th:text="${ticket.flight.destination.code}"></span>
-					                                </div>
-					                                <hr class="my-3">
-					                                <div class="details">
-					                                    <p><strong th:text="#{seat.number.lbl}"></strong> <span class="text-dark" th:text="${ticket.columnNumber} * ${ticket.rowNumber}"></span></p>
-					                                    <p><strong th:text="#{ticket.name.lbl}"> </strong> <span class="text-dark" th:text="${ticket.firstName} + ', ' + ${ticket.lastName}"></span></p>
-					                                </div>
-					                            </div>
-					                        </div>
-					                    </div>
-					                </div>
-					            </div>
-					        </div>
-					    </div>
+			<div class="card shadow-sm">
+				<div class="card-body">
+					<h3 class="card-title mb-3" th:text="#{requests.header}"></h3>
+					<div class="request-list list-group">
+						<div th:each="cardRequest, iter: ${cardRequests}"
+							class="list-item list-group-item d-flex justify-content-between align-items-center">
+							<span th:text="#{request.label} + ' ' + (${iter.index + 1})"></span>
+							<span th:if="${cardRequest.status.name} == 'InProcess'"
+								class="badge bg-primary rounded-pill"
+								th:text="#{card.req.status.inProcess}"></span> <span
+								th:if="${cardRequest.status.name} == 'Denied'"
+								class="badge bg-danger rounded-pill"
+								th:text="#{card.req.status.denied}"></span>
+						</div>
 					</div>
 				</div>
 			</div>
-			    </div>
-			  </div>
+		</div>
+	</div>
+	<div
+		th:if="${session.loggedIn.loyaltyCard} != null and ${session.loggedIn.role.name} == 'Tourist'">
+		<div class="container py-5">
+			<div class="loyalty-card">
+				<div class="content">
+					<div class="header" th:text="'Rizzair ' + #{loyalty.card.header}"></div>
+					<div class="points"
+						th:text="${session.loggedIn.loyaltyCard.points} + ' ' + #{points.lbl}"></div>
+					<div class="footer" th:text="#{loyalty.card.footer}"></div>
+					<div class="footer" th:text="#{loyalty.card.note1}"></div>
+					<div class="footer" th:text="#{loyalty.card.note2}"></div>
+					<div class="bar"></div>
+				</div>
 			</div>
-			<div>
+		</div>
+	</div>
+	<div class="reservations mt-3" th:if="${reservations.size()} > 0">
+		<div class="content-card row"
+			th:each="reservation, iter: ${reservations}">
+			<h1 style="text-align: center;" th:text="#{reservation.header}"></h1>
+			<div class="accordion accordion-flush" id="accordionFlushExample">
+				<div class="accordion-item">
+					<h2 class="accordion-header">
+						<button class="accordion-button collapsed" type="button"
+							data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
+							aria-expanded="false" aria-controls="flush-collapseOne"
+							th:text="'Reservation ' + ${iter.index + 1}" style="z-index: 0;">
+						</button>
+					</h2>
+					<div id="flush-collapseOne" class="accordion-collapse collapse"
+						data-bs-parent="#accordionFlushExample">
+						<div th:each="reservation, iterator: ${reservations}"
+							th:if="${iterator.index} < 1" class="reservation-card">
+							<span class="reservation-text"><strong
+								th:text="#{total.reservation.price.lbl}"></strong><span
+								th:text="${reservation.totalPrice} + ' RSD'"></span></span> <span
+								class="reservation-text"><strong
+								th:text="#{reservation.date.lbl} + ' '"></strong><span
+								th:text="${reservation.date}"></span></span>
+							<div class="ticket-container">
+								<div class="container mt-5">
+									<div class="row justify-content-center mt-1 mb-1"
+										th:each="ticket, iterator: ${reservation.tickets}">
+										<div class="col-md-8">
+											<div class="card boarding-pass">
+												<div class="row g-0">
+													<div class="col-md-6 border-end">
+														<div class="p-4">
+															<h4 class="text-uppercase text-dark">Rizzair</h4>
+															<p class="badge bg-secondary text-uppercase">Boarding
+																Pass</p>
+															<div
+																class="d-flex justify-content-between align-items-center mt-4">
+																<span class="fs-1 text-dark fw-bold"
+																	th:text="${ticket.flight.departure.code}"></span> <span
+																	class="fs-1 text-dark fw-bold"
+																	th:text="${ticket.flight.destination.code}"></span>
+															</div>
+															<hr class="my-3">
+															<div class="details">
+																<p>
+																	<strong th:text="#{ticket.name.lbl}"></strong> <span
+																		class="text-dark"
+																		th:text="${ticket.firstName} + ', ' + ${ticket.lastName}"></span>
+																</p>
+																<p>
+																	<strong th:text="#{seat.number.lbl}"></strong> <span
+																		class="text-dark"
+																		th:text="${ticket.columnNumber} * ${ticket.rowNumber}"></span>
+																</p>
+																<p>
+																	<strong th:text="#{dop.lbl}"></strong> <span
+																		class="text-dark"
+																		th:text="${ticket.flight.dateOfDeparture} + ' | ' + ${ticket.flight.timeOfDeparture}"></span>
+																</p>
+															</div>
+														</div>
+													</div>
+
+													<div class="col-md-6">
+														<div class="p-4">
+															<h4 class="text-uppercase text-dark">Rizzair</h4>
+															<p class="badge bg-secondary text-uppercase">Boarding
+																Pass</p>
+															<div
+																class="d-flex justify-content-between align-items-center mt-4">
+																<span class="fs-1 text-dark fw-bold"
+																	th:text="${ticket.flight.departure.code}"></span> <span
+																	class="fs-1 text-dark fw-bold"
+																	th:text="${ticket.flight.destination.code}"></span>
+															</div>
+															<hr class="my-3">
+															<div class="details">
+																<p>
+																	<strong th:text="#{seat.number.lbl}"></strong> <span
+																		class="text-dark"
+																		th:text="${ticket.columnNumber} * ${ticket.rowNumber}"></span>
+																</p>
+																<p>
+																	<strong th:text="#{ticket.name.lbl}"> </strong> <span
+																		class="text-dark"
+																		th:text="${ticket.firstName} + ', ' + ${ticket.lastName}"></span>
+																</p>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </body>

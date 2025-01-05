@@ -1,46 +1,42 @@
-@media (min-width:1080px) {
+@media ( min-width :1080px) {
 	.ticket-container {
 		width: 50%;
 	}
-	
 	.card-text-container {
 		width: 40%;
 	}
-	
 	.card-request-list-container {
 		width: 40%;
 	}
 }
 
-@media (max-width:1080px) {
+@media ( max-width :1080px) {
 	.ticket-container {
 		width: 100%;
 	}
-	
 	.card-text-container {
 		width: 100%;
 	}
-	
 	.card-request-list-container {
 		width: 100%;
 	}
 }
 
 body {
-    overflow-x: hidden;
-    margin: 0;
-    padding: 0;
-    background-color: #ffffff;
+	overflow-x: hidden;
+	margin: 0;
+	padding: 0;
+	background-color: #ffffff;
 }
 
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
 }
 
 #hideAlertButton {
-	text-decoration:none;
+	text-decoration: none;
 	font-size: 15px;
 }
 
@@ -60,7 +56,7 @@ body {
 #profile-picture-img {
 	height: 100px;
 	width: 100px;
-	border-radius:100px;
+	border-radius: 100px;
 	border: 3px solid black;
 	margin-bottom: 20px;
 }
@@ -76,15 +72,15 @@ body {
 }
 
 .reservation-card {
-    margin: 0 auto;
+	margin: 0 auto;
 }
 
 .ticket-container {
-    margin: 0 auto;
+	margin: 0 auto;
 }
 
 #personal-info-container {
-	display:flex;
+	display: flex;
 	width: 100%;
 	flex-direction: column;
 	align-items: center;
@@ -126,15 +122,15 @@ body {
 }
 
 .list-item {
-	border: 1px solid black;	
+	border: 1px solid black;
 }
 
 .content-card {
-	display:flex;
+	display: flex;
 	justify-content: center;
-    background: #ffffff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+	background: #ffffff;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	padding: 20px;
 }
 
 .reservation-card {
@@ -142,9 +138,9 @@ body {
 	flex-direction: column;
 	align-items: center;
 	background: white;
-    border-radius: 8px;
-    box-shadow: 3px 3px 6px 3px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+	border-radius: 8px;
+	box-shadow: 3px 3px 6px 3px rgba(0, 0, 0, 0.1);
+	padding: 20px;
 }
 
 .reservation-text {
@@ -155,49 +151,118 @@ body {
 	margin-left: 20px;
 }
 
+.loyalty-card {
+	width: 100%;
+	max-width: 500px;
+	border-radius: 15px;
+	background: linear-gradient(135deg, #2c2c2c, #4a4a4a);
+	color: #f2f2f2;
+	padding: 20px;
+	margin: auto;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+	border: 2px solid #666;
+	position: relative;
+	overflow: hidden;
+}
+
+.loyalty-card::before, .loyalty-card::after {
+	content: "";
+	position: absolute;
+	border-radius: 100%;
+	background: rgba(255, 255, 255, 0.1);
+	z-index: 0;
+}
+
+.loyalty-card::before {
+	width: 120px;
+	height: 120px;
+	top: -30px;
+	left: -30px;
+}
+
+.loyalty-card::after {
+	width: 200px;
+	height: 200px;
+	bottom: -50px;
+	right: -50px;
+}
+
+.loyalty-card .content {
+	position: relative;
+	z-index: 1;
+	text-align: center;
+}
+
+.loyalty-card .header {
+	font-size: 1.5rem;
+	font-weight: bold;
+	letter-spacing: 1px;
+	color: #ffffff;
+}
+
+.loyalty-card .points {
+	font-size: 3rem;
+	font-weight: bold;
+	margin: 15px 0;
+	color: #e0e0e0;
+}
+
+.loyalty-card .footer {
+	font-size: 0.9rem;
+	font-style: italic;
+	color: #cccccc;
+}
+
+.loyalty-card .bar {
+	height: 10px;
+	border-radius: 5px;
+	background: #ffffff50;
+	margin-top: 20px;
+}
+
 .ticket-container {
 	width: 100%;
 }
 
 .ticket-card {
 	background: #ffffff;
-    border-radius: 8px;
-    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    width: 100%;
+	border-radius: 8px;
+	box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1);
+	padding: 20px;
+	width: 100%;
 }
 
 .ticket-details {
 	display: flex;
 	flex-direction: column;
-	border-top:1px solid lightGray;
+	border-top: 1px solid lightGray;
 }
 
 .content-card, .reservation-card, .ticket-container, .ticket-card {
-    max-width: 100%;
-    width: 100%;
+	max-width: 100%;
+	width: 100%;
 }
 
 .boarding-pass {
 	height: 350px;
 	font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #ffffff 50%, lightGray 50%);
-    border: 1px solid #000;
-    border-radius: 12px;
-    overflow: hidden;
+	background: linear-gradient(135deg, #ffffff 50%, lightGray 50%);
+	border: 1px solid #000;
+	border-radius: 12px;
+	overflow: hidden;
 }
 
 .boarding-pass h4 {
-    color: #0056b3;
-    font-weight: bold;
+	color: #0056b3;
+	font-weight: bold;
 }
 
 .boarding-pass .badge {
-    font-size: 0.9rem;
-    padding: 0.5rem 1rem;
+	font-size: 0.9rem;
+	padding: 0.5rem 1rem;
 }
 
 .boarding-pass .details p {
-    margin: 0.5rem 0;
-    font-size: 1.1rem;
+	margin: 0.5rem 0;
+	font-size: 1.1rem;
 }

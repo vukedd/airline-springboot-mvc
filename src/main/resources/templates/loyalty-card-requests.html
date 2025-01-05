@@ -24,34 +24,40 @@
 	<nav th:replace="~{fragments :: navbar}"></nav>
 
 	<div class="form">
-	<div th:replace="~{fragments :: language-bar1}"></div>
-	<div th:replace="~{fragments :: language-bar2}"></div>
-	<div class="alert alert-success alert-dismissible fade show w-100" id="successAlert" role="alert" th:if="${actionStatus} != null and ${actionStatus} == 'flightAdded'">
-	  	<span th:text="#{flight.add.success.alert}"></span>
-	  	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
-	    	<span aria-hidden="true">&times;</span>
-	 	</a>
-	</div>
-	<div class="alert alert-success alert-dismissible fade show w-100" id="successAlert" role="alert" th:if="${actionStatus} != null and ${actionStatus} == 'flightDeleted'">
-	  	<span th:text="#{flight.delete.success.alert}"></span>
-	  	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
-	    	<span aria-hidden="true">&times;</span>
-	 	</a>
-	</div>
-    <h3 style="text-align:center;" th:text="#{loyalty.card.head}"></h3>
-    <div class="card">
-        <div class="card-body" style="height: 400px; overflow-y: auto;">
-            <ul class="list-group">
-                <li th:each="request : ${loyaltyCardRequests}" class="list-group-item d-flex justify-content-between align-items-center">
-                    <span th:text="#{loyalty.card.request} + ' ' + ${request.requestedBy.username}"></span>
-                    <div class="d-flex flex-row">
-                        <a class="btn btn-success btn-sm me-2" th:text="#{approve.btn}" th:href="@{/loyaltyCardRequest/approve?id={requestId}(requestId=${request.id})}"></a>
-                        <a class="btn btn-danger btn-sm" th:text="#{deny.btn}" th:href="@{/loyaltyCardRequest/deny?id={requestId}(requestId=${request.id})}"></a>
-                   	 </div>
-                	</li>
-            	</ul>
-        	</div>
-    	</div>
+		<div th:replace="~{fragments :: language-bar1}"></div>
+		<div th:replace="~{fragments :: language-bar2}"></div>
+		<div class="alert alert-success alert-dismissible fade show w-100" id="successAlert" role="alert" th:if="${actionStatus} != null and ${actionStatus} == 'flightAdded'">
+		  	<span th:text="#{flight.add.success.alert}"></span>
+		  	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
+		    	<span aria-hidden="true">&times;</span>
+		 	</a>
+		</div>
+		<div class="alert alert-success alert-dismissible fade show w-100" id="successAlert" role="alert" th:if="${actionStatus} != null and ${actionStatus} == 'flightDeleted'">
+		  	<span th:text="#{flight.delete.success.alert}"></span>
+		  	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
+		    	<span aria-hidden="true">&times;</span>
+		 	</a>
+		</div>
+		<div th:if="${loyaltyCardRequests.size()} > 0">
+		   	<h3 style="text-align:center;" th:text="#{loyalty.card.head}"></h3>
+		   	<div class="card">
+		       	<div class="card-body" style="height: 400px; overflow-y: auto;">
+		           	<ul class="list-group">
+		               	<li th:each="request : ${loyaltyCardRequests}" class="list-group-item d-flex justify-content-between align-items-center">
+		                   	<span th:text="#{loyalty.card.request} + ' ' + ${request.requestedBy.username}"></span>
+		                   	<div class="d-flex flex-row">
+		                       	<a class="btn btn-success btn-sm me-2" th:text="#{approve.btn}" th:href="@{/loyaltyCardRequest/approve?id={requestId}(requestId=${request.id})}"></a>
+		                       	<a class="btn btn-danger btn-sm" th:text="#{deny.btn}" th:href="@{/loyaltyCardRequest/deny?id={requestId}(requestId=${request.id})}"></a>
+	                  		</div>
+	               		</li>
+	           		</ul>
+	       		</div>
+	   		</div>
+		</div>
+		<div th:unless="${loyaltyCardRequests.size()} > 0" class="d-flex justify-content-center flex-column align-items-center">
+			<h2 th:text="#{no.requests.msg}"></h2>
+			<a style="color:black;text-align:center;" href="/" th:text="#{back.to.index}"></a>
+		</div>
 	</div>
 </body>
 </html>
