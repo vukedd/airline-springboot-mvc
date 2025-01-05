@@ -25,7 +25,7 @@ public class LocaleConfig {
 	@Bean
 	LocaleChangeInterceptor localeChangeInterceptor() {
 		LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
-		localeChangeInterceptor.setParamName("localeData");
+		localeChangeInterceptor.setParamName("lang");
 		
 		return localeChangeInterceptor;
 	}

@@ -27,8 +27,6 @@
 	<div class="form">	
 		<form method='Post' th:if="${location} != null"
 			th:action='@{/location/edit?id={locationId}(locationId=${location.id})}' th:object="${location}">
-			<div th:replace="~{fragments :: language-bar1}"></div>
-			<div th:replace="~{fragments :: language-bar2}"></div>	
 			<h1 th:text="#{edit.location.head}"></h1>
 			<div class="form-group">
 				<label for="city" th:text="#{location.city.lbl}"></label> <input type="text" name="city"

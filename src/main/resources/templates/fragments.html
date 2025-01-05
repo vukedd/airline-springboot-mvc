@@ -59,27 +59,66 @@
 				        </div>
 				    </li>
 				</ul>
-
-				<a th:if="${session.loggedIn} == null" href="/auth/login" class="nav-link text-light" style="margin-right:30px;margin-top:7px;" th:text="#{log.in}">Log in</a>
-				<div class="btn-group" th:unless="${session.loggedIn} == null" id="authBtnNavbar">
-					  <a type="button" class="nav-link dropdown-toggle text-light" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${session.loggedIn.username}" style="margin-right: 30px;margin-top: 5px"></a>
+				<a th:if="${session.loggedIn} == null" href="/auth/login" class="nav-link text-light mt-2 mb-1" style="margin-right:30px;margin-top:5px;" th:text="#{log.in}"></a>
+				<div class="btn-group mb-1 mt-1" th:unless="${session.loggedIn} == null" id="authBtnNavbar">
+					  <a type="button" class="nav-link dropdown-toggle text-light mt-2 mb-1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${session.loggedIn.username}" style="margin-right: 30px;margin-top: 5px"></a>
 					  <div class="dropdown-menu dropleft">
-					    	<a class="dropdown-item" th:href="@{/user/profile?id={userId}(userId=${session.loggedIn.id})}" th:text="#{profile.msg}">Profile</a>
+					    	<a class="dropdown-item" th:href="@{/user/profile?id={userId}(userId=${session.loggedIn.id})}" th:text="#{profile.msg}"></a>
 					    	<div class="dropdown-divider"></div>
-					    	<a class="dropdown-item" href="/auth/logout" th:text="#{log.out}">Log out</a>
+					    	<a class="dropdown-item" href="/auth/logout" th:text="#{log.out}"></a>
 					  </div>
-					  <a href="/cart" class="nav-link text-light" id="cartPc"><i class="bi bi-cart" style="font-size:20px; margin-right: 7px;"></i><span th:if="${session.ShoppingCart} == null" style="font-size:20px; margin-right:25px;">0</span><span th:unless="${session.ShoppingCart} == null" style="font-size:20px; margin-right:25px;" th:text="${session.cartSize}"></span></a>	
+					  <a href="/cart" class="nav-link text-light mt-1" id="cartPc"><i class="bi bi-cart" style="font-size:20px; margin-right: 7px;"></i><span th:if="${session.ShoppingCart} == null" style="font-size:20px; margin-right:25px;">0</span><span th:unless="${session.ShoppingCart} == null" style="font-size:20px; margin-right:25px;" th:text="${session.cartSize}"></span></a>	
+				</div>
+				<div class="btn-group m-0" id="language-pc">
+				  <a class="btn text-light dropdown-toggle ps-0 pt-2" data-bs-toggle="dropdown" aria-expanded="false" th:text="#{selected.language}">
+				
+				  </a>
+				  <ul class="dropdown-menu dropdown-menu-end">
+				    <li>
+				      <a class="dropdown-item" th:href="@{${currentElement}(lang='en')}" th:if="${idparam} != null">
+				        <img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" alt="English" width="20" class="me-2"> English
+				      </a>
+				      <a class="dropdown-item" th:href="@{${currentElement}(lang='en')}" th:unless="${idparam} != null">
+				        <img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" alt="English" width="20" class="me-2"> English
+				      </a>
+				    </li>
+				    <li>
+				      <a class="dropdown-item" th:href="@{${currentElement}(lang='sr_RS')}" th:if="${idparam} != null">
+				        <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Flag_of_Serbia.svg" alt="Srpski" width="20" class="me-2"> Srpski
+				      </a>
+				      <a class="dropdown-item" th:href="@{${currentElement}(lang='sr_RS')}" th:unless="${idparam} != null">
+				        <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Flag_of_Serbia.svg" alt="Srpski" width="20" class="me-2"> Srpski
+				      </a>
+				    </li>
+				  </ul>
+				</div>
+				<br>
+				<div class="btn-group m-0" id="language-phone">
+				  <a class="btn text-light dropdown-toggle ps-0 pt-2" data-bs-toggle="dropdown" aria-expanded="false" th:text="#{selected.language}">
+				
+				  </a>
+				  <ul class="dropdown-menu dropdown-menu-start">
+				    <li>
+				      <a class="dropdown-item" th:href="@{${currentElement}(lang='en')}" th:if="${idparam} != null">
+				        <img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" alt="English" width="20" class="me-2"> English
+				      </a>
+				      <a class="dropdown-item" th:href="@{${currentElement}(lang='en')}" th:unless="${idparam} != null">
+				        <img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" alt="English" width="20" class="me-2"> English
+				      </a>
+				    </li>
+				    <li>
+				      <a class="dropdown-item" th:href="@{${currentElement}(lang='sr_RS')}" th:if="${idparam} != null">
+				        <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Flag_of_Serbia.svg" alt="Srpski" width="20" class="me-2"> Srpski
+				      </a>
+				      <a class="dropdown-item" th:href="@{${currentElement}(lang='sr_RS')}" th:unless="${idparam} != null">
+				        <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Flag_of_Serbia.svg" alt="Srpski" width="20" class="me-2"> Srpski
+				      </a>
+				    </li>
+				  </ul>
 				</div>
 			</div>
 		</div>
 	</nav>
-	
-	<div th:if="${idparam} != null" th:fragment="language-bar1" id="language-bar">
-		<a th:href="@{${currentElement}(localeData='en')}">EN</a><span>|</span><a th:href="@{${currentElement}(localeData='sr_RS')}">SR</a>
-	</div>
-	
-	<div th:if="${idparam} == null" th:fragment="language-bar2" id="language-bar">
-		<a th:href="@{${currentElement}(localeData='en')}">EN</a><span>|</span><a th:href="@{${currentElement}(localeData='sr_RS')}">SR</a>
-	</div>
+
 </body>
 </html>

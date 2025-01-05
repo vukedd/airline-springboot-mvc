@@ -22,8 +22,6 @@
 <body>
 <nav th:replace="~{fragments :: navbar}"></nav>
 <div class="form">
-<div th:replace="~{fragments :: language-bar1}"></div>
-<div th:replace="~{fragments :: language-bar2}"></div>
 <div class="logInFormDiv">
 	<h1 id="loginHeader" th:text="#{log.in.head}">Log in</h1>
 	<form method="POST" action="/auth/login" class="logInForm">

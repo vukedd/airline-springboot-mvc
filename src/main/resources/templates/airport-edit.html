@@ -23,9 +23,7 @@
 </head>
 <body>
 	<nav th:replace="~{fragments :: navbar}"></nav>
-	<div class="form" th:if="${airport != null}">
-	<div th:replace="~{fragments :: language-bar1}"></div>
-	<div th:replace="~{fragments :: language-bar2}"></div>	  
+	<div class="form" th:if="${airport != null}"> 
     <h1 th:text="#{edit.airport.head}"></h1>  
 	<form method='Post' th:action="@{/airport/edit}" th:object="${airport}">
 	    	<input type="hidden" th:value="*{id}" name="id">

@@ -25,8 +25,6 @@
 	<nav th:replace="~{fragments :: navbar}"></nav>
 	
 	<div class="form">
-<div th:replace="~{fragments :: language-bar1}"></div>
-<div th:replace="~{fragments :: language-bar2}"></div>
 <div class="alert alert-danger alert-dismissible fade show w-100" id="errorAlert" role="alert" th:if="${booked} != null and ${booked} == 'false'" >
 	 <span th:text="#{flight.booking.error}"></span>
   	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">

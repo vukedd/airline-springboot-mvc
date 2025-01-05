@@ -10,6 +10,14 @@
 	#cartPc {
 		display: none;
 	}
+	
+	#language-phone {
+		display: inline;
+	}
+	
+	#language-pc {
+		display: none;
+	}
 }
 
 @media (min-width:992px) {
@@ -19,6 +27,14 @@
 	}
 	
 	#cartPc {
+		display: inline;
+	}
+	
+	#language-phone {
+		display: none;
+	}
+	
+	#language-pc {
 		display: inline;
 	}
 }
