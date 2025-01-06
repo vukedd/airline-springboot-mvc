@@ -26,6 +26,10 @@ cartButton.addEventListener("click", (e) => {
 		requestUrl += seat.getAttribute("data-column") + "-" + seat.getAttribute("data-row") + ",";		
 	})
 	
+	if (arrSelected.length < 1) {
+		window.location.replace("/flight/details?id=" + document.getElementById("flightIdField").value + "&actionStatus=addToCartError");
+	}
+	
 	if (requestUrl.endsWith(",")) {
 		requestUrl = requestUrl.slice(0, -1);
 	}

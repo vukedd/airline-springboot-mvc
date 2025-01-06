@@ -37,6 +37,12 @@
     	<span aria-hidden="true">&times;</span>
  	</a>
 </div>
+<div class="alert alert-danger alert-dismissible fade show w-100" id="errorAlert" role="alert" th:if="${actionStatus} != null and ${actionStatus} == 'addToCartError'" >
+	 <span th:text="#{flight.add.to.cart.error}"></span>
+  	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
+    	<span aria-hidden="true">&times;</span>
+ 	</a>
+</div>
 <div class="flightDetails" th:if="${flight} != null">
 			<div class="flightDataDiv">
 				<div class="d-flex flex-row flex-wrap">

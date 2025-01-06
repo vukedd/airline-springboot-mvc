@@ -58,13 +58,15 @@ public class FlightController {
 	}
 	
 	@GetMapping("/details")
-	public String getFlightDetails(@RequestParam Long id, @RequestParam(required=false) String booked, @RequestParam(required=false) String actionStatus, Model model, HttpSession session) {
+	public String getFlightDetails(@RequestParam Long id, @RequestParam(required=false) String booked, @RequestParam(required=false) String actionStatus,Model model, HttpSession session) {
 		if (booked != null) {
 			model.addAttribute("booked", booked);
 		}
 		
 		if (actionStatus != null) {
 			if (actionStatus.equals("deleteError")) {
+				model.addAttribute("actionStatus", actionStatus);
+			} else if (actionStatus.equals("addToCartError")) {
 				model.addAttribute("actionStatus", actionStatus);
 			}
 		}
