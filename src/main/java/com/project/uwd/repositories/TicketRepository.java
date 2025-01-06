@@ -12,4 +12,5 @@ import com.project.uwd.models.Ticket;
 public interface TicketRepository {
 	
 	public List<Ticket> getTicketsByReservationId(Long reservationId);
+	public List<Ticket> getTicketsByFlightId(Long flightId);
 }

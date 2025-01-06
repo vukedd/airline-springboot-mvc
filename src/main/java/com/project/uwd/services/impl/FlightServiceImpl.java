@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.uwd.models.Flight;
+import com.project.uwd.models.Ticket;
 import com.project.uwd.repositories.FlightRepository;
+import com.project.uwd.repositories.TicketRepository;
 import com.project.uwd.services.FlightService;
 
 @Service
@@ -15,6 +17,9 @@ public class FlightServiceImpl implements FlightService{
 
 	@Autowired
 	private FlightRepository _flightRepository;
+	
+	@Autowired
+	private TicketRepository _ticketRepository;
 	
 	@Override
 	public List<Flight> getAllFlights() {
@@ -56,6 +61,30 @@ public class FlightServiceImpl implements FlightService{
 	@Override
 	public int numberOfAvailableSpotsByFlight(Long flightId) {
 		return _flightRepository.numberOfAvailableSpotsByFlight(flightId);
+	}
+
+	@Override
+	public int[][] getTakenSeatsByFlightId(Long flightId) {
+		Flight flight = getFlightById(flightId);
+		if (flight == null) {
+			return null;
+		}
+		
+		int cols = flight.getAirplane().getNumberOfColumns();
+		int rows = flight.getAirplane().getNumberOfRows();
+		int[][] seats = new int[cols + 1][rows];
+		for (int i = 0; i < cols; i++) {
+			for (int j = 0; j < rows; j++) {
+				seats[i][j] = 0;
+			}
+		}
+		
+		List<Ticket> tickets = _ticketRepository.getTicketsByFlightId(flightId);
+		for (Ticket t : tickets) {
+			seats[t.getColumnNumber() - 1][t.getRowNumber() - 1] = 1;
+		}
+		
+		return seats;
 	}
 
 }

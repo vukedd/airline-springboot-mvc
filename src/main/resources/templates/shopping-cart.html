@@ -35,31 +35,33 @@
         <thead class="table-header">
         <tr>
             <th th:text="#{product.lbl}"></th>
-            <th th:text="#{quantity.lbl}"></th>
-            <th th:text="#{subtotal.lbl}"></th>
+            <th th:text="#{seat.lbl}"></th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="entry : ${session.ShoppingCart.items}">
+        <tr th:each="ticket : ${session.ShoppingCart.items}">
             <td>
                 <div class="d-flex align-items-center">
                     <img src="https://via.placeholder.com/80" alt="Product Image" class="me-3">
                     <div>
-                        <h6 class="mb-1" th:text="${entry.key.departure.code} + '-' + ${entry.key.destination.code}"></h6>
-                        <p class="mb-0" th:text="${entry.key.ticketPrice} + ' RSD'"></p>
-                        <a th:href="@{/cart/remove?id={cartItemId}(cartItemId=${entry.key.id})}" class="remove-link" th:text="#{cart.remove.btn}"></a>
+                        <h6 class="mb-1" th:text="${ticket.flight.departure.code} + '-' + ${ticket.flight.destination.code}"></h6>
+                        <p class="mb-0" th:text="${ticket.flight.ticketPrice} + ' RSD'"></p>
+                        <a th:href="@{/cart/remove?id={itemId}(itemId=${ticket.id})}" class="remove-link" th:text="#{cart.remove.btn}"></a>
                     </div>
                 </div>
             </td>
             <td>
-            	<input type="hidden" th:value="${entry.key.id}" id="item-id">
+            	<span><strong th:text="#{seat.column.cart.lbl}"></strong><span th:text="${ticket.columnNumber}"></span></span><br>
+            	<span><strong th:text="#{seat.row.cart.lbl}"></strong><span th:text="${ticket.rowNumber}"></span></span>
+<!--            	
+@{/cart/remove?id={cartItemId}(cartItemId=${entry.key.id})}
+			   <input type="hidden" th:value="${entry.key.id}" id="item-id">
             	<span class="quantity-container">
             		<a th:href="@{/cart/decrement?id={key}(key=${entry.key.id})}">-</a>
             		<span th:text="${entry.value}"></span>
             		<a th:href="@{/cart/increment?id={key}(key=${entry.key.id})}">+</a>
-            	</span>
+            	</span>-->
             </td>
-            <td th:text="${entry.key.ticketPrice} *  ${entry.value} + ' RSD'"></td>
         </tr>
         </tbody>
     </table>

@@ -10,9 +10,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.project.uwd.models.Flight;
+import com.project.uwd.models.Ticket;
 import com.project.uwd.repositories.AirplaneRepository;
 import com.project.uwd.repositories.AirportRepository;
 import com.project.uwd.repositories.FlightRepository;
+import com.project.uwd.repositories.TicketRepository;
 import com.project.uwd.repositories.mappers.FlightRowMapper;
 
 import jakarta.annotation.PostConstruct;
@@ -212,5 +214,4 @@ public class FlightRepositoryImpl implements FlightRepository {
 		
 		return numberOfFreeSeats;
 	}
-
 }

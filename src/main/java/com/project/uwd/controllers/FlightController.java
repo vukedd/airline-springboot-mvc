@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.project.uwd.models.Flight;
 import com.project.uwd.models.ShoppingCart;
@@ -26,6 +27,7 @@ import com.project.uwd.services.AirplaneService;
 import com.project.uwd.services.AirportService;
 import com.project.uwd.services.FlightService;
 
+import ch.qos.logback.core.model.conditional.IfModel;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -69,7 +71,17 @@ public class FlightController {
 		model.addAttribute("idparam", 1);
 		model.addAttribute("currentElement", "/flight/details?id=" + id);
 		model.addAttribute("flight", _flightService.getFlightById(id));
-		model.addAttribute("availableSeats", _flightService.numberOfAvailableSpotsByFlight(id));
+		
+		if (session.getAttribute("seats") != null) {
+			if (!((HashMap<Long,int[][]>)session.getAttribute("seats")).containsKey(id)) {
+				model.addAttribute("seats", _flightService.getTakenSeatsByFlightId(id));
+			} else {
+				model.addAttribute("seats", ((HashMap<Long, int[][]>)session.getAttribute("seats")).get(id));
+			}
+		}
+		else {
+			model.addAttribute("seats", _flightService.getTakenSeatsByFlightId(id));
+		}
 		
 		return "flight-details";
 	}
@@ -171,64 +183,112 @@ public class FlightController {
 	}
 	
 	@PostMapping("/book")
-	public String bookFlight(@RequestParam int numberOfTickets, @RequestParam Long flightId, HttpSession session) {
-		boolean numberOfTicketsValidation = true;
-		if (session.getAttribute("loggedIn") == null) {
-			session.setAttribute("flightId", flightId);
-			session.setAttribute("forceAuthenticationFlightBooking", true);
-			session.setAttribute("numberOfTickets", numberOfTickets);
-			
-			return "redirect:/auth/login";
-		}
-		
-		if (numberOfTickets < 0 || numberOfTickets > 11) {
-			numberOfTicketsValidation = false;
-		}
-		
-		int ticketCount = 0;
-
-		Object test = session.getAttribute("FlightTicketTracker");
-		if (session.getAttribute("FlightTicketTracker") != null && ((Map<Long, Integer>)session.getAttribute("FlightTicketTracker")).containsKey(flightId)) {
-			ticketCount = ((int)((Map<Long, Integer>)session.getAttribute("FlightTicketTracker")).get(flightId)) + numberOfTickets;
-		} else
-			ticketCount = 0;
-		
-		if (numberOfTicketsValidation && _flightService.numberOfAvailableSpotsByFlight(flightId) -  ticketCount >= 0) {
-			ShoppingCart cart = new ShoppingCart();
-			if (session.getAttribute("ShoppingCart") == null)
-				cart = new ShoppingCart();
-			else
-				cart = (ShoppingCart)session.getAttribute("ShoppingCart");
-			
-			cart.addCartItem(_flightService.getFlightById(flightId), numberOfTickets);
-			
-			session.setAttribute("cartSize", cart.getTotalNumberOfItems());
-			session.setAttribute("ShoppingCart", cart);
-			
-			Map<Long, Integer> flightTicketTracker;
-			
-			if (session.getAttribute("FlightTicketTracker") == null) {
-				flightTicketTracker = new HashMap<Long, Integer>();
-				flightTicketTracker.put(flightId, numberOfTickets);
-				
-				session.setAttribute("FlightTicketTracker", flightTicketTracker);
-			} else {
-				flightTicketTracker = (Map<Long, Integer>)session.getAttribute("FlightTicketTracker");
-				
-				if (flightTicketTracker.containsKey(flightId)) {
-					flightTicketTracker.put(flightId, flightTicketTracker.get(flightId) + numberOfTickets);
-				} else {
-					flightTicketTracker.put(flightId, numberOfTickets);
-				}
+	public String bookFlight(@RequestParam Long flightId, @RequestParam String[] selectedSeats, HttpSession session) {
+		if (session.getAttribute("loggedIn") != null) {
+			Long cartIndex = 1l;
+			if (session.getAttribute("cartIndex") != null) {
+				cartIndex = (Long)session.getAttribute("cartIndex");
 			}
+			
+			ShoppingCart shoppingCart = null;
+			if (session.getAttribute("ShoppingCart") == null) {
+				shoppingCart = new ShoppingCart();
+			} else {
+				shoppingCart = (ShoppingCart)session.getAttribute("ShoppingCart");
+			}
+			
+			
+			Map<Long,int[][]> seats = null;
+			if (session.getAttribute("seats") == null) {
+				seats = new HashMap<Long, int[][]>();
+			} else {
+				seats = (Map<Long, int[][]>)session.getAttribute("seats");
+			}
+			
+			if (!seats.containsKey(flightId)) 
+				seats.put(flightId, _flightService.getTakenSeatsByFlightId(flightId));
+	
+			for (String seat : selectedSeats) {
+				String[] seatNumberParse = seat.split("-");
+				Ticket ticket = new Ticket();
+				ticket.setId(cartIndex++);
+				ticket.setFlightId(flightId);
+				ticket.setColumnNumber(Integer.parseInt(seatNumberParse[0]));
+				ticket.setRowNumber(Integer.parseInt(seatNumberParse[1]));
+				ticket.setFlight(_flightService.getFlightById(flightId));
+				shoppingCart.addCartItem(ticket);
+				seats.get(flightId)[ticket.getColumnNumber() - 1][ticket.getRowNumber() - 1] = 1;
+			}
+			
+			session.setAttribute("ShoppingCart", shoppingCart);
+			session.setAttribute("cartIndex", cartIndex);
+			session.setAttribute("cartSize", shoppingCart.getTotalNumberOfItems());
+			session.setAttribute("seats", seats);
 			
 			return "redirect:/cart";
 		}
 		
-		session.setAttribute("numberOfTickets", numberOfTickets);
+		session.setAttribute("forceAuthenticationFlightBooking", true);
 		session.setAttribute("flightId", flightId);
-
-		return "redirect:/flight/details?id=" + flightId + "&booked=false";
+		
+		return "redirect:/auth/login";
+//		boolean numberOfTicketsValidation = true;
+//		if (session.getAttribute("loggedIn") == null) {
+//			session.setAttribute("flightId", flightId);
+//			session.setAttribute("forceAuthenticationFlightBooking", true);
+//			session.setAttribute("numberOfTickets", numberOfTickets);
+//			
+//			return "redirect:/auth/login";
+//		}
+//		
+//		if (numberOfTickets < 0 || numberOfTickets > 11) {
+//			numberOfTicketsValidation = false;
+//		}
+//		
+//		int ticketCount = 0;
+//
+//		Object test = session.getAttribute("FlightTicketTracker");
+//		if (session.getAttribute("FlightTicketTracker") != null && ((Map<Long, Integer>)session.getAttribute("FlightTicketTracker")).containsKey(flightId)) {
+//			ticketCount = ((int)((Map<Long, Integer>)session.getAttribute("FlightTicketTracker")).get(flightId)) + numberOfTickets;
+//		} else
+//			ticketCount = 0;
+//		
+//		if (numberOfTicketsValidation && _flightService.numberOfAvailableSpotsByFlight(flightId) -  ticketCount >= 0) {
+//			ShoppingCart cart = new ShoppingCart();
+//			if (session.getAttribute("ShoppingCart") == null)
+//				cart = new ShoppingCart();
+//			else
+//				cart = (ShoppingCart)session.getAttribute("ShoppingCart");
+//			
+//			cart.addCartItem(_flightService.getFlightById(flightId), numberOfTickets);
+//			
+//			session.setAttribute("cartSize", cart.getTotalNumberOfItems());
+//			session.setAttribute("ShoppingCart", cart);
+//			
+//			Map<Long, Integer> flightTicketTracker;
+//			
+//			if (session.getAttribute("FlightTicketTracker") == null) {
+//				flightTicketTracker = new HashMap<Long, Integer>();
+//				flightTicketTracker.put(flightId, numberOfTickets);
+//				
+//				session.setAttribute("FlightTicketTracker", flightTicketTracker);
+//			} else {
+//				flightTicketTracker = (Map<Long, Integer>)session.getAttribute("FlightTicketTracker");
+//				
+//				if (flightTicketTracker.containsKey(flightId)) {
+//					flightTicketTracker.put(flightId, flightTicketTracker.get(flightId) + numberOfTickets);
+//				} else {
+//					flightTicketTracker.put(flightId, numberOfTickets);
+//				}
+//			}
+//			
+//			return "redirect:/cart";
+//		}
+//		
+//		session.setAttribute("numberOfTickets", numberOfTickets);
+//		session.setAttribute("flightId", flightId);
+//
+//		return "redirect:/flight/details?id=" + flightId + "&booked=false";
 	}
 	
 	@GetMapping("/delete")

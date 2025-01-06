@@ -31,7 +31,6 @@ public class AuthController {
 	public String postLogIn(@RequestParam String username, @RequestParam String password, HttpSession session) {
 		User user = _authService.authenticateUser(username, password);
 		if (user != null) {
-			session.setAttribute("FlightTicketTracker", new HashMap<Long, Integer>());
 			session.setAttribute("loggedIn", user);
 		} else {
 			return "redirect:/auth/login";

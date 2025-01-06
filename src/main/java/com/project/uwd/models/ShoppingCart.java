@@ -6,25 +6,26 @@ import java.util.List;
 import java.util.Map;
 
 public class ShoppingCart {
-	private Map<Flight, Integer> items;
+	private List<Ticket> items;
 	private double totalPrice;
 	
 	public ShoppingCart() {
 		super();
-		items = new HashMap<Flight, Integer>();
+		items = new ArrayList<Ticket>();
 		totalPrice = 0.0;
 	}
 
-	public ShoppingCart(Map<Flight, Integer> items) {
+	public ShoppingCart(ArrayList<Ticket> items) {
 		super();
 		this.items = items;
 	}
 
-	public Map<Flight, Integer> getItems() {
+
+	public List<Ticket> getItems() {
 		return items;
 	}
 
-	public void setItems(Map<Flight, Integer> items) {
+	public void setItems(List<Ticket> items) {
 		this.items = items;
 	}
 
@@ -36,29 +37,15 @@ public class ShoppingCart {
 		this.totalPrice = totalPrice;
 	}
 
-	public void addCartItem(Flight flight, int quantity) { 
-		boolean flightTicketExistsInCart = false;
-		
-		for (Flight flightIter : items.keySet()) {
-			if (!flightTicketExistsInCart) {
-				if (flightIter.equals(flight)) {
-					items.put(flightIter, items.get(flightIter) + quantity);
-					flightTicketExistsInCart = true;
-				}
-			} else
-				break;
-		}
-		
-		if (!flightTicketExistsInCart)
-			items.put(flight, quantity);
-		
+	public void addCartItem(Ticket ticket) { 
+		items.add(ticket);
 		calculateTotalPrice();
 	}
 	
 	public void calculateTotalPrice() {
 		double sum = 0.0;
-		for (Flight flightIter : items.keySet()) {
-			sum += flightIter.getTicketPrice() * items.get(flightIter);
+		for (Ticket ticket : items) {
+			sum += ticket.getFlight().getTicketPrice();
 		}
 		
 		totalPrice = sum;
@@ -66,38 +53,29 @@ public class ShoppingCart {
 	}
 	
 	public int getTotalNumberOfItems() {
-		int sum = 0;
-		for (int quantity : items.values()) {
-			sum += quantity;
-		}
-		
-		return sum;
+		return items.size();
 	}
 	
-	public boolean removeCartItemById(Long flightId) {
-		boolean isDeleted = false;
-		for (Flight flightIter : items.keySet()) {
-			if (flightIter.getId() == flightId) {
-				items.remove(flightIter);
-				isDeleted = true;
-				break;
+	public boolean removeCartItemById(Long ticketId) {
+		for (Ticket ticket : items) {
+			if (ticket.getId() == ticketId) {
+				items.remove(ticket);
+				calculateTotalPrice();
+				return true;
 			}
 		}
 		
-		calculateTotalPrice();
-		
-		return isDeleted;
+		return false;
 	}
 	
-	public Flight getCartItemById(Long flightId) {
-		Flight flight = null;
-		for (Flight flightIter : this.items.keySet()) {
-			if (flightIter.getId() == flightId) {
-				flight = flightIter;
-				break;
+	public Ticket getCartItemById(Long ticketId) {
+		Ticket ticket = null;
+		for (Ticket ticketIter : items) {
+			if (ticketIter.getId() == ticketId) {
+				return ticketIter;
 			}
 		}
 		
-		return flight;
+		return ticket;
 	}
 }

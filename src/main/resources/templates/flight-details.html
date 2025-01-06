@@ -39,6 +39,7 @@
 </div>
 <div class="flightDetails" th:if="${flight} != null">
 			<div class="flightDataDiv">
+				<div class="d-flex flex-row flex-wrap">
 				<div class="imageDiv">
 					<img src="/images/flight-pic.jpg" id="flightImage">
 				</div>
@@ -50,21 +51,39 @@
 					<span><span th:text="#{flight.departureTime.lbl}"></span><span th:text="' ' + ${flight.timeOfDeparture}"></span></span>
 					<span><span th:text="#{flight.flightDuration.lbl}"></span><span th:text="' ' + ${flight.duration} + ' min.'"></span></span>
 					<span><span th:text="#{flight.airplane.lbl}"></span><a th:href="@{/airplane/details?id={airplaneId}(airplaneId=${flight.airplane.id})}" th:text="' ' + ${flight.airplane.name}"></a></span>
-					<span><span th:text="#{flight.available.seats.lbl}"></span><span th:text="${availableSeats}"></span></span>
 					
 					<div class="actionDiv">
+						<input type="hidden" th:value="${flight.id}" id="flightIdField">
+						<input type="hidden" th:value="${session.loggedIn} == null ? 0 : 1" id="logged-in"> 
 						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-danger" th:href="@{/flight/delete?id={flightId}(flightId=${flight.id})}" role="button" th:text="#{delete.btn}"></a>
 						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-dark" href="#" role="button" th:text="#{edit.btn}"></a>
 						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-dark" th:href="@{/flight/cancel?id={flightId}(flightId=${flight.id})}" role="button" th:text="#{cancel.btn}"></a>
-						<form action="/flight/book" method="POST" th:if="(${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Tourist') or ${session.loggedIn} == null" class="flightReservationForm">
+						<button class="btn btn-dark" id="add-to-cart-btn" th:text="#{book.btn}"></button>
+<!--						<form action="/flight/book" method="POST" th:if="(${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Tourist') or ${session.loggedIn} == null" class="flightReservationForm">
 							<span class="mt-5" th:text="#{tickets.no}"></span><br>
 							<input type="hidden" th:value="${flight.id}" name="flightId">
 							<input type="number" th:if="${session.numberOfTickets != null}" min="0" max="10" class="mb-3" required name="numberOfTickets" th:value="${session.numberOfTickets}">
 							<input type="number" th:unless="${session.numberOfTickets != null}" min="0" max="10" class="mb-3" required name="numberOfTickets" value="1"><br>
 							<button class="btn btn-dark" type="submit" role="button" th:text="#{book.btn}"></button>
-						</form>
+						</form>  -->
 					</div>
 				</div>
+				</div>
+				<div class="airplane-container">
+				  <div class="airplane-shape">
+				    <div class="d-flex flex-row" id="airplane-seats">
+				      <div th:each="i : ${#numbers.sequence(1, flight.airplane.numberOfColumns)}">
+				        <div th:each="j : ${#numbers.sequence(1, flight.airplane.numberOfRows)}">
+				          <button th:attr="data-column=${i}, data-row=${j}" class="seat available" th:if="${seats[i - 1][j - 1]} == 0">
+				          </button>
+				    	  <button class="seat occupied" th:if="${seats[i - 1][j - 1]} != 0" disabled>
+				          </button>
+				        </div>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+				<div></div>
 			</div>
 		</div>
 
@@ -73,5 +92,6 @@
 			<a href="/flight/" th:text="#{flight.show.all.link}"></a>
 		</div>
 	</div>
+	<script src="/js/flight-details.js"></script>
 </body>
 </html>

@@ -1,11 +1,13 @@
 package com.project.uwd.repositories;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
 import com.project.uwd.models.Flight;
+import com.project.uwd.models.Ticket;
 
 @Repository
 public interface FlightRepository {
