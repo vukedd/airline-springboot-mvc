@@ -11,7 +11,7 @@ addBtn.addEventListener("click", () => {
 			pointsField.value = parseInt(pointsField.value) + 1;
 		}
 	} else {
-		if (parseInt(pointsField.value) <= 10) {
+		if (parseInt(pointsField.value) < 10) {
 			pointsField.value = parseInt(pointsField.value) + 1;
 		}
 	}

@@ -176,8 +176,8 @@ public class FlightController {
 	
 	@GetMapping("/cancel")
 	public String cancelFlight(@RequestParam Long id) {
-		int res = _flightService.cancelFlight(id);
-		if (res == 1) {
+		boolean res = _flightService.cancelFlight(id);
+		if (res == true) {
 			return "redirect:/flight/?cancelled=true";
 		}
 		

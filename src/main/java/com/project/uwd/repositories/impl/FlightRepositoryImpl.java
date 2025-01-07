@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.project.uwd.models.Flight;
 import com.project.uwd.models.Ticket;
@@ -114,17 +115,30 @@ public class FlightRepositoryImpl implements FlightRepository {
 	}
 
 	@Override
-	public int cancelFlight(Long id) {
-		String sql = "UPDATE Flight SET IsCancelled = 1 WHERE FlightId = ?;";
-		int res;
+	@Transactional(rollbackFor=Exception.class)
+	public boolean cancelFlight(Long id) {
+		String sql1 = "UPDATE Flight SET IsCancelled = 1 WHERE FlightId = ?;";
+		String sql2 = "UPDATE LoyaltyCard lc\r\n"
+				+ "SET lc.points = lc.points + 5\r\n"
+				+ "WHERE lc.LoyaltyCardId in (SELECT LoyaltyCardId\r\n"
+				+ "						   FROM User\r\n"
+				+ "						   WHERE UserId in (SELECT UserId\r\n"
+				+ "											FROM Reservation\r\n"
+				+ "                                            WHERE ReservationId in (SELECT ReservationId\r\n"
+				+ "																	FROM Ticket\r\n"
+				+ "																	Where FlightId = ?)));";
 		
+		int res1, res2;
 		try {
-			res = _jdbcTemplate.update(sql, id);
+			
+			res1 = _jdbcTemplate.update(sql1, id);
+			res2 = _jdbcTemplate.update(sql2, id);
+			
 		} catch (Exception e) {
-			res = 0;
+			res1= 0; res2 = 0;
 		}
 		
-		return res;
+		return (res1 != 0 && res2 != 0);
 	}
 
 	@Override

@@ -49,7 +49,7 @@ public class FlightServiceImpl implements FlightService{
 	}
 
 	@Override
-	public int cancelFlight(Long id) {
+	public boolean cancelFlight(Long id) {
 		return _flightRepository.cancelFlight(id);
 	}
 
