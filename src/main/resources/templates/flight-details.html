@@ -30,13 +30,20 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      <form method="POST" action="/flight/cancel">
       <div class="modal-body">
         <p th:text="#{flight.cancelation.message}"></p>
+	        <div class="form-group">
+	       <input type="hidden" th:value="${flight.id}" name="id">
+          <label for="cancelReason" th:text="#{flight.cancelation.reason.label}"></label>
+          <textarea class="form-control" id="cancelReason" rows="3" th:placeholder="#{cancelation.reason.placeholder}" name="cancelationReason"></textarea>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal" th:text="#{cancel.btn}"></button>
-        <a class="btn btn-dark" id="otkaziLet" th:href="@{/flight/cancel?id={flightId}(flightId=${flight.id})}" th:text="#{submit.btn}"></a>
+        <button class="btn btn-dark" id="otkaziLet" type="submit" th:text="#{submit.btn}"></button>
       </div>
+    </form>
     </div>
   </div>
 </div>

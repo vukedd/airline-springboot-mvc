@@ -49,8 +49,8 @@ public class FlightServiceImpl implements FlightService{
 	}
 
 	@Override
-	public boolean cancelFlight(Long id) {
-		return _flightRepository.cancelFlight(id);
+	public boolean cancelFlight(Long id, String cancelationReason) {
+		return _flightRepository.cancelFlight(id, cancelationReason);
 	}
 
 	@Override

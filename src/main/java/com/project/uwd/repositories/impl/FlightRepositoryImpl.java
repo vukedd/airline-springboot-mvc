@@ -116,7 +116,7 @@ public class FlightRepositoryImpl implements FlightRepository {
 
 	@Override
 	@Transactional(rollbackFor=Exception.class)
-	public boolean cancelFlight(Long id) {
+	public boolean cancelFlight(Long id, String cancelationReason) {
 		String sql1 = "UPDATE Flight SET IsCancelled = 1 WHERE FlightId = ?;";
 		String sql2 = "UPDATE LoyaltyCard lc\r\n"
 				+ "SET lc.points = lc.points + 5\r\n"
@@ -128,17 +128,20 @@ public class FlightRepositoryImpl implements FlightRepository {
 				+ "																	FROM Ticket\r\n"
 				+ "																	Where FlightId = ?)));";
 		
-		int res1, res2;
+		String sql3 = "INSERT INTO flightcancelation(CancelationReason, FlightId) VALUES (?, ?);";
+		int res1, res2, res3;
 		try {
 			
 			res1 = _jdbcTemplate.update(sql1, id);
 			res2 = _jdbcTemplate.update(sql2, id);
+			res3 = _jdbcTemplate.update(sql3, cancelationReason, id);
 			
 		} catch (Exception e) {
-			res1= 0; res2 = 0;
+			System.out.println(e.getMessage());
+			return false;
 		}
 		
-		return (res1 != 0 && res2 != 0);
+		return true;
 	}
 
 	@Override

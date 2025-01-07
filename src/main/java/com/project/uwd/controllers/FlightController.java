@@ -174,14 +174,25 @@ public class FlightController {
 		return "redirect:/flight/?actionStatus=flightAdded";
 	}
 	
-	@GetMapping("/cancel")
-	public String cancelFlight(@RequestParam Long id) {
-		boolean res = _flightService.cancelFlight(id);
+	@PostMapping("/cancel")
+	public String cancelFlight(@RequestParam Long id, @RequestParam(defaultValue="") String cancelationReason, HttpSession session) {
+		boolean res = _flightService.cancelFlight(id, cancelationReason);
 		if (res == true) {
-			return "redirect:/flight/?cancelled=true";
+			if (session.getAttribute("ShoppingCart") != null) {
+				ShoppingCart cart = (ShoppingCart)session.getAttribute("ShoppingCart");
+				for (Ticket t : cart.getItems()) {
+					if (t.getFlightId() == id) {
+						session.removeAttribute("ShoppingCart");
+						session.removeAttribute("cartSize");
+						session.removeAttribute("seats");
+						session.removeAttribute("cartIndex");
+					}
+				}
+			}
+			return "redirect:/?cancelled=true";
 		}
 		
-		return "redirect:/flight/?cancelled=false";
+		return "redirect:/?cancelled=false";
 	}
 	
 	@PostMapping("/book")
