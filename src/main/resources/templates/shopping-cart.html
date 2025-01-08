@@ -45,7 +45,9 @@
                     <img src="https://via.placeholder.com/80" alt="Product Image" class="me-3">
                     <div>
                         <h6 class="mb-1" th:text="${ticket.flight.departure.code} + '-' + ${ticket.flight.destination.code}"></h6>
-                        <p class="mb-0" th:text="${ticket.flight.ticketPrice} + ' RSD'"></p>
+                        <p th:if="not ${ticket.flight.onDiscount}" class="mb-0" th:text="${ticket.flight.ticketPrice} + ' RSD'"></p>
+                        <p th:if="${ticket.flight.onDiscount}" style="text-decoration:line-through" class="mb-0" th:text="${ticket.flight.ticketPrice} + ' RSD'"></p>
+                        <p th:if="${ticket.flight.onDiscount}" style="color:red;" class="mb-0 fw-bold" th:text="(${ticket.flight.ticketPrice} * (1 - (${ticket.flight.discount.discountPercentage} / 100.0))) + ' RSD'"></p>
                         <a th:href="@{/cart/remove?id={itemId}(itemId=${ticket.id})}" class="remove-link" th:text="#{cart.remove.btn}"></a>
                     </div>
                 </div>
@@ -74,7 +76,7 @@
 				    <button class="btn btn-dark px-3 py-1" style="width: 50px; height: 40px;" id="subtract-point">
 				        <i class="bi bi-dash"></i>
 				    </button>
-				    <input type="number" min="0" max="7" readonly class="form-control text-center mx-2 justify-content-center" style="width: 60px; height: 40px;" th:value="0" id="points-field">
+				    <input type="number" min="0" max="7" readonly class="form-control mx-1" style="width: 60px; height: 40px; text-align:center;" th:value='0' id="points-field">
 				    <button class="btn btn-dark px-3 py-1" style="width: 50px; height: 40px;" id="add-point">
 				        <i class="bi bi-plus"></i>
 				    </button>
@@ -84,7 +86,7 @@
 			    </div>
 		    </div>
 		</div>
-        <p class="summary-row summary mt-3" style="font-size:20px;" th:text="#{total.price} + '  ' + ${session.ShoppingCart.totalPrice} + ' RSD'" id="price-lbl"></p>
+        <p class="summary-row summary mt-3" style="font-size:20px;" th:text="#{total.price} + '  ' + ${session.ShoppingCart.totalPrice} + '0 RSD'" id="price-lbl"></p>
         <a class="btn btn-dark" th:text="#{confirm.reservation}" href="#"></a>
     </div>
 </div>

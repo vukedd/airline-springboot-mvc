@@ -93,7 +93,7 @@ public class FlightController {
 		User user = (User) session.getAttribute("loggedIn");
 		if (user != null && user.getRole().compareTo(Role.Admin) == 0) {
 			model.addAttribute("airports", _airportService.getAllAiports());
-			model.addAttribute("airplanes", _airplaneService.getAvailableAirplanes());
+			model.addAttribute("airplanes", _airplaneService.getAllAirplanes());
 			
 			if (depDest != null) {
 				model.addAttribute("depDest", depDest);

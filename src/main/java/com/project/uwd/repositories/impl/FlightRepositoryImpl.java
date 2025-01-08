@@ -86,6 +86,12 @@ public class FlightRepositoryImpl implements FlightRepository {
 			flight.setAirplane(_airplaneRepository.getAirplaneById(flight.getAirplaneId()));
 			flight.setDeparture(_airportRepository.getAirportById(flight.getDepartureId()));
 			flight.setDestination(_airportRepository.getAirportById(flight.getDestinationId()));
+			
+			Discount discount = _discountRepository.getDiscountByFlightId(flight.getId());
+			if (discount != null) {
+				flight.setDiscount(discount);
+				flight.setOnDiscount(true);
+			}
 		}
 		
 		return flight;

@@ -45,7 +45,11 @@ public class ShoppingCart {
 	public void calculateTotalPrice() {
 		double sum = 0.0;
 		for (Ticket ticket : items) {
-			sum += ticket.getFlight().getTicketPrice();
+			if (ticket.getFlight().isOnDiscount() == true) {
+				sum += (ticket.getFlight().getTicketPrice() * (1 - (ticket.getFlight().getDiscount().getDiscountPercentage() / 100.0)));
+			} else {
+				sum += ticket.getFlight().getTicketPrice();
+			}
 		}
 		
 		totalPrice = sum;

@@ -96,13 +96,15 @@
 				</div>
 				<div class="headerDiv">
 					<h1 th:text="${flight.departure.code} + '-' + ${flight.destination.code}"></h1>
-					<span><span th:text="#{flight.departure.lbl}"></span><a th:href="@{/airport/details?id={airportId}(airportId=${flight.departure.id})}" th:text="'  ' + ${flight.departure.code}"></a><span th:text="'/'"></span><a th:href="@{/location/details?id={locationId}(locationId=${flight.departure.location.id})}" th:text="${flight.departure.location.city}"></a></span>
-					<span><span th:text="#{flight.destination.lbl}"></span><a th:href="@{/airport/details?id={airportId}(airportId=${flight.destination.id})}" th:text="'  ' + ${flight.destination.code}"></a><span th:text="'/'"></span><a th:href="@{/location/details?id={locationId}(locationId=${flight.destination.location.id})}" th:text="${flight.destination.location.city}"></a></span>
-					<span><span th:text="#{flight.departureDate.lbl}"></span><span th:text="' ' + ${flight.dateOfDeparture}"></span></span>
-					<span><span th:text="#{flight.departureTime.lbl}"></span><span th:text="' ' + ${flight.timeOfDeparture}"></span></span>
-					<span><span th:text="#{flight.flightDuration.lbl}"></span><span th:text="' ' + ${flight.duration} + ' min.'"></span></span>
-					<span><span th:text="#{flight.airplane.lbl}"></span><a th:href="@{/airplane/details?id={airplaneId}(airplaneId=${flight.airplane.id})}" th:text="' ' + ${flight.airplane.name}"></a></span>
-					
+					<span><strong th:text="#{flight.departure.lbl}"></strong><a th:href="@{/airport/details?id={airportId}(airportId=${flight.departure.id})}" th:text="'  ' + ${flight.departure.code}"></a><span th:text="'/'"></span><a th:href="@{/location/details?id={locationId}(locationId=${flight.departure.location.id})}" th:text="${flight.departure.location.city}"></a></span>
+					<span><strong th:text="#{flight.destination.lbl}"></strong><a th:href="@{/airport/details?id={airportId}(airportId=${flight.destination.id})}" th:text="'  ' + ${flight.destination.code}"></a><span th:text="'/'"></span><a th:href="@{/location/details?id={locationId}(locationId=${flight.destination.location.id})}" th:text="${flight.destination.location.city}"></a></span>
+					<span><strong th:text="#{flight.departureDate.lbl}"></strong><span th:text="' ' + ${flight.dateOfDeparture}"></span></span>
+					<span><strong th:text="#{flight.departureTime.lbl}"></strong><span th:text="' ' + ${flight.timeOfDeparture}"></span></span>
+					<span><strong th:text="#{flight.flightDuration.lbl}"></strong><span th:text="' ' + ${flight.duration} + ' min.'"></span></span>
+					<span><strong th:text="#{flight.airplane.lbl}"></strong><a th:href="@{/airplane/details?id={airplaneId}(airplaneId=${flight.airplane.id})}" th:text="' ' + ${flight.airplane.name}"></a></span>
+					<span th:if="not ${flight.onDiscount}"><strong th:text="#{flight.seat.price}"></strong><span class="fw-bold" th:text="${flight.ticketPrice} + '0 RSD'"></span></span>
+					<span th:if="${flight.onDiscount}" style="text-decoration:line-through"><strong th:text="#{flight.seat.price}"></strong><span th:text="${flight.ticketPrice} + '0 RSD'"></span></span>
+					<span th:if="${flight.onDiscount}" style="font-size: 20px;color:red;"><strong th:text="#{flight.seat.price}"></strong><span th:text="(${flight.ticketPrice} * (1 - (${flight.discount.discountPercentage} / 100.0))) + '0 RSD'"></span></span>
 					<div class="actionDiv d-flex flex-wrap w-75">
 						<input type="hidden" th:value="${flight.id}" id="flightIdField">
 						<input type="hidden" th:value="${session.loggedIn} == null ? 0 : 1" id="logged-in"> 

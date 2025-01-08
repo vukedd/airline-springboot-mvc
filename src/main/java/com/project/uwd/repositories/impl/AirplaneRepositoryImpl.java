@@ -92,7 +92,7 @@ public class AirplaneRepositoryImpl implements AirplaneRepository{
 	public List<Airplane> getAvailableAirplanes() {
 		String sql = "SELECT Airplane.AirplaneId, Name, NumberOfColumns, NumberOfRows FROM Airplane "
 				+ "LEFT JOIN Flight ON Flight.AirplaneId = Airplane.AirplaneId "
-				+ "WHERE DateOfDeparture is null OR DateOfDeparture < current_date() OR (DateOfDeparture > current_date() AND IsCancelled = 1);";
+				+ "WHERE DateOfDeparture < current_date() OR (DateOfDeparture > current_date() AND IsCancelled = 1);";
 		List<Airplane> airplanes;
 		
 //		try {
