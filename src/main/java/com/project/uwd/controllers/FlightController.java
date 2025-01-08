@@ -318,6 +318,10 @@ public class FlightController {
 		return "redirect:/";
 	}
 
+//	@PostMapping("/discount")
+//	public String discountFlight(@RequestParam Long flightId, @RequestParam int discountPercentage, @RequestParam LocalDate endDate) {
+//		
+//	}
 //	boolean timeDifference = LocalDateTime.of(date, time).isAfter(LocalDateTime.now());
 //	if (timeDifference) {
 //		int flightTime = 0;

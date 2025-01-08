@@ -23,7 +23,7 @@ public class IndexController {
 	
 	@GetMapping
 	public String getIndexPage(Model model) {
-		model.addAttribute("flights", _flightService.getAllFlights());
+		model.addAttribute("flights", _flightService.getFlightsOnDiscount());
 		
 		return "index";
 	}
@@ -39,4 +39,6 @@ public class IndexController {
 		
 		return "index";
 	}
+	
+	
 }

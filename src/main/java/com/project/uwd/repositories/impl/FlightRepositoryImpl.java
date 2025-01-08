@@ -10,10 +10,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.project.uwd.models.Discount;
 import com.project.uwd.models.Flight;
 import com.project.uwd.models.Ticket;
 import com.project.uwd.repositories.AirplaneRepository;
 import com.project.uwd.repositories.AirportRepository;
+import com.project.uwd.repositories.DiscountRepository;
 import com.project.uwd.repositories.FlightRepository;
 import com.project.uwd.repositories.TicketRepository;
 import com.project.uwd.repositories.mappers.FlightRowMapper;
@@ -31,6 +33,9 @@ public class FlightRepositoryImpl implements FlightRepository {
 
 	@Autowired
 	private AirplaneRepository _airplaneRepository;
+	
+	@Autowired
+	private DiscountRepository _discountRepository;
 	
 	private FlightRowMapper _flightRowMapper;
 	
@@ -55,6 +60,12 @@ public class FlightRepositoryImpl implements FlightRepository {
 				flight.setAirplane(_airplaneRepository.getAirplaneById(flight.getAirplaneId()));
 				flight.setDeparture(_airportRepository.getAirportById(flight.getDepartureId()));
 				flight.setDestination(_airportRepository.getAirportById(flight.getDestinationId()));
+				
+				Discount discount = _discountRepository.getDiscountByFlightId(flight.getId());
+				if (discount != null) {
+					flight.setDiscount(discount);
+					flight.setOnDiscount(true);
+				}
 			}
 		}
 		
@@ -206,6 +217,12 @@ public class FlightRepositoryImpl implements FlightRepository {
 					flight.setDeparture(_airportRepository.getAirportById(flight.getDepartureId()));
 					flight.setDestination(_airportRepository.getAirportById(flight.getDestinationId()));
 					flightsWithEnoughSeats.add(flight);
+					
+					Discount discount = _discountRepository.getDiscountByFlightId(flight.getId());
+					if (discount != null) {
+						flight.setDiscount(discount);
+						flight.setOnDiscount(true);
+					}
 				}
 				
 				
@@ -230,5 +247,36 @@ public class FlightRepositoryImpl implements FlightRepository {
 		}
 		
 		return numberOfFreeSeats;
+	}
+
+	@Override
+	public List<Flight> getFlightsOnDiscount() {
+		List<Flight> discountedFlights = null;
+		String sql = "SELECT *\r\n"
+				+ "FROM Flight\r\n"
+				+ "WHERE FlightId in (SELECT FlightId\r\n"
+				+ "				   FROM Discount\r\n"
+				+ "                   WHERE DiscountValidDate > current_date()) AND IsCancelled = 0 AND DateOfDeparture > current_date();";
+		
+		try {
+			discountedFlights = _jdbcTemplate.query(sql, _flightRowMapper);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		if (discountedFlights != null) {
+			for (Flight flight : discountedFlights) {
+				flight.setAirplane(_airplaneRepository.getAirplaneById(flight.getAirplaneId()));
+				flight.setDeparture(_airportRepository.getAirportById(flight.getDepartureId()));
+				flight.setDestination(_airportRepository.getAirportById(flight.getDestinationId()));
+				Discount discount = _discountRepository.getDiscountByFlightId(flight.getId());
+				if (discount != null) {
+					flight.setDiscount(discount);
+					flight.setOnDiscount(true);
+				}
+			}
+		}
+		
+		return discountedFlights;
 	}
 }

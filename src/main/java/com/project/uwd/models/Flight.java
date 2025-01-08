@@ -26,6 +26,9 @@ public class Flight {
 	private Airplane airplane;
 	private Long airplaneId;
 	
+	private boolean onDiscount;
+	private Discount discount;
+	
 	public Flight(Long id, LocalDateTime dateTimeOfDeparture, int duration, double ticketPrice, Airport departure,
 			Airport destination, Airplane airplane) {
 		super();
@@ -144,6 +147,22 @@ public class Flight {
 
 	public void setCancelled(boolean cancelled) {
 		this.cancelled = cancelled;
+	}
+
+	public boolean isOnDiscount() {
+		return onDiscount;
+	}
+
+	public void setOnDiscount(boolean onDiscount) {
+		this.onDiscount = onDiscount;
+	}
+
+	public Discount getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(Discount discount) {
+		this.discount = discount;
 	}
 
 	@Override

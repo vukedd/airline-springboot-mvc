@@ -19,4 +19,5 @@ public interface FlightRepository {
 	public boolean cancelFlight(Long id, String cancelationReason);
 	public List<Flight> searchFlights(String departure, String destination, LocalDate dateOfDeparture, int numberOfSeats, boolean similarFlights);
 	public int numberOfAvailableSpotsByFlight(Long flightId);
+	public List<Flight> getFlightsOnDiscount();
 }

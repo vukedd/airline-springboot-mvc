@@ -20,6 +20,48 @@
 <link href="/css/navbar.css" rel="stylesheet">
 <link href="/css/index.css" rel="stylesheet">
 </head>
+<div class="modal fade" id="flightDiscount" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header justify-content-between">
+        <h5 class="modal-title" id="exampleModalLongTitle" th:text="#{flight.discount.model.header}"></h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-bs-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body">
+          <div class="mb-3">
+          	<input type="hidden" name="flightId" id="selectedFlightField">
+            <label for="discountPercentage" class="form-label" th:text="#{discount.percentage.label}"></label>
+            <input
+              type="number"
+              class="form-control"
+              id="discountPercentage"
+              name="discountPercentage"
+              min="0"
+              max="100"
+              th:placeholder="#{percentage.placeholder}"
+            />
+           	<label id="discountPercentageValidation" style="display:none;color:red;" th:text="#{percentage.validation}"></label>
+          </div>
+          <div class="mb-3">
+            <label for="endDate" class="form-label" th:text="#{discount.end.date.label}"></label>
+            <input
+              type="date"
+              class="form-control"
+              id="endDate"
+              name="endDate"
+            />
+            <label id="endDateValidation" style="display:none;color:red;" th:text="#{end.date.validation}"></label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" th:text="#{cancel.btn}"></button>
+          <button type="button" class="btn btn-dark" th:text="#{submit.btn}" id="discountFormSubmitBtn"></button>
+        </div>
+    </div>
+  </div>
+</div>
 <body>
 <nav th:replace="~{fragments :: navbar}"></nav>
 <div class="form">
@@ -52,14 +94,21 @@
 	    </form>
 	  </div>
 	<div class="content-body" th:if="${flights} != null">
-		<div class="card m-3" style="width: 20rem;" th:each="flight : ${flights}">
+		<div class="card m-3" style="width: 20rem;" th:each="flight, iter : ${flights}">
 			  	<img src="/images/flight-pic.jpg" class="card-img-top" alt="">
 			<div class="card-body">
 			    <h5 class="card-title" th:text="${flight.departure.code} + '-' + ${flight.destination.code}"></h5>
 			    <p th:text="${flight.dateOfDeparture} + ' | ' + ${flight.timeOfDeparture}"></p>
 			    <div class="d-flex justify-content-space-around flex-column p-1">
-			    	<span class="fw-bold pe-4 pt-1" th:text="${flight.ticketPrice} + '0 RSD per seat'"></span>
-			    	<a th:href="@{/flight/details?id={flightId}(flightId=${flight.id})}" class="btn btn-primary mt-1 w-100"><i class="bi bi-info-circle"></i></a>
+			    	<span th:if="not ${flight.onDiscount}" class="fw-bold pe-4 pt-1" th:text="${flight.ticketPrice} + '0 RSD ' + #{per.seat}"></span>
+			    	<span th:if="${flight.onDiscount}" class="fw-bold pe-4 pt-1" style="text-decoration:line-through;" th:text="${flight.ticketPrice} + '0 RSD ' + #{per.seat}"></span>
+			    	<span th:if="${flight.onDiscount}" class="fw-bold pe-4 pt-1" style="color:red;" th:text="(${flight.ticketPrice} * (1 - (${flight.discount.discountPercentage} / 100.0))) + '0 RSD ' + #{per.seat}"></span>
+			    	<div th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="d-flex flex-row">
+				    	<button class="btn btn-primary mt-1 w-50 addDiscountBtn" th:attr="flightId=${flight.id}" th:text="#{add.discount}" data-bs-target="#flightDiscount" data-bs-toggle="modal" th:if="not ${flight.onDiscount}"></button>
+			    		<a th:href="@{/flight/details?id={flightId}(flightId=${flight.id})}" class="btn btn-primary mt-1 me-1 ms-1 w-50" th:if="not ${flight.onDiscount}"><i class="bi bi-info-circle"></i></a>
+			    		<a th:href="@{/flight/details?id={flightId}(flightId=${flight.id})}" class="btn btn-primary mt-1 me-1 ms-1 w-100" th:if="${flight.onDiscount}"><i class="bi bi-info-circle"></i></a>
+			    	</div>
+			    	<a th:if="${session.loggedIn} == null or ${session.loggedIn.Role.name} != 'Admin'" th:href="@{/flight/details?id={flightId}(flightId=${flight.id})}" class="btn btn-primary mt-1 w-100"><i class="bi bi-info-circle"></i></a>
 			    </div>
 		    </div>
 		</div>
@@ -68,5 +117,6 @@
 		<h1 th:text="#{no.flights.found.search.msg}" style="text-align:center"></h1>	
 	</div>
 </div>
+<script src="/js/index.js"></script>
 </body>
 </html>

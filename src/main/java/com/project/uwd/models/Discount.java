@@ -7,6 +7,7 @@ public class Discount {
 	private double discountPercentage;
 	private LocalDate validUntill;
 	private Flight discountedFlight;
+	private Long discountedFlightId;
 	
 	public Discount(Long id, double discountPercentage, LocalDate validUntill, Flight discountedFlight) {
 		super();
@@ -51,5 +52,12 @@ public class Discount {
 	public void setDiscountedFlight(Flight discountedFlight) {
 		this.discountedFlight = discountedFlight;
 	}
-	
+
+	public Long getDiscountedFlightId() {
+		return discountedFlightId;
+	}
+
+	public void setDiscountedFlightId(Long discountedFlightId) {
+		this.discountedFlightId = discountedFlightId;
+	}
 }

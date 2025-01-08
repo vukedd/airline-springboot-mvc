@@ -87,4 +87,9 @@ public class FlightServiceImpl implements FlightService{
 		return seats;
 	}
 
+	@Override
+	public List<Flight> getFlightsOnDiscount() {
+		return _flightRepository.getFlightsOnDiscount();
+	}
+
 }
