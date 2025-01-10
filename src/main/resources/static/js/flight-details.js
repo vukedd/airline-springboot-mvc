@@ -1,5 +1,5 @@
+// Flight seats
 let arrAvailable = document.querySelectorAll(".seat");
-
 
 arrAvailable.forEach(seat =>  {
 	seat.addEventListener("click", (event) => {
@@ -48,3 +48,51 @@ cartButton.addEventListener("click", (e) => {
 	request.open("POST", requestUrl);
 	request.send();
 });
+
+
+// Wishlist
+let userIdField = document.querySelector("#userIdField");
+let wishlistButton = document.querySelector("#wishlistBtn");
+let flightIdField = document.getElementById("flightIdField");
+wishlistButton.addEventListener("click", () => {
+	let icon = wishlistButton.children[0];
+	let iconClass = icon.getAttribute("class");
+	if (iconClass === "bi bi-heart") {
+		let formData = new FormData();
+		formData.append("userId", userIdField.value);
+		formData.append("flightId", flightIdField.value);
+		
+		let request = new XMLHttpRequest();
+		request.onreadystatechange = function () {
+			if (this.readyState == 4) {
+				if (this.status == 200) {
+					if (this.responseText == 'true') {
+						icon.removeAttribute("class");
+						icon.setAttribute("class", "bi bi-heart-fill");
+					}
+				}
+			}
+		};
+		request.open("POST", "/wishlist/add");
+		request.send(formData);
+		
+	} else if (iconClass === "bi bi-heart-fill") {
+		let formData = new FormData();
+		formData.append("userId", userIdField.value);
+		formData.append("flightId", flightIdField.value);
+		
+		let request = new XMLHttpRequest();
+		request.onreadystatechange = function () {
+			if (this.readyState == 4) {
+				if (this.status == 200) {
+					if (this.responseText == 'true') {
+						icon.removeAttribute("class");
+						icon.setAttribute("class", "bi bi-heart");
+					}
+				}
+			}
+		};
+		request.open("POST", "/wishlist/remove");
+		request.send(formData);
+	}
+}); 

@@ -66,6 +66,7 @@ public class FlightRepositoryImpl implements FlightRepository {
 					flight.setDiscount(discount);
 					flight.setOnDiscount(true);
 				}
+				flight.setAvailableSeats(numberOfAvailableSpotsByFlight(flight.getId()) > 0 ? true : false);
 			}
 		}
 		
@@ -92,6 +93,7 @@ public class FlightRepositoryImpl implements FlightRepository {
 				flight.setDiscount(discount);
 				flight.setOnDiscount(true);
 			}
+			flight.setAvailableSeats(numberOfAvailableSpotsByFlight(flight.getId()) > 0 ? true : false);
 		}
 		
 		return flight;
@@ -229,6 +231,7 @@ public class FlightRepositoryImpl implements FlightRepository {
 						flight.setDiscount(discount);
 						flight.setOnDiscount(true);
 					}
+					flight.setAvailableSeats(numberOfAvailableSpotsByFlight(flight.getId()) > 0 ? true : false);
 				}
 				
 				
@@ -284,5 +287,37 @@ public class FlightRepositoryImpl implements FlightRepository {
 		}
 		
 		return discountedFlights;
+	}
+
+	@Override
+	public List<Flight> getWishlistItemsByUserId(Long userId) {
+		List<Flight> wishlist = new ArrayList<Flight>();
+		String sql = "SELECT f.FlightId, f.DateOfDeparture, f.Duration, f.TicketPrice, f.DepartureId, f.DestinationId, f.AirplaneId, f.IsCancelled\r\n"
+				+ "FROM Wishlist wl\r\n"
+				+ "LEFT JOIN WishlistItem it on wl.WishlistId = it.WishlistId\r\n"
+				+ "LEFT JOIN Flight f on it.FlightId = f.FlightId\r\n"
+				+ "WHERE UserId = ?;";
+		
+		try {
+			wishlist = _jdbcTemplate.query(sql, _flightRowMapper, userId);
+		} catch (Exception e) {
+			System.out.println("There are no items in this wishlist!");
+		}
+		
+		if (wishlist.size() > 0) {
+			for (Flight flight : wishlist) {
+				flight.setAirplane(_airplaneRepository.getAirplaneById(flight.getAirplaneId()));
+				flight.setDeparture(_airportRepository.getAirportById(flight.getDepartureId()));
+				flight.setDestination(_airportRepository.getAirportById(flight.getDestinationId()));
+				Discount discount = _discountRepository.getDiscountByFlightId(flight.getId());
+				if (discount != null) {
+					flight.setDiscount(discount);
+					flight.setOnDiscount(true);
+				}
+				flight.setAvailableSeats(numberOfAvailableSpotsByFlight(flight.getId()) > 0 ? true : false);
+			}
+		}
+		
+		return wishlist;
 	}
 }

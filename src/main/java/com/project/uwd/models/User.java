@@ -22,6 +22,8 @@ public class User {
 	private LoyaltyCard loyaltyCard;
 	private Long loyaltyCardId;
 	
+	private Wishlist wishlist;
+	
 	public User(String username, String password, String email, String firstName, String lastName,
 			LocalDate dateOfBirth, LocalDate dateOfRegistration,Role role) {
 		super();
@@ -181,6 +183,14 @@ public class User {
 
 	public void setLoyaltyCardId(Long loyaltyCardId) {
 		this.loyaltyCardId = loyaltyCardId;
+	}
+
+	public Wishlist getWishlist() {
+		return wishlist;
+	}
+
+	public void setWishlist(Wishlist wishlist) {
+		this.wishlist = wishlist;
 	}
 
 	@Override

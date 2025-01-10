@@ -20,4 +20,5 @@ public interface FlightRepository {
 	public List<Flight> searchFlights(String departure, String destination, LocalDate dateOfDeparture, int numberOfSeats, boolean similarFlights);
 	public int numberOfAvailableSpotsByFlight(Long flightId);
 	public List<Flight> getFlightsOnDiscount();
+	public List<Flight> getWishlistItemsByUserId(Long userId);
 }

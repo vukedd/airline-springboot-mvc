@@ -16,6 +16,7 @@ public class Flight {
 	private int duration;
 	private double ticketPrice;
 	private boolean cancelled;
+	private boolean availableSeats;
 	
 	private Airport departure;
 	private Long departureId;
@@ -163,6 +164,14 @@ public class Flight {
 
 	public void setDiscount(Discount discount) {
 		this.discount = discount;
+	}
+	
+	public boolean isAvailableSeats() {
+		return availableSeats;
+	}
+
+	public void setAvailableSeats(boolean availableSeats) {
+		this.availableSeats = availableSeats;
 	}
 
 	@Override

@@ -107,10 +107,15 @@
 					<span th:if="${flight.onDiscount}" style="font-size: 20px;color:red;"><strong th:text="#{flight.seat.price}"></strong><span th:text="(${flight.ticketPrice} * (1 - (${flight.discount.discountPercentage} / 100.0))) + '0 RSD'"></span></span>
 					<div class="actionDiv d-flex flex-wrap w-75">
 						<input type="hidden" th:value="${flight.id}" id="flightIdField">
+						<input type="hidden" th:if="${session.loggedIn} != null" th:value="${session.loggedIn.id}" id="userIdField">
 						<input type="hidden" th:value="${session.loggedIn} == null ? 0 : 1" id="logged-in"> 
 						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-danger m-1" data-bs-target="#flightDeletion" data-bs-toggle="modal" role="button" th:text="#{delete.btn}"></a>
 						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-dark m-1" data-bs-target="#flightCancelation" data-bs-toggle="modal" th:text="#{cancel.btn}"></a>
-						<button class="btn btn-dark m-1" id="add-to-cart-btn" th:text="#{book.btn}"></button>
+						<button class="btn btn-dark m-1" id="add-to-cart-btn" th:text="#{book.btn}" th:if="${flight.availableSeats}"></button>
+						<button class="btn btn-dark m-1 disabled" id="add-to-cart-btn" th:text="#{book.btn}" th:if="not ${flight.availableSeats}"></button>
+						<button class="btn btn-dark m-1" id="wishlistBtn" th:if="${session.loggedIn} != null and not ${wishlist}"><i class="bi bi-heart"></i></button>
+						<button class="btn btn-dark m-1" id="wishlistBtn" th:if="${session.loggedIn} != null and ${wishlist}"><i class="bi bi-heart-fill"></i></button>
+						
 <!--						<form action="/flight/boo"k method="POST" th:if="(${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Tourist') or ${session.loggedIn} == null" class="flightReservationForm">
 							<span class="mt-5" th:text="#{tickets.no}"></span><br>
 							<input type="hidden" th:value="${flight.id}" name="flightId">

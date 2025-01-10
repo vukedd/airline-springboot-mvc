@@ -116,13 +116,13 @@ body {
 }
 
 .request-list {
-	border: 1px solid black;
+	box-shadow: 1px 1px 3px rgb(0,0,0, 0.5);
 	overflow: auto;
 	height: 200px;
 }
 
 .list-item {
-	border: 1px solid black;
+	border: .2px solid black;
 }
 
 .content-card {
@@ -218,6 +218,37 @@ body {
 	border-radius: 5px;
 	background: #ffffff50;
 	margin-top: 20px;
+}
+
+#wishlist-container {
+	margin-top: 20px;
+	margin: 10px;
+	width: 1000px;
+	padding:0;
+}
+
+#wishlist {
+	overflow: auto;
+	border-radius: 10px;
+	width: 100%;
+	height: 250px;
+	box-shadow: 2px 2px 4px rgb(0,0,0, 0.5);
+}
+
+#out-of-stock-badge {
+	border: 1px solid black;
+	color: white;
+	background-color:black;
+	margin: 5px;
+	padding: 1px;
+	border-radius: 10px;
+}
+
+#wishlist-item {
+	width:max;
+	height:100px;
+	margin-right: 2px;
+	box-shadow: 2px 2px 4px rgb(0,0,0, 0.5);
 }
 
 .ticket-container {

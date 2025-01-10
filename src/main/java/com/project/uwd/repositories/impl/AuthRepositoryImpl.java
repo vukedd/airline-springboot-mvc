@@ -7,7 +7,9 @@ import org.springframework.stereotype.Repository;
 import com.project.uwd.models.LoyaltyCard;
 import com.project.uwd.models.User;
 import com.project.uwd.repositories.AuthRepository;
+import com.project.uwd.repositories.FlightRepository;
 import com.project.uwd.repositories.LoyaltyCardRepository;
+import com.project.uwd.repositories.WishlistRepository;
 import com.project.uwd.repositories.mappers.UserRowMapper;
 
 import jakarta.annotation.PostConstruct;
@@ -20,6 +22,9 @@ public class AuthRepositoryImpl implements AuthRepository{
 	
 	@Autowired
 	private LoyaltyCardRepository _loyaltyCardRepository;
+	
+	@Autowired
+	private WishlistRepository _wishlistRepository;
 	
 	private UserRowMapper rowMapper;
 	

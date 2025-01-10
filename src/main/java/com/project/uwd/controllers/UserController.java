@@ -1,4 +1,4 @@
-	package com.project.uwd.controllers;
+ 	package com.project.uwd.controllers;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.project.uwd.helpers.CSVResourceProvider;
 import com.project.uwd.models.LoyaltyCardRequest;
+import com.project.uwd.models.Reservation;
 import com.project.uwd.models.User;
+import com.project.uwd.services.FlightService;
 import com.project.uwd.services.LoyaltyCardRequestService;
 import com.project.uwd.services.ReservationService;
 import com.project.uwd.services.UserService;
@@ -36,6 +38,9 @@ public class UserController {
 	
 	@Autowired
 	LoyaltyCardRequestService _loyaltyCardRequestService;
+	
+	@Autowired
+	FlightService _flightService;
 	
 	@Autowired
 	ReservationService _reservationService;
@@ -248,9 +253,8 @@ public class UserController {
 		}
 		
 		User loggedInUser = (User)session.getAttribute("loggedIn");
-		
 		model.addAttribute("reservations", _reservationService.getUserReservations(loggedInUser.getId()));
-		
+
 		if (edit != null)
 			model.addAttribute("edit", edit);
 		
@@ -261,9 +265,10 @@ public class UserController {
 			model.addAttribute("loyaltyCardRequest", loyaltyCardRequest);
 		}
 		
-		List<LoyaltyCardRequest> cardRequests = _loyaltyCardRequestService.getLoyaltyCardRequestsById(loggedInUser.getId());
-		
-		model.addAttribute("cardRequests", cardRequests);
+		if (loggedInUser.getLoyaltyCard() == null) {
+			List<LoyaltyCardRequest> cardRequests = _loyaltyCardRequestService.getLoyaltyCardRequestsById(loggedInUser.getId());
+			model.addAttribute("cardRequests", cardRequests);
+		}
 		
 		return "user-profile";
 	}

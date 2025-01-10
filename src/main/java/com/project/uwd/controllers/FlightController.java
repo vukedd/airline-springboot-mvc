@@ -72,7 +72,24 @@ public class FlightController {
 		}
 		model.addAttribute("idparam", 1);
 		model.addAttribute("currentElement", "/flight/details?id=" + id);
-		model.addAttribute("flight", _flightService.getFlightById(id));
+		Flight flight = _flightService.getFlightById(id);
+		model.addAttribute("flight", flight);
+		
+		if (flight != null && session.getAttribute("loggedIn") != null) {
+			boolean onWishlist = false;
+			User user = (User)session.getAttribute("loggedIn");
+			for (Flight f : user.getWishlist().getItems())
+			{
+				if (f.getId().equals(id)) {
+					model.addAttribute("wishlist", true);
+					onWishlist = true;
+				}
+			}
+			
+			if (!onWishlist) {
+				model.addAttribute("wishlist", false);
+			}
+		}
 		
 		if (session.getAttribute("seats") != null) {
 			if (!((HashMap<Long,int[][]>)session.getAttribute("seats")).containsKey(id)) {
