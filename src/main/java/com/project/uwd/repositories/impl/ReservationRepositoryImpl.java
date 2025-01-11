@@ -31,7 +31,7 @@ public class ReservationRepositoryImpl implements ReservationRepository{
 	
 	@Override
 	public List<Reservation> getUserReservations(Long id) {
-		String sql = "SELECT * FROM Reservation WHERE UserId = ?;";
+		String sql = "SELECT * FROM Reservation WHERE UserId = ? ORDER BY ReservationDate desc;";
 		List<Reservation> reservations = null;
 		
 		try {
