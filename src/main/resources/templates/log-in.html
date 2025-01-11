@@ -18,10 +18,23 @@
 	<link href="/css/body.css" rel="stylesheet">
 	<link href="/css/log-in.css" rel="stylesheet">
 	<link href="/css/navbar.css" rel="stylesheet">
+	<link href="/css/register.css" rel="stylesheet">
 </head>
 <body>
 <nav th:replace="~{fragments :: navbar}"></nav>
 <div class="form">
+<div class="alert alert-success alert-dismissible fade show w-100 z - 0" id="successAlert" role="alert" th:if="${register} != null and ${register} == 'success'" >
+ 	<span th:text="#{register.success.alert}"></span>
+ 		<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
+   		<span aria-hidden="true">&times;</span>
+		</a>
+</div>
+<div class="alert alert-danger alert-dismissible fade show w-100 z - 0" id="successAlert" role="alert" th:if="${login} != null and ${login} == 'fail'" >
+ 	<span th:text="#{log.in.fail.msg}"></span>
+ 		<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
+   		<span aria-hidden="true">&times;</span>
+		</a>
+</div>
 <div class="logInFormDiv">
 	<h1 id="loginHeader" th:text="#{log.in.head}">Log in</h1>
 	<form method="POST" action="/auth/login" class="logInForm">

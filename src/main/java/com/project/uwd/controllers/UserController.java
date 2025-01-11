@@ -242,7 +242,7 @@ public class UserController {
 		
 		int res = _userService.addUser(user);
 		session.removeAttribute("registerFormData");
-		response.sendRedirect("/user/register?status=success");
+		response.sendRedirect("/auth/login?register=success");
 		return;
 	}
 

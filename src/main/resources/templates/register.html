@@ -25,12 +25,6 @@
 <body>
 	<nav th:replace="~{fragments :: navbar}"></nav>
 	<div class="form">
-	<div class="alert alert-success alert-dismissible fade show w-100" id="successAlert" role="alert" th:if="${status} == 'success'" >
-  	<span th:text="#{register.success.alert}"></span>
-  		<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
-    		<span aria-hidden="true">&times;</span>
- 		</a>
-	</div>
 		<div class="registerFormDiv">
 			<div>	    	
 				<h2 id="registerHeader" th:text="#{register.head}"></h2>

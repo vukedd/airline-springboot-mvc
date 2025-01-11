@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +24,15 @@ public class AuthController {
 	AuthService _authService;
 	
 	@GetMapping("/login")
-	public String getLogIn() {
+	public String getLogIn(@RequestParam(required=false)String register, @RequestParam(required=false)String login, Model model) {
+		if (register != null && register.equals("success")) {
+			model.addAttribute("register", register);
+		}
+		
+		if (login != null && login.equals("fail")) {
+			model.addAttribute("login", login);
+		}
+		
 		return "log-in";
 	}
 	
@@ -33,7 +42,7 @@ public class AuthController {
 		if (user != null) {
 			session.setAttribute("loggedIn", user);
 		} else {
-			return "redirect:/auth/login";
+			return "redirect:/auth/login?login=fail";
 		}
 		
 		if (session.getAttribute("forceAuthenticationFlightBooking") != null && (boolean)session.getAttribute("forceAuthenticationFlightBooking") == true) {
