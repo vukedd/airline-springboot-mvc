@@ -147,9 +147,8 @@ public class AirplaneController {
 				model.addAttribute("numberOfColumns", numberOfColumns);
 			}
 			
-			String currentLocation = "/airplane/edit?id=" + id;
-			model.addAttribute("currentLocation", currentLocation);
-			model.addAttribute("idparam", "1");
+			model.addAttribute("idparam", 1);
+			model.addAttribute("currentElement", "/airplane/edit?id=" + id);
 			
 			return "airplane-edit";
 		}

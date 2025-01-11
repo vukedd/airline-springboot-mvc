@@ -38,13 +38,11 @@ public class FlightServiceImpl implements FlightService{
 
 	@Override
 	public int editFlight(Long id, Flight flight) {
-		// TODO Auto-generated method stub
-		return 0;
+		return _flightRepository.editFlight(id, flight);
 	}
 
 	@Override
 	public int createFlight(Flight flight) {
-		// TODO Auto-generated method stub
 		return _flightRepository.createFlight(flight);
 	}
 

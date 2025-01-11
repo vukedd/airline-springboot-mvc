@@ -95,7 +95,6 @@ public class FlightRepositoryImpl implements FlightRepository {
 			}
 			flight.setAvailableSeats(numberOfAvailableSpotsByFlight(flight.getId()) > 0 ? true : false);
 		}
-		
 		return flight;
 	}
 
@@ -115,8 +114,15 @@ public class FlightRepositoryImpl implements FlightRepository {
 
 	@Override
 	public int editFlight(Long id, Flight flight) {
-		// TODO Auto-generated method stub
-		return 0;
+		String sql = "UPDATE Flight Set DateOfDeparture = ?, Duration = ?, TicketPrice = ? WHERE FlightId = ?;";
+		int res;
+		
+		try {
+			res = _jdbcTemplate.update(sql, LocalDateTime.of(flight.getDateOfDeparture(), flight.getTimeOfDeparture()), flight.getDuration(), flight.getTicketPrice(), id);
+		} catch (Exception e) {
+			res = 0;
+		}
+		return res;
 	}
 
 	@Override

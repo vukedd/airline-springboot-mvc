@@ -111,6 +111,7 @@
 						<input type="hidden" th:value="${session.loggedIn} == null ? 0 : 1" id="logged-in"> 
 						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-danger m-1" data-bs-target="#flightDeletion" data-bs-toggle="modal" role="button" th:text="#{delete.btn}"></a>
 						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-dark m-1" data-bs-target="#flightCancelation" data-bs-toggle="modal" th:text="#{cancel.btn}"></a>
+						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-dark m-1" th:text="#{edit.btn}" th:href="@{/flight/edit?id={flightId}(flightId=${flight.id})}"></a>
 						<button class="btn btn-dark m-1" id="add-to-cart-btn" th:text="#{book.btn}" th:if="${flight.availableSeats}"></button>
 						<button class="btn btn-dark m-1 disabled" id="add-to-cart-btn" th:text="#{book.btn}" th:if="not ${flight.availableSeats}"></button>
 						<button class="btn btn-dark m-1" id="wishlistBtn" th:if="${session.loggedIn} != null and not ${wishlist}"><i class="bi bi-heart"></i></button>
@@ -140,7 +141,6 @@
 				    </div>
 				  </div>
 				</div>
-				<div></div>
 			</div>
 		</div>
 

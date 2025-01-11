@@ -141,9 +141,8 @@ public class AirportController {
 				model.addAttribute("code", code);
 			}
 			
-			String currentLocation = "/airport/edit?id=" + id;
-			model.addAttribute("currentLocation", currentLocation);
-			model.addAttribute("idparam", "1");
+			model.addAttribute("idparam", 1);
+			model.addAttribute("currentElement", "/airport/edit?id=" + id);
 			
 			return "airport-edit";
 		}

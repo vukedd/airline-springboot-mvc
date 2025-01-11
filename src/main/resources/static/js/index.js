@@ -57,3 +57,5 @@ discountFormSubmitBtn.addEventListener("click", (e) => {
 		request.send(formData);
 	}
 });
+
+document.getElementById("departureDateField").min = new Date().toISOString().split("T")[0];

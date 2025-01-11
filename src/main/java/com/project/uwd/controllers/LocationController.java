@@ -276,94 +276,99 @@ public class LocationController {
 	
 	@GetMapping("/edit")
 	public String getEditLocation(@RequestParam(required=false) String city, @RequestParam(required=false) String country ,@RequestParam(name="status", defaultValue="") String status, @RequestParam(name="id") Long id, HttpServletResponse response, HttpSession session, Model model) throws IOException {
-		Location location = _locationService.getLocation(id);
-//		if (location == null) {
-//			response.sendRedirect("/location/");
-//			return;
-//		}
-//		
-//		Location locationSession = null;
-//		boolean invalidTry = false;	
-//		if (session.getAttribute("location") != null) {
-//			locationSession = (Location)session.getAttribute("location");
-//			invalidTry = true;
-//		}
-//		
-//		PrintWriter out = response.getWriter();
-		Continent[] continents = Continent.values();
-//		out.write("<!DOCTYPE html>\r\n"
-//				+ "<html lang=\"en\">\r\n"
-//				+ "<head>\r\n"
-//				+ "    <meta charset=\"UTF-8\">\r\n"
-//				+ "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n"
-//				+ "    <title>Document</title>\r\n"
-//				+ "</head>\r\n"
-//				+ "<body>\r\n"
-//				+ "    <h1>Edit location</h1>\r\n");
-//		
-//		if (status.equals("error")) {
-//			out.write("<p style='color:red'>Error while editing location</p>");
-//		}
-//		
-//		out.write("    <form method='Post' action='/location/edit?id=" + location.getId() + "'>\r\n"
-//				+ "        <label>City:</label><br>\r\n");
-//		if (invalidTry) {
-//			out.write("        <input type=\"text\" name=\"city\" value='" + locationSession.getCity() + "'><br>\r\n");
-//		} else { 
-//			out.write("        <input type=\"text\" name=\"city\" value='" + location.getCity() + "'><br>\r\n");
-//		}
-//		if (city != null && city.equals("failure")) {
-//			out.write("<p style='color:red;font-size:12px;margin:0;pading:0;'>City must contain at least 3 characters</p>");
-//		}
-//		out.write("        <label>Country:</label><br>\r\n");
-//		if (invalidTry) {
-//			out.write("        <input type=\"text\" name=\"country\" value='" + locationSession.getCountry() + "'><br>\r\n");
-//		} else { 
-//			out.write("        <input type=\"text\" name=\"country\" value='" + location.getCountry() + "'><br>\r\n");
-//		}
-//		if (country != null && country.equals("failure")) {
-//			out.write("<p style='color:red;font-size:12px;margin:0;pading:0;'>Country must contain at least 3 characters</p>");
-//		}
-//		out.write("        <label>Continent:</label><br>\r\n"
-//				+ "        <select name=\"continent\">\r\n");
-//		
-//		for (Continent continent : continents) {
-//			if (locationSession != null && locationSession.getContinent().equals(continent)) {
-//				out.write("            <option selected value='" + continent + "'>" + continent.name() + "</option>\r\n");
-//			} else if (continent.equals(location.getContinent())) {
-//				out.write("            <option selected value='" + continent + "'>" + continent + "</option>\r\n");
-//			}
-//			else {
-//				out.write("            <option value='" + continent + "'>" + continent + "</option>\r\n");
-//			}
-//		}
-//		out.write("        </select><br>\r\n"
-//				+ "   	   <button type='submit'>Save changes</button>"
-//				+ "   </form>\r\n"
-//				+ "<a href='/location/details?id=" + location.getId() + "'>Go back</a>"
-//				+ "</body>\r\n"
-//				+ "</html>");
-//		
-		model.addAttribute("location", location);
-		model.addAttribute("continents", continents);
-		
-		if (id != null) {
-			model.addAttribute("locationId", id);
+		User user = (User)session.getAttribute("loggedIn");
+		if (user != null && user.getRole().compareTo(Role.Admin) == 0) {
+			
+			Location location = _locationService.getLocation(id);
+	//		if (location == null) {
+	//			response.sendRedirect("/location/");
+	//			return;
+	//		}
+	//		
+	//		Location locationSession = null;
+	//		boolean invalidTry = false;	
+	//		if (session.getAttribute("location") != null) {
+	//			locationSession = (Location)session.getAttribute("location");
+	//			invalidTry = true;
+	//		}
+	//		
+	//		PrintWriter out = response.getWriter();
+			Continent[] continents = Continent.values();
+	//		out.write("<!DOCTYPE html>\r\n"
+	//				+ "<html lang=\"en\">\r\n"
+	//				+ "<head>\r\n"
+	//				+ "    <meta charset=\"UTF-8\">\r\n"
+	//				+ "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n"
+	//				+ "    <title>Document</title>\r\n"
+	//				+ "</head>\r\n"
+	//				+ "<body>\r\n"
+	//				+ "    <h1>Edit location</h1>\r\n");
+	//		
+	//		if (status.equals("error")) {
+	//			out.write("<p style='color:red'>Error while editing location</p>");
+	//		}
+	//		
+	//		out.write("    <form method='Post' action='/location/edit?id=" + location.getId() + "'>\r\n"
+	//				+ "        <label>City:</label><br>\r\n");
+	//		if (invalidTry) {
+	//			out.write("        <input type=\"text\" name=\"city\" value='" + locationSession.getCity() + "'><br>\r\n");
+	//		} else { 
+	//			out.write("        <input type=\"text\" name=\"city\" value='" + location.getCity() + "'><br>\r\n");
+	//		}
+	//		if (city != null && city.equals("failure")) {
+	//			out.write("<p style='color:red;font-size:12px;margin:0;pading:0;'>City must contain at least 3 characters</p>");
+	//		}
+	//		out.write("        <label>Country:</label><br>\r\n");
+	//		if (invalidTry) {
+	//			out.write("        <input type=\"text\" name=\"country\" value='" + locationSession.getCountry() + "'><br>\r\n");
+	//		} else { 
+	//			out.write("        <input type=\"text\" name=\"country\" value='" + location.getCountry() + "'><br>\r\n");
+	//		}
+	//		if (country != null && country.equals("failure")) {
+	//			out.write("<p style='color:red;font-size:12px;margin:0;pading:0;'>Country must contain at least 3 characters</p>");
+	//		}
+	//		out.write("        <label>Continent:</label><br>\r\n"
+	//				+ "        <select name=\"continent\">\r\n");
+	//		
+	//		for (Continent continent : continents) {
+	//			if (locationSession != null && locationSession.getContinent().equals(continent)) {
+	//				out.write("            <option selected value='" + continent + "'>" + continent.name() + "</option>\r\n");
+	//			} else if (continent.equals(location.getContinent())) {
+	//				out.write("            <option selected value='" + continent + "'>" + continent + "</option>\r\n");
+	//			}
+	//			else {
+	//				out.write("            <option value='" + continent + "'>" + continent + "</option>\r\n");
+	//			}
+	//		}
+	//		out.write("        </select><br>\r\n"
+	//				+ "   	   <button type='submit'>Save changes</button>"
+	//				+ "   </form>\r\n"
+	//				+ "<a href='/location/details?id=" + location.getId() + "'>Go back</a>"
+	//				+ "</body>\r\n"
+	//				+ "</html>");
+	//		
+			model.addAttribute("location", location);
+			model.addAttribute("continents", continents);
+			
+			if (id != null) {
+				model.addAttribute("locationId", id);
+			}
+			
+			if (city != null) {
+				model.addAttribute("city", "failure");
+			}
+			
+			if (country != null) {
+				model.addAttribute("country", "failure");
+			}
+			
+			model.addAttribute("idparam", 1);
+			model.addAttribute("currentElement", "/location/edit?id=" + id);
+			
+			return "location-edit";
 		}
 		
-		if (city != null) {
-			model.addAttribute("city", "failure");
-		}
-		
-		if (country != null) {
-			model.addAttribute("country", "failure");
-		}
-		
-		String currentLocation = "/location/edit?id=" + id;
-		model.addAttribute("currentLocation", currentLocation);
-		model.addAttribute("idparam", "1");
-		
-		return "location-edit";
+		return "redirect:/";
 	}
 	
 	@PostMapping("/edit")

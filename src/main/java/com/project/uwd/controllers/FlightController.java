@@ -64,12 +64,9 @@ public class FlightController {
 		}
 		
 		if (actionStatus != null) {
-			if (actionStatus.equals("deleteError")) {
-				model.addAttribute("actionStatus", actionStatus);
-			} else if (actionStatus.equals("addToCartError")) {
-				model.addAttribute("actionStatus", actionStatus);
-			}
+			model.addAttribute("actionStatus", actionStatus);
 		}
+		
 		model.addAttribute("idparam", 1);
 		model.addAttribute("currentElement", "/flight/details?id=" + id);
 		Flight flight = _flightService.getFlightById(id);
@@ -132,8 +129,6 @@ public class FlightController {
 				model.addAttribute("flight", new Flight());
 			else
 				model.addAttribute("flight", session.getAttribute("flight"));
-			
-			
 			
 			return "flight-add";
 		}
@@ -335,6 +330,67 @@ public class FlightController {
 		return "redirect:/";
 	}
 
+	@GetMapping("/edit")
+	public String editFlight(@RequestParam Long id, @RequestParam(required=false) String departureDate, @RequestParam(required=false) String flightDuration, @RequestParam(required=false) String ticketPrice, Model model, HttpSession session) {
+		User user = (User) session.getAttribute("loggedIn");
+		if (user != null && user.getRole().compareTo(Role.Admin) == 0) {
+			
+			if (departureDate != null) {
+				model.addAttribute("departureDate", departureDate);
+			}
+			
+			if (flightDuration != null) {
+				model.addAttribute("flightDuration", flightDuration);
+			}
+			
+			if (ticketPrice != null) {
+				model.addAttribute("ticketPrice", ticketPrice);
+			}
+			
+			Flight flightForEdit = _flightService.getFlightById(id);
+			if (flightForEdit == null) {
+				return "redirect:/flight/";
+			} else {
+				model.addAttribute("flight", flightForEdit);
+			}
+			model.addAttribute("airports", _airportService.getAllAiports());
+			model.addAttribute("airplanes", _airplaneService.getAllAirplanes());
+			model.addAttribute("idparam", 1);
+			model.addAttribute("currentElement", "/flight/edit?id=" + id);
+			
+			return "flight-edit";
+		}
+		
+		return "redirect:/";
+	}
+	
+	@PostMapping("/edit")
+	public String postEditFlight(@ModelAttribute Flight flight, HttpSession session) {
+		StringBuilder queryParameters = new StringBuilder();
+		
+		if (flight.getDateOfDeparture().isBefore(LocalDate.now()) || flight.getDateOfDeparture() == LocalDate.now()) {
+			queryParameters.append("&departureDate=failure");
+		}
+		
+		if (flight.getDuration() <= 0) {
+			queryParameters.append("&flightDuration=failure");
+		}
+		
+		if (flight.getTicketPrice() <= 0) {
+			queryParameters.append("&ticketPrice=failure");
+		}
+		
+		if (queryParameters.length() > 0) {
+			return "redirect:/flight/edit?id=" + flight.getId() + queryParameters.toString();
+		}
+		
+		int res = _flightService.editFlight(flight.getId(), flight);
+		if (res == 0) {
+			return "redirect:/flight/?actionStatus=flightEditError";
+		}
+		
+		return "redirect:/flight/?actionStatus=flightEdited";
+	}
 //	@PostMapping("/discount")
 //	public String discountFlight(@RequestParam Long flightId, @RequestParam int discountPercentage, @RequestParam LocalDate endDate) {
 //		
