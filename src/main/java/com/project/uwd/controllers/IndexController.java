@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.project.uwd.models.Flight;
 import com.project.uwd.services.FlightService;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/")
 public class IndexController {
@@ -29,7 +31,12 @@ public class IndexController {
 	}
 	
 	@PostMapping("search")
-	public String searchFlights(@RequestParam(required=false) String departure, @RequestParam(required=false) String destination, @RequestParam(required=false) LocalDate dateOfDeparture, @RequestParam(required=false, defaultValue="0") int numberOfSeats, @RequestParam(required=false) boolean similarFlights, Model model) {
+	public String searchFlights(@RequestParam(required=false) String departure, @RequestParam(required=false) String destination, @RequestParam(required=false) LocalDate dateOfDeparture, @RequestParam(required=false, defaultValue="0") int numberOfSeats, @RequestParam(required=false) boolean similarFlights, Model model, HttpSession session) {
+		if (session.getAttribute("loggedIn") == null) {
+			session.setAttribute("searchForceRedirect", true);
+			return "redirect:/auth/login";
+		}
+		
 		List<Flight> flights = _flightService.searchFlight(departure, destination, dateOfDeparture, numberOfSeats, similarFlights);
 		if (flights.size() > 0) {
 			model.addAttribute("flights", flights);

@@ -255,6 +255,7 @@ public class FlightController {
 		
 		session.setAttribute("forceAuthenticationFlightBooking", true);
 		session.setAttribute("flightId", flightId);
+		session.setAttribute("selectedSeats", selectedSeats);
 		
 		return "redirect:/auth/login";
 //		boolean numberOfTicketsValidation = true;

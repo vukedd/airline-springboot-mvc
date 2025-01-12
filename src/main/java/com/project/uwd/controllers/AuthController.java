@@ -45,6 +45,10 @@ public class AuthController {
 			return "redirect:/auth/login?login=fail";
 		}
 		
+		if (session.getAttribute("searchForceRedirect") != null && (boolean)session.getAttribute("searchForceRedirect") == true) {
+			return "redirect:/";
+		}
+		
 		if (session.getAttribute("forceAuthenticationFlightBooking") != null && (boolean)session.getAttribute("forceAuthenticationFlightBooking") == true) {
 			return "redirect:/flight/details?id=" + session.getAttribute("flightId");
 		}
