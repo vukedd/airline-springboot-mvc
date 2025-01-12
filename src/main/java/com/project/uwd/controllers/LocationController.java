@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.Base64Utils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.uwd.helpers.CSVResourceProvider;
 import com.project.uwd.models.Location;
@@ -154,7 +156,11 @@ public class LocationController {
 	}
 	
 	@GetMapping("/add")
-	public String getAddLocation(@RequestParam(required=false) String city, @RequestParam(required=false) String country, HttpSession session, Model model) {
+	public String getAddLocation(@RequestParam(required=false) String city, @RequestParam(required=false) String country, @RequestParam(required=false) String image, HttpSession session, Model model) {
+		User user = (User) session.getAttribute("loggedIn");
+		if (user == null || user.getRole().compareTo(Role.Admin) != 0) {
+			return "redirect:/";
+		}
 		Continent[] continents = Continent.values();
 		model.addAttribute("continents", continents);
 		
@@ -172,6 +178,9 @@ public class LocationController {
 			model.addAttribute("country", "failure");
 		}
 		
+		if (image != null) {
+			model.addAttribute("image", "failure");
+		}
 //		String retval = "<!DOCTYPE html>\r\n"
 //				+ "<html lang=\"en\">\r\n"
 //				+ "<head>\r\n"
@@ -229,7 +238,7 @@ public class LocationController {
 	}
 	
 	@PostMapping("/add")
-	public void postAddLocation(@ModelAttribute Location location, @RequestParam(required=false) String city, @RequestParam(required=false) String country ,HttpServletResponse response,BindingResult result, HttpSession session) throws IOException {
+	public void postAddLocation(@ModelAttribute Location location, @RequestParam(required=false) String city, @RequestParam(required=false) String country, @RequestParam(required=false) MultipartFile locationImage ,HttpServletResponse response,BindingResult result, HttpSession session) throws IOException {		
 		StringBuilder queryParameter = new StringBuilder();
 
 		if (location.getCity().length() < 3) {
@@ -256,13 +265,21 @@ public class LocationController {
 			}
 		}
 		
+		if (locationImage.isEmpty()) {
+			if (queryParameter.length() > 0) {
+				queryParameter.append("&image=failure");
+			} else {
+				queryParameter.append("?image=failure");
+			}
+		}
+		
 		if (queryParameter.length() > 0) {
 			response.sendRedirect("/location/add" + queryParameter.toString());
 			session.setAttribute("location", location);
 			return;
 		}
 		
-		int res =_locationService.addLocation(location);
+		int res =_locationService.addLocation(location, locationImage);
 		if (res == 1) {
 			session.removeAttribute("location");		
 			response.sendRedirect("/location/?actionStatus=locationAdded");

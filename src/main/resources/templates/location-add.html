@@ -25,12 +25,12 @@
 	<nav th:replace="~{fragments :: navbar}"></nav>
 	<div class="form">
     <h1 th:text="#{location.add.head}"></h1>
-	    <form method='Post' th:action="@{/location/add}" th:object="${location}">
+	    <form method='Post' th:action="@{/location/add}" th:object="${location}" enctype="multipart/form-data">
 			<div class="form-group">
 				<label for="city" th:text="#{location.city.lbl}"></label> <input type="text" name="city"
 					class="form-control" id="city" th:placeholder="#{location.city.placeholder}" th:value="*{city}">
 				<p th:if="${city} != null"
-					style='color: red; font-size: 12px; margin: 0; padding: 0;' th:text="#{location.add.validation}"></p>
+					style='color: red; font-size: 12px; margin: 0; padding: 0;' th:text="#{location.city.validation}"></p>
 			</div>
 			<div class="form-group">
 				<label for="country" th:text="#{location.country.lbl}"></label> <input type="text" name="country"
@@ -43,6 +43,13 @@
 					<option th:each="continentIt : ${continents}" th:text="${continentIt}">
 				</select><br>
 			</div>
+			<div class="form-group">
+				<label th:text="#{location.image.lbl}"></label><br>
+			    <input type="file" id="locationImage" accept="image/*" name="locationImage">
+			    <p th:if="${image} != null"
+					style='color: red; font-size: 12px; margin: 0; padding: 0;' th:text="#{location.image.validation}"></p>
+			</div>
+			<br>
 			<button type="submit" class="btn btn-primary" th:text="#{location.submit.btn}"></button>
 		</form>
     </div>

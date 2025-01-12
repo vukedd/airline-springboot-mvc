@@ -27,7 +27,8 @@
 		<div class="locationDetails" th:if="${location} != null">
 			<div class="locationDataDiv">
 				<div class="imageDiv">
-					<img src="/images/placeholder.jpeg" id="locationImage">
+					<img th:if="${location.decodedImage} == null" src="/images/placeholder.jpeg" alt="Location Image" id="locationImage">
+					<img th:unless="${location.decodedImage} == null" th:src="${location.decodedImage}" id="locationImage" alt="Location Image">
 				</div>
 				<div class="headerDiv">
 					<h3 th:text="${location.city}"></h3>

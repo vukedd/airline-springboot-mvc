@@ -1,11 +1,14 @@
 package com.project.uwd.repositories.impl;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Base64Utils;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.uwd.models.Location;
 import com.project.uwd.repositories.LocationRepository;
@@ -29,6 +32,9 @@ public class LocationRepositoryImpl implements LocationRepository {
 	public List<Location> getLocations() {
 		String sql = "SELECT * FROM Location;";
 		List<Location> locations = jdbcTemplate.query(sql, rowMapper);
+		for (Location location : locations) {
+			location.setDecodedImage(location.getImage() != null ? "data:image/jpeg;base64," + Base64Utils.encodeToString(location.getImage()) : null);
+		}
 		return locations;
 	}
 
@@ -43,6 +49,9 @@ public class LocationRepositoryImpl implements LocationRepository {
 			location = null;
 		}
 
+		if (location != null) {
+			location.setDecodedImage(location.getImage() != null ? "data:image/jpeg;base64," + Base64Utils.encodeToString(location.getImage()) : null);
+		}
 		
 		return location;
 	}
@@ -61,15 +70,20 @@ public class LocationRepositoryImpl implements LocationRepository {
 	}
 
 	@Override
-	public int addLocation(Location location) {
-		String sql = "INSERT INTO Location(Country, City, Continent) VALUES (?, ?, ?);";
+	public int addLocation(Location location, MultipartFile locationImage) {
+		String sql = "INSERT INTO Location(Country, City, Continent, LocationImage) VALUES (?, ?, ?, ?);";
 		int res;
 		try {
-			res = jdbcTemplate.update(sql, location.getCountry(), location.getCity(), location.getContinent().ordinal());
-		} catch (EmptyResultDataAccessException e) {
-			System.out.println("Error;");
+			byte[] image = locationImage.isEmpty() ? null : locationImage.getBytes();
+			if (image != null)
+				res = jdbcTemplate.update(sql, location.getCountry(), location.getCity(), location.getContinent().ordinal(), image);
+			else
+				res = 0;
+		} catch (EmptyResultDataAccessException | IOException e) {
+			System.out.println("An error ocurred while adding the location!");
 			res = 0;
 		}
+		
 		return res;
 	}
 

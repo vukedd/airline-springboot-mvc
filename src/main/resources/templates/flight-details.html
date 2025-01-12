@@ -92,7 +92,8 @@
 			<div class="flightDataDiv">
 				<div class="d-flex flex-row flex-wrap">
 				<div class="imageDiv">
-					<img src="/images/flight-pic.jpg" id="flightImage">
+					<img src="/images/flight-pic.jpg" id="flightImage" th:if="${flight.destination.location.decodedImage} == null">
+					<img th:src="${flight.destination.location.decodedImage}" id="flightImage" th:unless="${flight.destination.location.decodedImage} == null">
 				</div>
 				<div class="headerDiv">
 					<h1 th:text="${flight.departure.code} + '-' + ${flight.destination.code}"></h1>

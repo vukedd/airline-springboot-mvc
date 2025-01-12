@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.uwd.models.Location;
 import com.project.uwd.repositories.LocationRepository;
@@ -33,8 +34,8 @@ public class LocationServiceImpl implements LocationService {
 	}
 
 	@Override
-	public int addLocation(Location location) {
-		return _locationRepository.addLocation(location);
+	public int addLocation(Location location, MultipartFile locationImage) {
+		return _locationRepository.addLocation(location, locationImage);
 	}
 
 	@Override

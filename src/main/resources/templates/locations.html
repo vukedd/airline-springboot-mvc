@@ -62,7 +62,8 @@
 	<h1 th:text="#{locations.head}"></h1>
 	<div class="content-body">
 		<div class="card m-3" style="width: 18rem;" th:each="location : ${locations}">
-			  	<img src="/images/placeholder.jpeg" class="card-img-top" alt="">
+			  	<img th:if="${location.decodedImage} == null" src="/images/placeholder.jpeg" class="card-img-top" alt="Location image">
+			  	<img th:unless="${location.decodedImage} == null" th:src="${location.decodedImage}" alt="Location Image" class="card-img-top">
 			<div class="card-body">
 			    <h5 class="card-title" th:text="${location.city}"></h5>
 			    <a th:href="@{/location/details?id={id}(id=${location.id})}" class="btn btn-primary" th:text="#{show-more.msg}"></a>

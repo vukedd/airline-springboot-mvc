@@ -7,6 +7,8 @@ public class Location {
 	private String city;
 	private String country;
 	private Continent continent;
+	private byte[] image;
+	private String decodedImage;
 	
 	public Location(Long id, String city, String country, Continent continent) {
 		super();
@@ -51,5 +53,20 @@ public class Location {
 	public void setContinent(Continent continent) {
 		this.continent = continent;
 	}
-	
+
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
+
+	public String getDecodedImage() {
+		return decodedImage;
+	}
+
+	public void setDecodedImage(String decodedImage) {
+		this.decodedImage = decodedImage;
+	}
 }

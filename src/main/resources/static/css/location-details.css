@@ -27,3 +27,10 @@
 		height: 220px;
 	}
 }
+
+@media (min-width: 1080px) {
+	#locationImage {
+		width: 600px;
+		height: 400px;
+	}
+}

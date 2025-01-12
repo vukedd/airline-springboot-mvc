@@ -46,7 +46,8 @@
 	<h1 th:text="#{flights.head}"></h1>
 		<div class="content-body" th:if="${flights} != null">
 		<div class="card m-3" style="width: 20rem;" th:each="flight, iter : ${flights}">
-			  	<img src="/images/flight-pic.jpg" class="card-img-top" alt="">
+			  	<img th:if="${flight.destination.location.decodedImage} == null" src="/images/flight-pic.jpg" class="card-img-top" alt="" style="height:200px;">
+			  	<img th:unless="${flight.destination.location.decodedImage} == null" th:src="${flight.destination.location.decodedImage}" class="card-img-top" alt="" style="height:200px;">
 			<div class="card-body">
 			    <h5 class="card-title" th:text="${flight.departure.code} + '-' + ${flight.destination.code}"></h5>
 			    <p th:text="${flight.dateOfDeparture} + ' | ' + ${flight.timeOfDeparture}"></p>

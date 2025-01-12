@@ -17,6 +17,7 @@ public class LocationRowMapper implements RowMapper<Location>{
 		location.setCountry(rs.getString(2));
 		location.setCity(rs.getString(3));
 		location.setContinent(Continent.values()[rs.getInt(4)]);
+		location.setImage(rs.getBytes(5));
 		
 		return location;
 	}

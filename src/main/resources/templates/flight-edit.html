@@ -40,12 +40,12 @@
 		  <p th:if="${departureTime} != null" style='color: red; font-size: 12px; margin: 0; padding: 0;' th:text="#{departure.time.validation.lbl}"></p>
 		  <div class="form-group">
 		    <label for="duration" th:text="#{flight.duration.lbl}"></label><br>
-		    <input type="number" class="form-control" id="durationInpt" aria-describedby="duration" th:placeholder="#{flight.duration.placeholder}" name="duration" th:value="${flight.duration} != null ? ${flight.duration} : 0">
+		    <input type="number" class="form-control" id="durationInpt" aria-describedby="duration" th:placeholder="#{flight.duration.placeholder}" name="duration" th:value="${flight.duration} != null ? ${flight.duration} : 0" required>
 		  </div>
 		  <p th:if="${flightDuration} != null" style='color: red; font-size: 12px; margin: 0; padding: 0;' th:text="#{flight.duration.validation.lbl}" ></p>
 		  <div class="form-group">
 		    <label for="ticketPrice" th:text="#{flight.ticketPrice.lbl} + ' RSD'"></label><br>
-		    <input type="number" class="form-control" id="priceInpt" aria-describedby="ticketPrice" th:placeholder="#{flight.ticketPrice.placeholder}" name="ticketPrice" th:value="${flight.ticketPrice} != null ? ${flight.ticketPrice} : 0">
+		    <input type="number" class="form-control" id="priceInpt" aria-describedby="ticketPrice" th:placeholder="#{flight.ticketPrice.placeholder}" name="ticketPrice" th:value="${flight.ticketPrice} != null ? ${flight.ticketPrice} : 0" required>
 		  </div>
 		  <p th:if="${ticketPrice} != null" style='color: red; font-size: 12px; margin: 0; padding: 0;' th:text="#{ticket.price.validation.lbl}"></p>
 		  <br>
