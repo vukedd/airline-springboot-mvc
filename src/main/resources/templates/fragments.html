@@ -63,7 +63,7 @@
 				<div class="btn-group mb-1 mt-1" th:unless="${session.loggedIn} == null" id="authBtnNavbar">
 					  <a type="button" class="nav-link dropdown-toggle text-light mt-2 mb-1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${session.loggedIn.username}" style="margin-right: 30px;margin-top: 5px"></a>
 					  <div class="dropdown-menu dropleft">
-					    	<a class="dropdown-item" th:href="@{/user/profile?id={userId}(userId=${session.loggedIn.id})}" th:text="#{profile.msg}"></a>
+					    	<a class="dropdown-item" th:href="@{/user/profile}" th:text="#{profile.msg}"></a>
 					    	<div class="dropdown-divider"></div>
 					    	<a class="dropdown-item" href="/auth/logout" th:text="#{log.out}"></a>
 					  </div>

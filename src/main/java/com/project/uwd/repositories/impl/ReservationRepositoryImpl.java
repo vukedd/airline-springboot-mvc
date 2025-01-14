@@ -1,12 +1,20 @@
 package com.project.uwd.repositories.impl;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.project.uwd.models.Reservation;
+import com.project.uwd.models.Ticket;
 import com.project.uwd.repositories.ReservationRepository;
 import com.project.uwd.repositories.TicketRepository;
 import com.project.uwd.repositories.mappers.ReservationRowMapper;
@@ -48,5 +56,53 @@ public class ReservationRepositoryImpl implements ReservationRepository{
 		
 		return reservations;
 	}
+
+	@Override
+	@Transactional(rollbackFor=Exception.class)
+	public boolean createReservation(List<Ticket> reservationTickets, int points, double totalPrice, Long userId) {
+		int bonusLoyaltyCardPoints = (int) (totalPrice / 30000);
+		
+		int rowsAffected1 = 0;
+		int rowsAffected2 = 0;
+		int rowsAffected3 = 0;
+		int rowsAffected4 = 0;
+		
+		String sql1 = "INSERT INTO Reservation(ReservationDate, TotalPrice, UserId) VALUES (current_date(), ?, ?);";
+		String sql2 = "INSERT INTO Ticket(SeatRow, SeatColumn, PassportNumber, FirstName, LastName, FlightId, ReservationId) VALUES(?, ?, ?, ?, ?, ?, ?);";
+		String sql3 = "UPDATE LoyaltyCard, User\r\n"
+				+ "SET LoyaltyCard.points = LoyaltyCard.points - ?\r\n"
+				+ "WHERE LoyaltyCard.LoyaltyCardId = User.LoyaltyCardId and User.userId = ?;";
+		String sql4 = "UPDATE LoyaltyCard, User\r\n"
+				+ "SET LoyaltyCard.points = LoyaltyCard.points + ?\r\n"
+				+ "WHERE LoyaltyCard.LoyaltyCardId = User.LoyaltyCardId and User.userId = ?;";
+		
+		GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+        rowsAffected1 = _jdbcTemplate.update(new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                PreparedStatement ps = con.prepareStatement(sql1, Statement.RETURN_GENERATED_KEYS);
+                ps.setDouble(1, totalPrice);
+                ps.setLong(2, userId);
+                return ps;
+            }
+        }, keyHolder);
+        
+        Long reservationId = keyHolder.getKey().longValue();
+		
+        for (Ticket t : reservationTickets) {
+        	rowsAffected2 = _jdbcTemplate.update(sql2, t.getRowNumber(), t.getColumnNumber(), t.getPassportNumber(), t.getFirstName(), t.getLastName(), t.getFlightId(), reservationId);
+        }
+        
+        rowsAffected3 = _jdbcTemplate.update(sql3, points, userId);
+        rowsAffected4 = _jdbcTemplate.update(sql4, bonusLoyaltyCardPoints, userId);
+        
+        if (rowsAffected1 != 0 && rowsAffected2 != 0 && rowsAffected3 != 0 && rowsAffected4 != 0) {
+        	return true;
+        }
+        
+		return false;
+	}
+	
+	
 	
 }

@@ -90,4 +90,11 @@ public class Ticket {
 	public void setFlightId(Long flightId) {
 		this.flightId = flightId;
 	}
+
+	@Override
+	public String toString() {
+		return "Ticket [id=" + id + ", columnNumber=" + columnNumber + ", rowNumber=" + rowNumber + ", passportNumber="
+				+ passportNumber + ", firstName=" + firstName + ", lastName=" + lastName + ", flight=" + flight
+				+ ", flightId=" + flightId + "]";
+	}
 }

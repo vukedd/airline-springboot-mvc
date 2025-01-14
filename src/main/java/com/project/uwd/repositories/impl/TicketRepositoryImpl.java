@@ -64,4 +64,19 @@ public class TicketRepositoryImpl implements TicketRepository{
 		
 		return tickets;
 	}
+
+	@Override
+	public boolean isSeatAlreadyTaken(Ticket t) {
+		String sql = "SELECT Count(*) FROM Ticket WHERE FlightId = ? and SeatRow = ? and SeatColumn = ?;";
+		int count = 0;
+		try {
+			count = _jdbcTemplate.queryForObject(sql, new Object[] {t.getFlightId(), t.getRowNumber(), t.getColumnNumber()}, Integer.class);
+		} catch (Exception e) {
+			return false;
+		}
+		if (count < 1) 
+			return true;
+		
+		return false;
+	}
 }

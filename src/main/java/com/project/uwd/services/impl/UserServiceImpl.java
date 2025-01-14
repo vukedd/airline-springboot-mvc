@@ -8,12 +8,16 @@ import org.springframework.stereotype.Service;
 import com.project.uwd.models.User;
 import com.project.uwd.repositories.UserRepository;
 import com.project.uwd.services.UserService;
+import com.project.uwd.services.WishlistService;
 
 @Service
 public class UserServiceImpl implements UserService{
 
 	@Autowired
 	UserRepository _userRepository;
+	
+	@Autowired
+	WishlistService _wishlistService;
 	
 	@Override
 	public int addUser(User user) {
@@ -32,7 +36,11 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public User getUserById(Long id) {
-		return _userRepository.getUserById(id);
+		User user = _userRepository.getUserById(id);
+		if (user != null) {
+			user.setWishlist(_wishlistService.getWishlistByUserId(user.getId()));
+		}
+		return user;
 	}
 
 	@Override

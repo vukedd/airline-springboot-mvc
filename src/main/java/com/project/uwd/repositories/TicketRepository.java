@@ -13,4 +13,5 @@ public interface TicketRepository {
 	
 	public List<Ticket> getTicketsByReservationId(Long reservationId);
 	public List<Ticket> getTicketsByFlightId(Long flightId);
+	public boolean isSeatAlreadyTaken(Ticket t);
 }

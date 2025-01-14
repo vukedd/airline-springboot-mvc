@@ -1,15 +1,17 @@
 #hideAlertButton {
-	text-decoration:none;
+	text-decoration: none;
 	font-size: 15px;
 }
 
 #successAlert {
+	margin-top: 80px;
 	display: flex;
 	justify-content: space-between;
+	position: absolute;
+	z-index: 0;
 }
 
 #errorAlert {
 	display: flex;
 	justify-content: space-between;
 }
-

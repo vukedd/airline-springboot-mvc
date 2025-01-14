@@ -10,8 +10,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.project.uwd.helpers.CSVResourceProvider;
+import com.project.uwd.models.LoyaltyCard;
 import com.project.uwd.models.User;
 import com.project.uwd.models.enums.Role;
+import com.project.uwd.repositories.LoyaltyCardRepository;
 import com.project.uwd.repositories.UserRepository;
 import com.project.uwd.repositories.mappers.UserRowMapper;
 
@@ -22,6 +24,9 @@ public class UserRepositoryImpl implements UserRepository{
 	
 	@Autowired
 	JdbcTemplate jdbcTemplate;
+	
+	@Autowired
+	private LoyaltyCardRepository _loyaltyCardRepository;
 	
 	private UserRowMapper rowMapper;
 	
@@ -70,6 +75,12 @@ public class UserRepositoryImpl implements UserRepository{
 			user = jdbcTemplate.queryForObject(sql, rowMapper, id);
 		} catch (Exception e) {
 			System.out.println("Error");
+		}
+		
+		LoyaltyCard card = _loyaltyCardRepository.getLoyaltyCardById(user.getLoyaltyCardId());
+		
+		if (user != null && card != null) {
+			user.setLoyaltyCard(card);
 		}
 		
 		return user;

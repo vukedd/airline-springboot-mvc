@@ -43,3 +43,7 @@
 	display: flex;
 	justify-content: end;
 }
+
+#navbar {
+	z-index: 10;
+}

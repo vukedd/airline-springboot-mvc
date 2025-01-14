@@ -24,9 +24,6 @@ public class AuthServiceImpl implements AuthService{
 		User user = _authRepository.authenticateUser(username, password);
 		if (user != null) {
 			user.setWishlist(_wishlistService.getWishlistByUserId(user.getId()));
-			for (Flight f : user.getWishlist().getItems()) {
-				System.out.println(f.isAvailableSeats());
-			}
 		}
 		
 		return user;

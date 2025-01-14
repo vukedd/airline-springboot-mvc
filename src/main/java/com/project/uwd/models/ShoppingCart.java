@@ -8,11 +8,13 @@ import java.util.Map;
 public class ShoppingCart {
 	private List<Ticket> items;
 	private double totalPrice;
+	private int pointsUsed;
 	
 	public ShoppingCart() {
 		super();
 		items = new ArrayList<Ticket>();
 		totalPrice = 0.0;
+		pointsUsed = 0;
 	}
 
 	public ShoppingCart(ArrayList<Ticket> items) {
@@ -81,5 +83,18 @@ public class ShoppingCart {
 		}
 		
 		return ticket;
+	}
+
+	public int getPointsUsed() {
+		return pointsUsed;
+	}
+
+	public void setPointsUsed(int pointsUsed) {
+		this.pointsUsed = pointsUsed;
+	}
+
+	@Override
+	public String toString() {
+		return "ShoppingCart [items=" + items + ", totalPrice=" + totalPrice + ", pointsUsed=" + pointsUsed + "]";
 	}
 }
