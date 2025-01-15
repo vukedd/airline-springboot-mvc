@@ -1,6 +1,7 @@
 package com.project.uwd.services;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -15,4 +16,5 @@ public interface UserService {
 	User getUserById(Long id);
 	boolean editUserData(Long id, String username, String firstName, String lastName, LocalDate dateOfBirth,String email);
 	boolean editUserPassword(Long id, String newPassword);
+	List<User> getAllUsers();
 }

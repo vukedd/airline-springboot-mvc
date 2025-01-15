@@ -1,6 +1,7 @@
 package com.project.uwd.repositories;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
@@ -15,4 +16,5 @@ public interface UserRepository {
 	public User getUserById(Long id);
 	public boolean editUserData(Long id, String username, String firstName, String lastName, LocalDate dateOfBirth, String email);
 	public boolean editUserPassword(Long id, String newPassword);
+	public List<User> getAllUsers();
 }

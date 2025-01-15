@@ -1,6 +1,7 @@
 package com.project.uwd.services.impl;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,5 +58,9 @@ public class UserServiceImpl implements UserService{
 	public boolean editUserPassword(Long id, String newPassword) {
 		return _userRepository.editUserPassword(id, newPassword);
 	}
-	
+
+	@Override
+	public List<User> getAllUsers() {
+		return _userRepository.getAllUsers();
+	}	
 }

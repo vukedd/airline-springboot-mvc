@@ -24,6 +24,9 @@ public class UserRowMapper implements RowMapper<User>{
 		user.setDateOfRegistration(rs.getDate(8).toLocalDate());
 		user.setRole(Role.values()[rs.getInt(9)]);
 		user.setLoyaltyCardId(rs.getLong(10));
+		boolean isBlocked = rs.getInt(11) == 0 ? false : true; 
+		user.setBlocked(isBlocked);
+		
 		return user;
 	}
 

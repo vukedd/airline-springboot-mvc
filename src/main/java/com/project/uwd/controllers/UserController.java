@@ -46,13 +46,9 @@ public class UserController {
 	ReservationService _reservationService;
 	
 	@GetMapping("/")
-	@ResponseBody
-	public String getUsers() throws URISyntaxException, IOException {
-		List<User> users = CSVResourceProvider.getInstance().getAllUsers();
-		for (User u : users) {
-			System.out.println(u);
-		}
-		return "Hello";
+	public String getUsers(Model model) {
+		model.addAttribute("users", _userService.getAllUsers());
+		return "user-list";
 	}
 
 	@GetMapping("/register")

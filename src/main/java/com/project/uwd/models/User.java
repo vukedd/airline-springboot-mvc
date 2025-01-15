@@ -25,7 +25,7 @@ public class User {
 	private Wishlist wishlist;
 	
 	public User(String username, String password, String email, String firstName, String lastName,
-			LocalDate dateOfBirth, LocalDate dateOfRegistration,Role role) {
+			LocalDate dateOfBirth, LocalDate dateOfRegistration, Role role) {
 		super();
 		this.username = username;
 		this.password = password;

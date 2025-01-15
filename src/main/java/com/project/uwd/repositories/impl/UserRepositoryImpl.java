@@ -3,6 +3,8 @@ package com.project.uwd.repositories.impl;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -130,5 +132,17 @@ public class UserRepositoryImpl implements UserRepository{
 		}
 		
 		return successfullyChanged;
+	}
+
+	@Override
+	public List<User> getAllUsers() {
+		String sql = "SELECT * FROM User;";
+		List<User> users = new ArrayList<User>();
+		try {
+			users = jdbcTemplate.query(sql, rowMapper);
+		} catch (Exception e) {
+			System.out.println("An error occurred while fetching users!");
+		}
+		return users;
 	}
 }
