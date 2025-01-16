@@ -17,4 +17,6 @@ public interface UserRepository {
 	public boolean editUserData(Long id, String username, String firstName, String lastName, LocalDate dateOfBirth, String email);
 	public boolean editUserPassword(Long id, String newPassword);
 	public List<User> getAllUsers();
+	public boolean blockUserById(Long id);
+	public boolean unblockUserById(Long id);
 }

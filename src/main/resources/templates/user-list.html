@@ -21,9 +21,65 @@
 <link href="/css/airports.css" rel="stylesheet">
 <link href="/css/user-list.css" rel="stylesheet">
 </head>
+<div class="modal fade" id="unblock" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header justify-content-between">
+        <h5 class="modal-title" id="exampleModalLongTitle" th:text="#{user.unblock.head}"></h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-bs-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="POST" action="/user/unblock">
+      	<div class="modal-body">
+        	<input type="hidden" id="selectedUserUnblockId" name="selectedUserUnblockId">
+        	<p th:text="#{user.unblock.message}" id="unblock-message"></p>
+      	</div>
+      	<div class="modal-footer">
+        	<button type="button" class="btn btn-danger" data-bs-dismiss="modal" th:text="#{cancel.btn}"></button>
+        	<button class="btn btn-dark" id="unblockUser" th:text="#{confirm.btn}" type="submit"></button>
+      	</div>
+     </form>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="block" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header justify-content-between">
+        <h5 class="modal-title" id="exampleModalLongTitle" th:text="#{user.block.head}"></h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-bs-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="POST" action="/user/block">
+      	<div class="modal-body">
+      		<input type="hidden" id="selectedUserBlockId" name="selectedUserBlockId">
+       		<p th:text="#{user.block.message}" id="block-message"></p>
+      	</div>
+      	<div class="modal-footer">
+        	<button type="button" class="btn btn-danger" data-bs-dismiss="modal" th:text="#{cancel.btn}"></button>
+        	<button class="btn btn-dark" id="blockUser" th:text="#{confirm.btn}" type="submit"></button>
+      	</div>
+     </form>
+    </div>
+  </div>
+</div>
 <body>
 	<nav th:replace="~{fragments :: navbar}"></nav>
 	<div class="form d-flex justify-content-center flex-column">
+		<div class="alert alert-success alert-dismissible fade show w-100" id="errorAlert" role="alert" th:if="${blocked} != null and ${blocked} == 'success'" >
+			<span th:text="#{block.success.msg}"></span>
+		 	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
+		   		<span aria-hidden="true">&times;</span>
+			</a>
+		</div>
+		<div class="alert alert-success alert-dismissible fade show w-100" id="errorAlert" role="alert" th:if="${unblocked} != null and ${unblocked} == 'success'" >
+			<span th:text="#{unblock.success.msg}"></span>
+		 	<a class="close" href="#" data-bs-dismiss="alert" aria-label="Close" id="hideAlertButton">
+		   		<span aria-hidden="true">&times;</span>
+			</a>
+		</div>
 	<h1 style="text-align: center; margin-bottom: 30px;" th:text="#{user.management}"></h1>
 		<div style="overflow: auto; width: 100%;">
 			<table class="table-sortable">
@@ -38,6 +94,7 @@
 		            <th th:text="#{role}"></th>
 		            <th th:text="#{joined}"></th>
 		            <th th:text="#{status}"></th>
+		            <th>/</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -56,6 +113,8 @@
 					<td th:unless="not ${user.blocked}">
 						<span th:text="#{blocked.msg}" style="color:red"></span>					
 					</td>
+					<td th:if="${user.blocked} == true"><button style="height:100%; width: 100%;" class="btn btn-success unblock-btn" th:attr="user-id=${user.id}" data-bs-target="#unblock" data-bs-toggle="modal" th:text="#{unblock}"></button></td>
+					<td th:unless="${user.blocked} == true"><button style="height:100%; width: 100%" class="btn btn-danger block-btn" th:attr="user-id=${user.id}" data-bs-target="#block" data-bs-toggle="modal" th:text="#{block}"></button></td>
 				</tr>
 			</tbody> 
 			</table>

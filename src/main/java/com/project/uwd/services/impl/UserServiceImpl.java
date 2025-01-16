@@ -62,5 +62,15 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public List<User> getAllUsers() {
 		return _userRepository.getAllUsers();
+	}
+
+	@Override
+	public boolean blockUserById(Long id) {
+		return _userRepository.blockUserById(id);
+	}
+
+	@Override
+	public boolean unblockUserById(Long id) {
+		return _userRepository.unblockUserById(id);
 	}	
 }

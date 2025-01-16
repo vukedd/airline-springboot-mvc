@@ -24,13 +24,17 @@ public class AuthController {
 	AuthService _authService;
 	
 	@GetMapping("/login")
-	public String getLogIn(@RequestParam(required=false)String register, @RequestParam(required=false)String login, Model model) {
+	public String getLogIn(@RequestParam(required=false)String register, @RequestParam(required=false)String login, @RequestParam(required=false) String blocked, Model model) {
 		if (register != null && register.equals("success")) {
 			model.addAttribute("register", register);
 		}
 		
 		if (login != null && login.equals("fail")) {
 			model.addAttribute("login", login);
+		}
+		
+		if (blocked != null) {
+			model.addAttribute("blocked", blocked);
 		}
 		
 		return "log-in";
@@ -40,6 +44,10 @@ public class AuthController {
 	public String postLogIn(@RequestParam String username, @RequestParam String password, HttpSession session) {
 		User user = _authService.authenticateUser(username, password);
 		if (user != null) {
+			if (user.isBlocked()) {
+				return "redirect:/auth/login?blocked=true";
+			}
+			
 			session.setAttribute("loggedIn", user);
 		} else {
 			return "redirect:/auth/login?login=fail";

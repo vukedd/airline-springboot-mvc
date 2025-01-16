@@ -145,4 +145,41 @@ public class UserRepositoryImpl implements UserRepository{
 		}
 		return users;
 	}
+
+	@Override
+	public boolean blockUserById(Long id) {
+		String sql = "UPDATE User SET IsBlocked = 1 WHERE UserId = ?;";
+		
+		int rowsAffected = 0;
+		try {
+			rowsAffected = jdbcTemplate.update(sql, id);
+		} catch (Exception e) {
+			System.out.println("An error occurred while blocking user!");
+		}
+		
+		if (rowsAffected != 0) {
+			return true;
+		}
+		
+		return false;
+	}
+
+	@Override
+	public boolean unblockUserById(Long id) {
+		String sql = "UPDATE User SET IsBlocked = 0 WHERE UserId = ?;";
+		
+		int rowsAffected = 0;
+		try {
+			rowsAffected = jdbcTemplate.update(sql, id);
+		} catch (Exception e) {
+			System.out.println("An error occurred while unblocking user!");
+		}
+		
+		if (rowsAffected != 0) {
+			return true;
+		}
+		
+		return false;
+	}
+	
 }

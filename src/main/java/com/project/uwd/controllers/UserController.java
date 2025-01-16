@@ -20,6 +20,7 @@ import com.project.uwd.helpers.CSVResourceProvider;
 import com.project.uwd.models.LoyaltyCardRequest;
 import com.project.uwd.models.Reservation;
 import com.project.uwd.models.User;
+import com.project.uwd.models.enums.Role;
 import com.project.uwd.services.FlightService;
 import com.project.uwd.services.LoyaltyCardRequestService;
 import com.project.uwd.services.ReservationService;
@@ -46,8 +47,19 @@ public class UserController {
 	ReservationService _reservationService;
 	
 	@GetMapping("/")
-	public String getUsers(Model model) {
+	public String getUsers(@RequestParam(required=false) String blocked, @RequestParam(required=false) String unblocked, Model model, HttpSession session) {
+		User user = (User)session.getAttribute("loggedIn");
+		if (user == null || user.getRole().compareTo(Role.Tourist) == 0) {
+			return "redirect:/";
+		}
+		
 		model.addAttribute("users", _userService.getAllUsers());
+		if (blocked != null)
+			model.addAttribute("blocked", blocked);
+		
+		if (unblocked != null)
+			model.addAttribute("unblocked", unblocked);
+		
 		return "user-list";
 	}
 
@@ -418,5 +430,35 @@ public class UserController {
 		
 		session.setAttribute("loggedIn", _userService.getUserById(user.getId()));
 		return "redirect:/user/profile?password=success";
+	}
+
+	@PostMapping("/block")
+	public String postBlockUser(@RequestParam int selectedUserBlockId) {
+		Integer userId = selectedUserBlockId;
+		Long longUserId = userId.longValue();
+		
+		boolean isBlocked = false;
+		User user = _userService.getUserById(longUserId);
+		if (user != null) {
+			isBlocked = _userService.blockUserById(longUserId);
+		}
+		
+		
+		return "redirect:/user/?blocked=success";
+	}
+	
+	@PostMapping("/unblock")
+	public String postUnblockUser(@RequestParam int selectedUserUnblockId) {
+		Integer userId = selectedUserUnblockId;
+		Long longUserId = userId.longValue();
+		
+		boolean isUnblocked = false;
+		User user = _userService.getUserById(longUserId);
+		if (user != null) {
+			isUnblocked = _userService.unblockUserById(longUserId);
+		}
+		
+		
+		return "redirect:/user/?unblocked=success";
 	}
 }

@@ -17,4 +17,6 @@ public interface UserService {
 	boolean editUserData(Long id, String username, String firstName, String lastName, LocalDate dateOfBirth,String email);
 	boolean editUserPassword(Long id, String newPassword);
 	List<User> getAllUsers();
+	public boolean blockUserById(Long id);
+	public boolean unblockUserById(Long id);
 }
