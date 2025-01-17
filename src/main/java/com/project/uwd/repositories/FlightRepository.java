@@ -21,4 +21,5 @@ public interface FlightRepository {
 	public int numberOfAvailableSpotsByFlight(Long flightId);
 	public List<Flight> getFlightsOnDiscount();
 	public List<Flight> getWishlistItemsByUserId(Long userId);
+	public List<Flight[]> getConnectedFlights(String departure, String destination);
 }

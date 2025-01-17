@@ -24,43 +24,43 @@ import jakarta.annotation.PostConstruct;
 
 @Repository
 public class FlightRepositoryImpl implements FlightRepository {
-	
+
 	@Autowired
 	private JdbcTemplate _jdbcTemplate;
-	
+
 	@Autowired
 	private AirportRepository _airportRepository;
 
 	@Autowired
 	private AirplaneRepository _airplaneRepository;
-	
+
 	@Autowired
 	private DiscountRepository _discountRepository;
-	
+
 	private FlightRowMapper _flightRowMapper;
-	
+
 	@PostConstruct
 	public void init() {
 		_flightRowMapper = new FlightRowMapper();
 	}
-	
+
 	@Override
 	public List<Flight> getAllFlights() {
 		String sql = "SELECT * FROM Flight WHERE IsCancelled = 0 AND DateOfDeparture > current_date();";
 		List<Flight> flights;
-		
+
 		try {
 			flights = _jdbcTemplate.query(sql, _flightRowMapper);
 		} catch (Exception e) {
 			flights = null;
 		}
-		
+
 		if (flights != null) {
 			for (Flight flight : flights) {
 				flight.setAirplane(_airplaneRepository.getAirplaneById(flight.getAirplaneId()));
 				flight.setDeparture(_airportRepository.getAirportById(flight.getDepartureId()));
 				flight.setDestination(_airportRepository.getAirportById(flight.getDestinationId()));
-				
+
 				Discount discount = _discountRepository.getDiscountByFlightId(flight.getId());
 				if (discount != null) {
 					flight.setDiscount(discount);
@@ -69,7 +69,7 @@ public class FlightRepositoryImpl implements FlightRepository {
 				flight.setAvailableSeats(numberOfAvailableSpotsByFlight(flight.getId()) > 0 ? true : false);
 			}
 		}
-		
+
 		return flights;
 	}
 
@@ -82,12 +82,12 @@ public class FlightRepositoryImpl implements FlightRepository {
 		} catch (Exception e) {
 			flight = null;
 		}
-		
+
 		if (flight != null) {
 			flight.setAirplane(_airplaneRepository.getAirplaneById(flight.getAirplaneId()));
 			flight.setDeparture(_airportRepository.getAirportById(flight.getDepartureId()));
 			flight.setDestination(_airportRepository.getAirportById(flight.getDestinationId()));
-			
+
 			Discount discount = _discountRepository.getDiscountByFlightId(flight.getId());
 			if (discount != null) {
 				flight.setDiscount(discount);
@@ -100,15 +100,14 @@ public class FlightRepositoryImpl implements FlightRepository {
 
 	@Override
 	public int deleteFlight(Long id) {
-		String sql = "DELETE FROM Flight\r\n"
-				+ "WHERE FlightId = ? AND FlightId NOT IN (SELECT FlightId FROM Ticket);";
+		String sql = "DELETE FROM Flight\r\n" + "WHERE FlightId = ? AND FlightId NOT IN (SELECT FlightId FROM Ticket);";
 		int res;
 		try {
 			res = _jdbcTemplate.update(sql, id);
 		} catch (Exception e) {
 			res = 0;
 		}
-		
+
 		return res;
 	}
 
@@ -116,9 +115,10 @@ public class FlightRepositoryImpl implements FlightRepository {
 	public int editFlight(Long id, Flight flight) {
 		String sql = "UPDATE Flight Set DateOfDeparture = ?, Duration = ?, TicketPrice = ? WHERE FlightId = ?;";
 		int res;
-		
+
 		try {
-			res = _jdbcTemplate.update(sql, LocalDateTime.of(flight.getDateOfDeparture(), flight.getTimeOfDeparture()), flight.getDuration(), flight.getTicketPrice(), id);
+			res = _jdbcTemplate.update(sql, LocalDateTime.of(flight.getDateOfDeparture(), flight.getTimeOfDeparture()),
+					flight.getDuration(), flight.getTicketPrice(), id);
 		} catch (Exception e) {
 			res = 0;
 		}
@@ -129,43 +129,44 @@ public class FlightRepositoryImpl implements FlightRepository {
 	public int createFlight(Flight flight) {
 		String sql = "INSERT INTO Flight(DateOfDeparture, Duration, TicketPrice, DepartureId, DestinationId, AirplaneId, IsCancelled) VALUES (?, ?, ?, ?, ?, ?, 0);";
 		int res;
-		
+
 		try {
-			res = _jdbcTemplate.update(sql, LocalDateTime.of(flight.getDateOfDeparture(), flight.getTimeOfDeparture()), flight.getDuration(), flight.getTicketPrice(), flight.getDepartureId(), flight.getDestinationId(), flight.getAirplaneId());
+			res = _jdbcTemplate.update(sql, LocalDateTime.of(flight.getDateOfDeparture(), flight.getTimeOfDeparture()),
+					flight.getDuration(), flight.getTicketPrice(), flight.getDepartureId(), flight.getDestinationId(),
+					flight.getAirplaneId());
 		} catch (Exception e) {
 			res = 0;
 		}
-		
+
 		return res;
 	}
 
 	@Override
-	@Transactional(rollbackFor=Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public boolean cancelFlight(Long id, String cancelationReason) {
 		String sql1 = "UPDATE Flight SET IsCancelled = 1 WHERE FlightId = ?;";
-		String sql2 = "UPDATE LoyaltyCard lc\r\n"
-				+ "SET lc.points = lc.points + 5\r\n"
-				+ "WHERE lc.LoyaltyCardId in (SELECT LoyaltyCardId\r\n"
+		String sql2 = "UPDATE LoyaltyCard lc\r\n" + "SET lc.points = lc.points + 5\r\n"
+				+ "WHERE lc.LoyaltyCardId in (SELECT LoyaltyCardId\r\n" 
 				+ "						   FROM User\r\n"
 				+ "						   WHERE UserId in (SELECT UserId\r\n"
 				+ "											FROM Reservation\r\n"
 				+ "                                            WHERE ReservationId in (SELECT ReservationId\r\n"
 				+ "																	FROM Ticket\r\n"
 				+ "																	Where FlightId = ?)));";
-		
+
 		String sql3 = "INSERT INTO flightcancelation(CancelationReason, FlightId) VALUES (?, ?);";
 		int res1, res2, res3;
 		try {
-			
+
 			res1 = _jdbcTemplate.update(sql1, id);
 			res2 = _jdbcTemplate.update(sql2, id);
 			res3 = _jdbcTemplate.update(sql3, cancelationReason, id);
-			
+
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -173,7 +174,7 @@ public class FlightRepositoryImpl implements FlightRepository {
 	public List<Flight> searchFlights(String departure, String destination, LocalDate dateOfDeparture,
 			int numberOfSeats, boolean similarFlights) {
 		String sql;
-		List<Flight> flights;
+		List<Flight> flights = new ArrayList<Flight>();
 		String departureChecker = !departure.equals(null) ? departure + "%" : "%";
 		String destinationChecker = !destination.equals(null) ? destination + "%" : "%";
 
@@ -225,65 +226,61 @@ public class FlightRepositoryImpl implements FlightRepository {
 					flights = null;
 				}
 			}
-			}
+		}
 
-			List<Flight> flightsWithEnoughSeats = new ArrayList<Flight>();
+		List<Flight> flightsWithEnoughSeats = new ArrayList<Flight>();
 
-			if (flights != null) {
-				for (Flight flight : flights) {
-					flight.setAirplane(_airplaneRepository.getAirplaneById(flight.getAirplaneId()));
+		if (flights != null) {
+			for (Flight flight : flights) {
+				flight.setAirplane(_airplaneRepository.getAirplaneById(flight.getAirplaneId()));
 
-					if (numberOfAvailableSpotsByFlight(flight.getId()) - numberOfSeats >= 0) {
-						flight.setDeparture(_airportRepository.getAirportById(flight.getDepartureId()));
-						flight.setDestination(_airportRepository.getAirportById(flight.getDestinationId()));
-						flightsWithEnoughSeats.add(flight);
+				if (numberOfAvailableSpotsByFlight(flight.getId()) - numberOfSeats >= 0) {
+					flight.setDeparture(_airportRepository.getAirportById(flight.getDepartureId()));
+					flight.setDestination(_airportRepository.getAirportById(flight.getDestinationId()));
+					flightsWithEnoughSeats.add(flight);
 
-						Discount discount = _discountRepository.getDiscountByFlightId(flight.getId());
-						if (discount != null) {
-							flight.setDiscount(discount);
-							flight.setOnDiscount(true);
-						}
-						flight.setAvailableSeats(numberOfAvailableSpotsByFlight(flight.getId()) > 0 ? true : false);
+					Discount discount = _discountRepository.getDiscountByFlightId(flight.getId());
+					if (discount != null) {
+						flight.setDiscount(discount);
+						flight.setOnDiscount(true);
 					}
-
+					flight.setAvailableSeats(numberOfAvailableSpotsByFlight(flight.getId()) > 0 ? true : false);
 				}
-			}
 
-			return flightsWithEnoughSeats;
+			}
+		}
+		
+		return flightsWithEnoughSeats;
 	}
 
 	@Override
 	public int numberOfAvailableSpotsByFlight(Long flightId) {
 		String sql = "SELECT airplane.numberOfRows * airplane.numberOfColumns - count(ticketId) 'Free seats'\r\n"
-				+ "FROM Airplane\r\n"
-				+ "LEFT JOIN Flight ON Airplane.airplaneId = Flight.airplaneId\r\n"
-				+ "LEFT JOIN Ticket ON Flight.flightId = Ticket.flightId\r\n"
-				+ "WHERE Flight.flightId = ?;";
+				+ "FROM Airplane\r\n" + "LEFT JOIN Flight ON Airplane.airplaneId = Flight.airplaneId\r\n"
+				+ "LEFT JOIN Ticket ON Flight.flightId = Ticket.flightId\r\n" + "WHERE Flight.flightId = ?;";
 		Integer numberOfFreeSeats;
 		try {
-			numberOfFreeSeats = _jdbcTemplate.queryForObject(sql, new Object[] {flightId}, Integer.class);
+			numberOfFreeSeats = _jdbcTemplate.queryForObject(sql, new Object[] { flightId }, Integer.class);
 		} catch (Exception e) {
 			return -1;
 		}
-		
+
 		return numberOfFreeSeats;
 	}
 
 	@Override
 	public List<Flight> getFlightsOnDiscount() {
 		List<Flight> discountedFlights = null;
-		String sql = "SELECT *\r\n"
-				+ "FROM Flight\r\n"
-				+ "WHERE FlightId in (SELECT FlightId\r\n"
+		String sql = "SELECT *\r\n" + "FROM Flight\r\n" + "WHERE FlightId in (SELECT FlightId\r\n"
 				+ "				   FROM Discount\r\n"
 				+ "                   WHERE DiscountValidDate > current_date()) AND IsCancelled = 0 AND DateOfDeparture > current_date();";
-		
+
 		try {
 			discountedFlights = _jdbcTemplate.query(sql, _flightRowMapper);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		
+
 		if (discountedFlights != null) {
 			for (Flight flight : discountedFlights) {
 				flight.setAirplane(_airplaneRepository.getAirplaneById(flight.getAirplaneId()));
@@ -296,7 +293,7 @@ public class FlightRepositoryImpl implements FlightRepository {
 				}
 			}
 		}
-		
+
 		return discountedFlights;
 	}
 
@@ -304,17 +301,15 @@ public class FlightRepositoryImpl implements FlightRepository {
 	public List<Flight> getWishlistItemsByUserId(Long userId) {
 		List<Flight> wishlist = new ArrayList<Flight>();
 		String sql = "SELECT f.FlightId, f.DateOfDeparture, f.Duration, f.TicketPrice, f.DepartureId, f.DestinationId, f.AirplaneId, f.IsCancelled\r\n"
-				+ "FROM Wishlist wl\r\n"
-				+ "LEFT JOIN WishlistItem it on wl.WishlistId = it.WishlistId\r\n"
-				+ "LEFT JOIN Flight f on it.FlightId = f.FlightId\r\n"
-				+ "WHERE UserId = ?;";
-		
+				+ "FROM Wishlist wl\r\n" + "LEFT JOIN WishlistItem it on wl.WishlistId = it.WishlistId\r\n"
+				+ "LEFT JOIN Flight f on it.FlightId = f.FlightId\r\n" + "WHERE UserId = ?;";
+
 		try {
 			wishlist = _jdbcTemplate.query(sql, _flightRowMapper, userId);
 		} catch (Exception e) {
 			System.out.println("There are no items in this wishlist!");
 		}
-		
+
 		if (wishlist.size() > 0) {
 			for (Flight flight : wishlist) {
 				flight.setAirplane(_airplaneRepository.getAirplaneById(flight.getAirplaneId()));
@@ -328,7 +323,59 @@ public class FlightRepositoryImpl implements FlightRepository {
 				flight.setAvailableSeats(numberOfAvailableSpotsByFlight(flight.getId()) > 0 ? true : false);
 			}
 		}
-		
+
 		return wishlist;
 	}
+
+	@Override
+	public List<Flight[]> getConnectedFlights(String departure, String destination) {
+		List<Flight> flightsToDestination = new ArrayList<Flight>();
+		List<Flight> flightsFromDeparture = new ArrayList<Flight>();
+		
+		String departureChecker = !departure.equals(null) ? departure + "%" : "%";
+		String destinationChecker = !destination.equals(null) ? destination + "%" : "%";
+		
+		String sql1 = "SELECT *\r\n"
+				+ "FROM Flight f\r\n"
+				+ "LEFT JOIN Airport departure ON departure.AirportId = f.DepartureId\r\n"
+				+ "LEFT JOIN Location location1 ON departure.LocationId = location1.LocationId\r\n"
+				+ "LEFT JOIN Airport destination ON destination.AirportId = f.DestinationId\r\n"
+				+ "LEFT JOIN Location location2 ON destination.LocationId = location2.LocationId\r\n"
+				+ "WHERE (departure.AirportCode like ? OR location1.country like ? OR location1.city like ?) AND IsCancelled = 0 AND DateOfDeparture > current_date();";
+		
+		String sql2 = "SELECT *\r\n"
+				+ "FROM Flight f\r\n"
+				+ "LEFT JOIN Airport departure ON departure.AirportId = f.DepartureId\r\n"
+				+ "LEFT JOIN Location location1 ON departure.LocationId = location1.LocationId\r\n"
+				+ "LEFT JOIN Airport destination ON destination.AirportId = f.DestinationId\r\n"
+				+ "LEFT JOIN Location location2 ON destination.LocationId = location2.LocationId\r\n"
+				+ "WHERE (destination.AirportCode like ? OR location2.country like ? OR location2.city like ?) AND IsCancelled = 0 AND DateOfDeparture > current_date();";
+		
+		try {
+			flightsFromDeparture = _jdbcTemplate.query(sql1, _flightRowMapper, departure, departure, departure);
+		} catch (Exception e) {
+			System.out.println("An error occurred while fetching flights connected to departure!");
+		}
+		
+		try {
+			flightsToDestination = _jdbcTemplate.query(sql2, _flightRowMapper, destination, destination, destination);
+		} catch (Exception e) {
+			System.out.println("An error occurred while fetching flights connected to destination!");
+		}
+		
+		List<Flight[]> connectedFlights = new ArrayList<>();
+		connectedFlights = Flight.connectFlights(flightsFromDeparture, flightsToDestination, getAllFlights());
+		
+//		if (connectedFlights.size() > 0) {
+//			for (Flight[] connection : connectedFlights) {
+//				System.out.println("-----connection-----");
+//				for (Flight flight : connection) {
+//					System.out.println(flight);
+//				}
+//			}
+//		}
+		
+		return connectedFlights;
+	}
+
 }

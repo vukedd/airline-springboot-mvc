@@ -41,6 +41,7 @@ public class IndexController {
 		if (flights.size() > 0) {
 			model.addAttribute("flights", flights);
 		} else {
+			List<Flight[]> connectedFlights = _flightService.getConnectedFlights(departure, destination, dateOfDeparture, numberOfSeats);
 			model.addAttribute("flights", null);
 		}
 		

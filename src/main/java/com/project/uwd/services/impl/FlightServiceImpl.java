@@ -1,6 +1,9 @@
 package com.project.uwd.services.impl;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,6 +91,40 @@ public class FlightServiceImpl implements FlightService{
 	@Override
 	public List<Flight> getFlightsOnDiscount() {
 		return _flightRepository.getFlightsOnDiscount();
+	}
+
+	@Override
+	public List<Flight[]> getConnectedFlights(String departure, String destination, LocalDate dateOfDeparture, int numberOfSeats) {
+		List<Flight[]> connections = _flightRepository.getConnectedFlights(departure, destination);
+		List<Flight[]> validConnections = new ArrayList<>();
+		
+		if (dateOfDeparture == null)
+			dateOfDeparture = LocalDate.now();
+		
+		for (Flight[] connection : connections) {
+			boolean allFlightsAreValid = true;
+			if (connection[0].getDateOfDeparture().isAfter(dateOfDeparture)) {
+				for (Flight f : connection) {
+					if (_flightRepository.numberOfAvailableSpotsByFlight(f.getId()) < numberOfSeats) {
+						allFlightsAreValid = false;
+					}
+				}
+				
+				if (allFlightsAreValid)
+					validConnections.add(connection);
+			}
+		}
+		
+		if (validConnections.size() > 0) {
+			for (Flight[] connection : validConnections) {
+				System.out.println("-----connection-----");
+				for (Flight flight : connection) {
+					System.out.println(flight);
+				}
+			}
+		}
+		
+		return validConnections;
 	}
 
 }

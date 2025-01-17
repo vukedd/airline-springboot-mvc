@@ -19,4 +19,5 @@ public interface FlightService {
 	public int numberOfAvailableSpotsByFlight(Long flightId);
 	public int[][] getTakenSeatsByFlightId(Long flightId);
 	public List<Flight> getFlightsOnDiscount();
+	public List<Flight[]> getConnectedFlights(String departure, String destination, LocalDate dateOfDeparture, int numberOfSeats);
 }

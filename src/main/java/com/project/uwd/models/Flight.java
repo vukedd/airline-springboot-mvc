@@ -1,5 +1,6 @@
 package com.project.uwd.models;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -30,6 +31,8 @@ public class Flight {
 	private boolean onDiscount;
 	private Discount discount;
 	
+    private static final int MIN_LAYOVER_MINUTES = 60;
+	
 	public Flight(Long id, LocalDateTime dateTimeOfDeparture, int duration, double ticketPrice, Airport departure,
 			Airport destination, Airplane airplane) {
 		super();
@@ -40,6 +43,50 @@ public class Flight {
 		this.departure = departure;
 		this.destination = destination;
 		this.airplane = airplane;
+	}
+	
+	public static List<Flight[]> connectFlights(List<Flight> flightsConnectedToDeparture, List<Flight> flightsConnectedToDestination, List<Flight> allFlights) {
+		List<Flight[]> flights = new ArrayList<>();
+		for (Flight f1 : flightsConnectedToDeparture) {
+			for (Flight f2 : flightsConnectedToDestination) {
+				Flight[] flightConnection = new Flight[2];
+				flightConnection[0] = f1;
+				if (f1.destinationId == f2.departureId && f1.dateTimeOfDeparture.isBefore(f2.dateTimeOfDeparture)) {
+					int flightDuration = f1.duration;
+					Duration duration = Duration.between(f1.getTimeOfDeparture().plusMinutes(flightDuration), f2.getTimeOfDeparture());
+					if (duration.toMinutes() >= MIN_LAYOVER_MINUTES) {
+						flightConnection[1] = f2;
+						flights.add(flightConnection);
+					}
+				}
+			}
+		}
+		
+		for (Flight f1 : flightsConnectedToDeparture) {
+			for (Flight f2 : allFlights) {
+				Flight[] flightConnection = new Flight[3];
+				flightConnection[0] = f1;
+				if (f1.destinationId == f2.departureId && f1.dateTimeOfDeparture.isBefore(f2.dateTimeOfDeparture)) {
+					int flightDuration1 = f1.duration;
+					Duration duration1 = Duration.between(f1.getTimeOfDeparture().plusMinutes(flightDuration1), f2.getTimeOfDeparture());
+					if (duration1.toMinutes() >= MIN_LAYOVER_MINUTES) {
+						for (Flight f3 : flightsConnectedToDestination) {
+							if (f2.destinationId == f3.departureId && f2.dateTimeOfDeparture.isBefore(f3.dateTimeOfDeparture)) {
+								int flightDuration2 = f2.duration;
+								Duration duration2 = Duration.between(f2.getTimeOfDeparture().plusMinutes(flightDuration2), f3.getTimeOfDeparture());
+								if (duration2.toMinutes() >= MIN_LAYOVER_MINUTES) {
+									flightConnection[1] = f2;
+									flightConnection[2] = f3;
+									flights.add(flightConnection);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		return flights;
 	}
 	
 	public Flight() {
