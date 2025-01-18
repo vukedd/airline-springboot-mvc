@@ -375,6 +375,23 @@ public class FlightRepositoryImpl implements FlightRepository {
 //			}
 //		}
 		
+		if (connectedFlights != null) {
+			for (Flight[] flights: connectedFlights) {
+				for (Flight flight : flights) {
+					flight.setAirplane(_airplaneRepository.getAirplaneById(flight.getAirplaneId()));
+					flight.setDeparture(_airportRepository.getAirportById(flight.getDepartureId()));
+					flight.setDestination(_airportRepository.getAirportById(flight.getDestinationId()));
+	
+					Discount discount = _discountRepository.getDiscountByFlightId(flight.getId());
+					if (discount != null) {
+						flight.setDiscount(discount);
+						flight.setOnDiscount(true);
+					}
+					flight.setAvailableSeats(numberOfAvailableSpotsByFlight(flight.getId()) > 0 ? true : false);
+				}
+			}
+		}
+		
 		return connectedFlights;
 	}
 

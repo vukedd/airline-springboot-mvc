@@ -72,22 +72,26 @@
 	    <form class="search-bar" method="POST" action="search">
 	      <div class="row gy-2 gx-3 align-items-center">
 	        <div class="col-12 col-md-3">
-	          <input type="text" class="form-control" name="departure" th:placeholder="#{search.bar.departure.ph}">
+	          <input type="text" class="form-control" name="departure" th:placeholder="#{search.bar.departure.ph}" th:value="${session.departureSearch}" th:if="${session.searchInitialized} != null">
+	          <input type="text" class="form-control" name="departure" th:placeholder="#{search.bar.departure.ph}" th:unless="${session.searchInitialized} != null">
 	        </div>
 	        <div class="col-12 col-md-3">
-	          <input type="text" class="form-control" name="destination" th:placeholder="#{search.bar.destination.ph}">
+	          <input type="text" class="form-control" name="destination" th:placeholder="#{search.bar.destination.ph}" th:value="${session.destinationSearch}"  th:if="${session.searchInitialized} != null">
+	          <input type="text" class="form-control" name="destination" th:placeholder="#{search.bar.destination.ph}" th:unless="${session.searchInitialized} != null">
 	        </div>
 	        <div class="col-12 col-md-3">
-	          <input type="date" class="form-control" name="dateOfDeparture" id="departureDateField">
+	          <input type="date" class="form-control" name="dateOfDeparture" id="departureDateField" th:if="${session.searchInitialized} != null" th:value="${session.dateOfDepartureSearch}">
+	          <input type="date" class="form-control" name="dateOfDeparture" id="departureDateField" th:unless="${session.searchInitialized} != null">
 	        </div>
 	        <div class="col-12 col-md-2">
-	          <input type="number" class="form-control" name="numberOfSeats" th:placeholder="#{search.bar.passengers.ph}" min="1">
+	          <input type="number" class="form-control" name="numberOfSeats" th:placeholder="#{search.bar.passengers.ph}" min="1" th:value="${session.numberOfSeatsSearch}" th:if="${session.searchInitialized} != null">
+	          <input type="number" class="form-control" name="numberOfSeats" th:placeholder="#{search.bar.passengers.ph}" min="1" th:unless="${session.searchInitialized} != null">
 	        </div>
 	        <div class="col-12 col-md-1 d-flex justify-content-center">
 	          <button type="submit" class="btn w-100" th:text="#{search.bar.btn}"></button>
 	        </div>
  	        <div>
-	        	<input type="checkbox" name="similarFlights">
+ 	        	<input type="checkbox" name="similarFlights" th:if="${session.searchInitialized} != null" th:checked="${session.similarFlightsSearch}">
 	        	<label th:text="#{similar.flights.search}"></label>
 	        </div>
 	      </div>
@@ -114,10 +118,32 @@
 		    </div>
 		</div>
 	</div>
-	<div class="content-body d-flex justify-content-center mt-4" th:unless="${flights} != null">
-		<h1 th:text="#{no.flights.found.search.msg}" style="text-align:center"></h1>	
+	<div class="content-body d-flex justify-content-center flex-column mt-4" th:unless="${flights} != null">
+		<h3 th:text="#{no.flights.found.search.msg}" style="text-align:center"></h3>
+		<div class="d-flex justify-content-center flex-column align-items-center mt-4">
+			<h1 th:text="#{connected.flights.head}"></h1>
+			<div class="d-flex align-items-center flex-column m-2 p-2" th:each="connection, iter : ${flightConnections}"  style="border-radius:20px; box-shadow:2px 2px 2px 2px rgb(0,0,0,0.2)">
+				<h3 th:text="#{option}  + '  ' + ${iter.index + 1}"></h3>
+				<div class="content-body">
+					<div class="card m-3" style="width: 20rem;" th:each="flight : ${connection}">
+					  	<img src="/images/flight-pic.jpg" class="card-img-top" alt="" th:if="${flight.destination.location.decodedImage} == null" style="height:200px;">
+					  	<img th:src="${flight.destination.location.decodedImage}" class="card-img-top" alt="" th:unless="${flight.destination.location.decodedImage} == null" style="height:200px;">
+						<div class="card-body">
+						    <h5 class="card-title" th:text="${flight.departure.code} + '-' + ${flight.destination.code}"></h5>
+						    <p th:text="${flight.dateOfDeparture} + ' | ' + ${flight.timeOfDeparture}"></p>
+						    <div class="d-flex justify-content-space-around flex-column p-1">
+						    	<span th:if="not ${flight.onDiscount}" class="fw-bold pe-4 pt-1" th:text="${flight.ticketPrice} + '0 RSD ' + #{per.seat}"></span>
+						    	<span th:if="${flight.onDiscount}" class="fw-bold pe-4 pt-1" style="text-decoration:line-through;" th:text="${flight.ticketPrice} + '0 RSD ' + #{per.seat}"></span>
+						    	<span th:if="${flight.onDiscount}" class="fw-bold pe-4 pt-1" style="color:red;" th:text="(${flight.ticketPrice} * (1 - (${flight.discount.discountPercentage} / 100.0))) + '0 RSD ' + #{per.seat}"></span>
+						    	<a th:if="${session.loggedIn} == null or ${session.loggedIn.Role.name} != 'Admin'" th:href="@{/flight/details?id={flightId}(flightId=${flight.id})}" target='_blank' class="btn btn-primary mt-1 w-100"><i class="bi bi-info-circle"></i></a>
+						    </div>
+					    </div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
-<script src="/js/index.js"></script>
+	<script src="/js/index.js"></script>
 </body>
 </html>

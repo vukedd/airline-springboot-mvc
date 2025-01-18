@@ -37,12 +37,43 @@ public class IndexController {
 			return "redirect:/auth/login";
 		}
 		
+		System.out.println(similarFlights);
+		
 		List<Flight> flights = _flightService.searchFlight(departure, destination, dateOfDeparture, numberOfSeats, similarFlights);
 		if (flights.size() > 0) {
 			model.addAttribute("flights", flights);
 		} else {
 			List<Flight[]> connectedFlights = _flightService.getConnectedFlights(departure, destination, dateOfDeparture, numberOfSeats);
 			model.addAttribute("flights", null);
+			model.addAttribute("flightConnections", connectedFlights);
+		}
+		
+		session.setAttribute("searchInitialized", true);
+		if (departure != null)
+			session.setAttribute("departureSearch", departure);
+		else
+			session.setAttribute("departureSearch", null);
+
+		
+		if (destination != null)
+			session.setAttribute("destinationSearch", destination);
+		else
+			session.setAttribute("destinationSearch", null);
+		
+		if (dateOfDeparture != null) 
+			session.setAttribute("dateOfDepartureSearch", dateOfDeparture);
+		else
+			session.setAttribute("dateOfDepartureSearch", null);
+		
+		if (numberOfSeats != 0)
+			session.setAttribute("numberOfSeatsSearch", numberOfSeats);
+		else
+			session.setAttribute("numberOfSeatsSearch", 1);
+		
+		if (similarFlights == true) {
+			session.setAttribute("similarFlightsSearch", true);
+		} else {
+			session.setAttribute("similarFlightsSearch", false);
 		}
 		
 		return "index";
