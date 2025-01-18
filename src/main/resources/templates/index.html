@@ -91,7 +91,7 @@
 	          <button type="submit" class="btn w-100" th:text="#{search.bar.btn}"></button>
 	        </div>
  	        <div>
- 	        	<input type="checkbox" name="similarFlights" th:if="${session.searchInitialized} != null" th:checked="${session.similarFlightsSearch}">
+ 	        	<input type="checkbox" name="similarFlights" th:checked="${session.similarFlightsSearch}">
 	        	<label th:text="#{similar.flights.search}"></label>
 	        </div>
 	      </div>
@@ -122,7 +122,7 @@
 		<h3 th:text="#{no.flights.found.search.msg}" style="text-align:center"></h3>
 		<div class="d-flex justify-content-center flex-column align-items-center mt-4">
 			<h1 th:text="#{connected.flights.head}"></h1>
-			<div class="d-flex align-items-center flex-column m-2 p-2" th:each="connection, iter : ${flightConnections}"  style="border-radius:20px; box-shadow:2px 2px 2px 2px rgb(0,0,0,0.2)">
+			<div th:if="${flightConnections.size()} > 0" class="d-flex align-items-center flex-column m-2 p-2" th:each="connection, iter : ${flightConnections}"  style="border-radius:20px; box-shadow:2px 2px 2px 2px rgb(0,0,0,0.2)">
 				<h3 th:text="#{option}  + '  ' + ${iter.index + 1}"></h3>
 				<div class="content-body">
 					<div class="card m-3" style="width: 20rem;" th:each="flight : ${connection}">
@@ -135,12 +135,13 @@
 						    	<span th:if="not ${flight.onDiscount}" class="fw-bold pe-4 pt-1" th:text="${flight.ticketPrice} + '0 RSD ' + #{per.seat}"></span>
 						    	<span th:if="${flight.onDiscount}" class="fw-bold pe-4 pt-1" style="text-decoration:line-through;" th:text="${flight.ticketPrice} + '0 RSD ' + #{per.seat}"></span>
 						    	<span th:if="${flight.onDiscount}" class="fw-bold pe-4 pt-1" style="color:red;" th:text="(${flight.ticketPrice} * (1 - (${flight.discount.discountPercentage} / 100.0))) + '0 RSD ' + #{per.seat}"></span>
-						    	<a th:if="${session.loggedIn} == null or ${session.loggedIn.Role.name} != 'Admin'" th:href="@{/flight/details?id={flightId}(flightId=${flight.id})}" target='_blank' class="btn btn-primary mt-1 w-100"><i class="bi bi-info-circle"></i></a>
+						    	<a th:href="@{/flight/details?id={flightId}(flightId=${flight.id})}" target='_blank' class="btn btn-primary mt-1 w-100"><i class="bi bi-info-circle"></i></a>
 						    </div>
 					    </div>
 					</div>
 				</div>
 			</div>
+			<h3 th:unless="${flightConnections.size()} > 0" th:text="#{no.connected.flights.message}"></h3>
 		</div>
 	</div>
 </div>
