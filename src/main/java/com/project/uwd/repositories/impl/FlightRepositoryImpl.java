@@ -255,13 +255,13 @@ public class FlightRepositoryImpl implements FlightRepository {
 
 	@Override
 	public int numberOfAvailableSpotsByFlight(Long flightId) {
-		String sql = "SELECT airplane.numberOfRows * airplane.numberOfColumns - count(ticketId) 'Free seats'\r\n"
-				+ "FROM Airplane\r\n" + "LEFT JOIN Flight ON Airplane.airplaneId = Flight.airplaneId\r\n"
-				+ "LEFT JOIN Ticket ON Flight.flightId = Ticket.flightId\r\n" + "WHERE Flight.flightId = ?;";
+		String sql = "SELECT (airplane.numberOfRows * airplane.numberOfColumns) - COUNT(ticket.ticketId) AS 'Free seats' FROM Airplane LEFT JOIN Flight ON Airplane.airplaneId = Flight.airplaneId LEFT JOIN Ticket ON Flight.flightId = Ticket.flightId WHERE Flight.flightId = ?;\r\n";
 		Integer numberOfFreeSeats;
 		try {
 			numberOfFreeSeats = _jdbcTemplate.queryForObject(sql, new Object[] { flightId }, Integer.class);
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			System.out.println("An error occurred while fetching the number of free seats, flightRepository");
 			return -1;
 		}
 
@@ -394,5 +394,7 @@ public class FlightRepositoryImpl implements FlightRepository {
 		
 		return connectedFlights;
 	}
+	
+	
 
 }
