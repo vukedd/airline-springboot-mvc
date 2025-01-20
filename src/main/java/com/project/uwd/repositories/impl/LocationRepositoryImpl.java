@@ -58,7 +58,7 @@ public class LocationRepositoryImpl implements LocationRepository {
 
 	@Override
 	public int deleteLocation(Long id) {
-		String sql = "DELETE FROM Location WHERE LocationId = ?;";
+		String sql = "DELETE FROM Location WHERE LocationId = ? and LocationId not in (SELECT LocationId FROM Airport);";
 		int res;
 		try {
 			res = jdbcTemplate.update(sql, id);

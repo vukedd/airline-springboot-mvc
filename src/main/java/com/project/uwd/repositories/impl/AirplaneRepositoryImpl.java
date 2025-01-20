@@ -77,7 +77,7 @@ public class AirplaneRepositoryImpl implements AirplaneRepository{
 	@Override
 	public int deleteAirplaneById(Long id) {
 		int res = 0;
-		String sql = "DELETE FROM Airplane WHERE AirplaneId = ?;";
+		String sql = "DELETE FROM Airplane WHERE AirplaneId = ? and AirplaneId not in (SELECT AirplaneId FROM Flight WHERE AirplaneId IS NOT NULL);";
 		
 		try {
 			res = _jdbcTemplate.update(sql, id);

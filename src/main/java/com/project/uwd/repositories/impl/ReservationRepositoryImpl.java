@@ -93,16 +93,18 @@ public class ReservationRepositoryImpl implements ReservationRepository{
         	rowsAffected2 = _jdbcTemplate.update(sql2, t.getRowNumber(), t.getColumnNumber(), t.getPassportNumber(), t.getFirstName(), t.getLastName(), t.getFlightId(), reservationId);
         }
         
-        rowsAffected3 = _jdbcTemplate.update(sql3, points, userId);
-        rowsAffected4 = _jdbcTemplate.update(sql4, bonusLoyaltyCardPoints, userId);
+        if (points != -1) {
+            rowsAffected3 = _jdbcTemplate.update(sql3, points, userId);
+            rowsAffected4 = _jdbcTemplate.update(sql4, bonusLoyaltyCardPoints, userId);
+            if (rowsAffected1 != 0 && rowsAffected2 != 0 && rowsAffected3 != 0 && rowsAffected4 != 0) {
+            	return true;
+            }
+        }
         
-        if (rowsAffected1 != 0 && rowsAffected2 != 0 && rowsAffected3 != 0 && rowsAffected4 != 0) {
+        if (rowsAffected1 != 0 && rowsAffected2 != 0) {
         	return true;
         }
         
 		return false;
-	}
-	
-	
-	
+	}	
 }

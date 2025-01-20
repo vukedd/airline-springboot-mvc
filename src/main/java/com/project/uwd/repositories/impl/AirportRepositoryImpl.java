@@ -73,7 +73,7 @@ public class AirportRepositoryImpl implements AirportRepository{
 
 	@Override
 	public int deleteAirport(Long id) {
-		String sql = "DELETE FROM Airport WHERE AirportId = ?";
+		String sql = "DELETE FROM Airport WHERE AirportId = ? and AirportId not in (SELECT DepartureId FROM Flight WHERE DepartureId IS NOT NULL) and AirportId not in (SELECT DestinationId FROM Flight WHERE DestinationId IS NOT NULL);";
 		int res = 0;
 
 		try {

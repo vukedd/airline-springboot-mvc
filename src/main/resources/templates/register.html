@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Register</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -43,7 +43,7 @@
 				  </div>
 				  <div class="form-group">
 				    <label for="dateOfBirth" th:text="#{register.dob}"></label>
-				    <input type="date" class="form-control" id="dateOfBirth" aria-describedby="dateOfBirth" th:placeholder="#{register.dob.placeholder}" name="dateOfBirth" required>
+				    <input type="date" class="form-control" id="dateOfBirth" aria-describedby="dateOfBirth" th:placeholder="#{register.dob.placeholder}" name="dateOfBirth" th:value="${user.dateOfBirth}" required>
 				  </div>
 				  <div class="form-group">
 				    <label for="email" th:text="#{register.email}"></label>

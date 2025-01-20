@@ -100,7 +100,7 @@ public class FlightRepositoryImpl implements FlightRepository {
 
 	@Override
 	public int deleteFlight(Long id) {
-		String sql = "DELETE FROM Flight\r\n" + "WHERE FlightId = ? AND FlightId NOT IN (SELECT FlightId FROM Ticket);";
+		String sql = "DELETE FROM Flight\r\n" + "WHERE FlightId = ? AND FlightId NOT IN (SELECT FlightId FROM Ticket WHERE FlightId IS NOT NULL);";
 		int res;
 		try {
 			res = _jdbcTemplate.update(sql, id);

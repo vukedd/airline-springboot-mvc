@@ -102,6 +102,10 @@ public class UserController {
 		if (status != null) {
 			model.addAttribute("status", "success");
 		}
+		
+		if (session.getAttribute("registerFormData") != null) {
+			model.addAttribute("user", (User)session.getAttribute("registerFormData"));
+		}
 //		if (session.getAttribute("registerFormData") != null) {
 //			invalidTry = true;
 //			user = (User)session.getAttribute("registerFormData");

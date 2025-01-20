@@ -59,3 +59,4 @@ discountFormSubmitBtn.addEventListener("click", (e) => {
 });
 
 document.getElementById("departureDateField").min = new Date().toISOString().split("T")[0];
+document.getElementById("endDate").min = new Date().toISOString().split("T")[0];
