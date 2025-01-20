@@ -97,7 +97,7 @@
 						<th>ID</th>
 						<th th:text="#{total.seats}"></th>
 						<th th:text="#{sold.seats}"></th>
-						<th th:text="#{total.income}"></th>
+						<th th:text="#{total.income} + ' (RSD)'"></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -105,7 +105,7 @@
 						<td><a style="color:black;text-decoration:bold;" th:href="@{/flight/details?id={flightId}(flightId=${data[0]})}" th:text="${data[0]}"></a></td>
 						<td th:text="${data[1]}"></td>
 						<td th:text="${data[2]}"></td>
-						<td th:text="${data[3]} + '.00 RSD'"></td>
+						<td th:text="${data[3]}"></td>
 					</tr>
 				</tbody>
 				<tbody>
@@ -117,6 +117,7 @@
 				</tbody>
 			</table>
 			<h2 style="text-align: center" th:unless="${dataSet} != null" th:text="#{no.report.found}"></h2>
+			<h4 style="text-align: center; color: red" th:if="${dataSet} == null and ${session.reportGenerated}" th:text="#{empty.report}"></h4>
 		</div>
 	</div>
 	<script src="/js/user-list.js"></script>
