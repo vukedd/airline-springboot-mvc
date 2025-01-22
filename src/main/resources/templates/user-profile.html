@@ -186,6 +186,7 @@
 							<span th:text="${item.dateOfDeparture} + ' | ' + ${item.timeOfDeparture}"></span>
 						</strong>
 					</div>
+					<button class="btn btn-danger p-0 px-1 mx-3 removeWishlistItemBtn" th:attr="wishlist-item-id=${item.id}, user-id=${session.loggedIn.id}">Remove</button>
 				</div>
 			</div>
 			<div id="wishlist" class="d-flex justify-content-center align-items-center" th:unless="${session.loggedIn.wishlist.items.size()} > 0">
@@ -295,5 +296,6 @@
 			</div>
 		</div>
 	</div>
+	<script src="/js/user-profile-wishlist.js"></script>
 </body>
 </html>
