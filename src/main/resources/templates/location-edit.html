@@ -49,7 +49,10 @@
 						th:text="${continentIt}">
 				</select><br>
 			</div>
-			<button type="submit" class="btn btn-primary" th:text="#{submit.changes.btn}"></button>
+			<div>
+				<a class="btn btn-secondary" th:href="@{/location/details?id={locationId}(locationId=${location.id})}" th:text="#{go.back.btn}"></a>
+				<button type="submit" class="btn btn-dark" th:text="#{submit.changes.btn}"></button>			
+			</div>
 		</form>
 	</div>	
 	<div th:unless="${location} != null" class="form">

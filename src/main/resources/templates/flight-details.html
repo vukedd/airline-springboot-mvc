@@ -113,8 +113,9 @@
 						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-danger m-1" data-bs-target="#flightDeletion" data-bs-toggle="modal" role="button" th:text="#{delete.btn}"></a>
 						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-dark m-1" data-bs-target="#flightCancelation" data-bs-toggle="modal" th:text="#{cancel.btn}"></a>
 						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-dark m-1" th:text="#{edit.btn}" th:href="@{/flight/edit?id={flightId}(flightId=${flight.id})}"></a>
-						<button class="btn btn-dark m-1" id="add-to-cart-btn" th:text="#{book.btn}" th:if="${flight.availableSeats}"></button>
-						<button class="btn btn-dark m-1 disabled" id="add-to-cart-btn" th:text="#{sold.out.lbl}" th:if="not ${flight.availableSeats}"></button>
+						<button class="btn btn-dark m-1" id="add-to-cart-btn" th:text="#{book.btn}" th:if="${flight.availableSeats} and not ${flight.cancelled}"></button>
+						<button class="btn btn-dark m-1 disabled" id="add-to-cart-btn" th:text="#{sold.out.lbl}" th:if="not ${flight.availableSeats} and not ${flight.cancelled}"></button>
+						<button class="btn btn-dark m-1 disabled" id="add-to-cart-btn" th:text="#{cancelled.lbl}" th:if="${flight.cancelled}"></button>
 						<button class="btn btn-dark m-1" id="wishlistBtn" th:if="${session.loggedIn} != null and not ${wishlist}"><i class="bi bi-heart"></i></button>
 						<button class="btn btn-dark m-1" id="wishlistBtn" th:if="${session.loggedIn} != null and ${wishlist}"><i class="bi bi-heart-fill"></i></button>
 						

@@ -1,1 +1,1 @@
-![alt text](AirlineProjectClassDiagram.png)
+![alt text](Rizzair-class-diagram.png)

@@ -20,6 +20,25 @@
 <link href="/css/navbar.css" rel="stylesheet">
 <link href="/css/location-details.css" rel="stylesheet">
 </head>
+<div class="modal fade" id="locationDeletion" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header justify-content-between">
+        <h5 class="modal-title" id="exampleModalLongTitle" th:text="#{location.deletion.model.header}"></h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-bs-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p th:text="#{location.deletion.message}"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" th:text="#{cancel.btn}"></button>
+        <a class="btn btn-dark" id="obrisiLet" th:href="@{/location/delete?id={locationId}(locationId=${location.id})}" th:text="#{submit.btn}"></a>
+      </div>
+    </div>
+  </div>
+</div>
 <body>
 	<nav th:replace="~{fragments :: navbar}"></nav>
 	
@@ -35,7 +54,7 @@
 					<span><span th:text="#{location.country.lbl}"></span>  <span th:text="${location.country}"></span></span>
 					<span><span th:text="#{location.continent.lbl}"></span>  <span th:text="${location.continent}"></span></span>
 					<div class="actionDiv">
-						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-danger" th:href="@{/location/delete?id={id}(id=${location.id})}" role="button" th:text="#{delete.btn}"></a>
+						<button th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-danger" data-bs-target="#locationDeletion" data-bs-toggle="modal" th:text="#{delete.btn}"></button>
 						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-dark" th:href="@{/location/edit?id={id}(id=${location.id})}" role="button" th:text="#{edit.btn}"></a>
 					</div>
 				</div>

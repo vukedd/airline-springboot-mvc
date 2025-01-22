@@ -38,7 +38,10 @@
 					<option th:each="locationIt : ${locations}" th:selected="${locationIt.id == airport.location.id}"  th:text="${locationIt.city}" th:value="${locationIt.id}">
 				</select><br>
 			</div>
-			<button type="submit" class="btn btn-primary mt-3" th:text="#{submit.changes.btn}"></button>
+			<div >
+				<a class="btn btn-secondary" th:href="@{/airport/details?id={airportId}(airportId=${airport.id})}" th:text="#{go.back.btn}"></a>
+				<button type="submit" class="btn btn-dark" th:text="#{submit.changes.btn}"></button>
+			</div>
 		</form>
     </div>
     	<div th:unless="${airport} != null" class="form">

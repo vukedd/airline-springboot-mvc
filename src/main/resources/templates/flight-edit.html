@@ -49,7 +49,10 @@
 		  </div>
 		  <p th:if="${ticketPrice} != null" style='color: red; font-size: 12px; margin: 0; padding: 0;' th:text="#{ticket.price.validation.lbl}"></p>
 		  <br>
-			<button type="submit" class="btn btn-primary" th:text="#{flight.edit.btn}"></button>
+		  <div>
+		  	<a class="btn btn-secondary" th:href="@{/flight/details?id={flightId}(flightId=${flight.id})}" th:text="#{go.back.btn}"></a>
+		  	<button type="submit" class="btn btn-primary" th:text="#{flight.edit.btn}"></button>
+		  </div>
 		</form>
     </div>
     <script src="/js/flight-edit.js"></script>

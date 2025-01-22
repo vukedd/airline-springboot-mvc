@@ -136,7 +136,7 @@
 				<div class="card-body">
 					<h3 class="card-title mb-3" th:text="#{requests.header}"></h3>
 					<div class="request-list list-group">
-						<div th:each="cardRequest, iter: ${cardRequests}"
+						<div th:each="cardRequest, iter: ${cardRequests}" th:if="${cardRequests.size()} > 0"
 							class="list-item list-group-item d-flex justify-content-between align-items-center">
 							<span th:text="#{request.label} + ' ' + (${iter.index + 1})"></span>
 							<span th:if="${cardRequest.status.name} == 'InProcess'"
@@ -146,6 +146,7 @@
 								class="badge bg-danger rounded-pill"
 								th:text="#{card.req.status.denied}"></span>
 						</div>
+						<em style="color:gray; text-align:center;" class="mt-3" th:unless="${cardRequests.size()} > 0" th:text="#{no.requests.sent.msg}"></em>
 					</div>
 				</div>
 			</div>

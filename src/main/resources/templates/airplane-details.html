@@ -20,6 +20,25 @@
 <link href="/css/navbar.css" rel="stylesheet">
 <link href="/css/airplane-details.css" rel="stylesheet">
 </head>
+<div class="modal fade" id="airplaneDeletion" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header justify-content-between">
+        <h5 class="modal-title" id="exampleModalLongTitle" th:text="#{airplane.deletion.model.header}"></h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-bs-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p th:text="#{airplane.deletion.message}"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" th:text="#{cancel.btn}"></button>
+        <a class="btn btn-dark" th:href="@{/airplane/delete?id={airplaneId}(airplaneId=${airplane.id})}" th:text="#{submit.btn}"></a>
+      </div>
+    </div>
+  </div>
+</div>
 <body>
 	<nav th:replace="~{fragments :: navbar}"></nav>
 	
@@ -33,7 +52,7 @@
 					<h3 th:text="${airplane.name}"></h3>
 					<span><span th:text="#{number.of.seats.lbl}"></span>  <span th:text="${airplane.numberOfColumns} * ${airplane.numberOfRows}"></span></span>
 					<div class="actionDiv">
-						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-danger" th:href="@{/airplane/delete?id={airplaneId}(airplaneId=${airplane.id})}" role="button" th:text="#{delete.btn}"></a>
+						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-danger" data-bs-target="#airplaneDeletion" data-bs-toggle="modal" role="button" th:text="#{delete.btn}"></a>
 						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-dark" th:href="@{/airplane/edit?id={airplaneId}(airplaneId=${airplane.id})}" role="button" th:text="#{edit.btn}"></a>
 					</div>
 				</div>

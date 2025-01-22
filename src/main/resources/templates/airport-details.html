@@ -20,6 +20,25 @@
 <link href="/css/navbar.css" rel="stylesheet">
 <link href="/css/airport-details.css" rel="stylesheet">
 </head>
+<div class="modal fade" id="airportDeletion" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header justify-content-between">
+        <h5 class="modal-title" id="exampleModalLongTitle" th:text="#{airport.deletion.model.header}"></h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-bs-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p th:text="#{airport.deletion.message}"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" th:text="#{cancel.btn}"></button>
+        <a class="btn btn-dark" th:href="@{/airport/delete?id={airportId}(airportId=${airport.id})}" th:text="#{submit.btn}"></a>
+      </div>
+    </div>
+  </div>
+</div>
 <body>
 	<nav th:replace="~{fragments :: navbar}"></nav>
 	
@@ -34,7 +53,7 @@
 					<span><span th:text="#{airport.country.lbl}"> </span>  <span th:text="${airport.location.country}"></span></span>
 					<span><span th:text="#{airport.city.lbl}"> </span>  <span th:text="${airport.location.city}"></span></span>
 					<div class="actionDiv">
-						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-danger" th:href="@{/airport/delete?id={airportId}(airportId=${airport.id})}" role="button" th:text="#{delete.btn}"></a>
+						<button th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-danger" data-bs-target="#airportDeletion" data-bs-toggle="modal" role="button" th:text="#{delete.btn}"></button>
 						<a th:if="${session.loggedIn} != null and ${session.loggedIn.Role.name()} == 'Admin'" class="btn btn-dark" th:href="@{/airport/edit?id={airportId}(airportId=${airport.id})}" role="button" th:text="#{edit.btn}"></a>
 					</div>
 				</div>
