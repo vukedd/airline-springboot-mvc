@@ -30,7 +30,7 @@ public class LocationRepositoryImpl implements LocationRepository {
 	
 	@Override
 	public List<Location> getLocations() {
-		String sql = "SELECT * FROM Location;";
+		String sql = "SELECT * FROM location;";
 		List<Location> locations = jdbcTemplate.query(sql, rowMapper);
 		for (Location location : locations) {
 			location.setDecodedImage(location.getImage() != null ? "data:image/jpeg;base64," + Base64Utils.encodeToString(location.getImage()) : null);
@@ -40,7 +40,7 @@ public class LocationRepositoryImpl implements LocationRepository {
 
 	@Override
 	public Location getLocation(Long id) {
-		String sql = "SELECT * FROM Location WHERE LocationId = ?;";
+		String sql = "SELECT * FROM location WHERE LocationId = ?;";
 
 		Location location;
 		try {
@@ -58,7 +58,7 @@ public class LocationRepositoryImpl implements LocationRepository {
 
 	@Override
 	public int deleteLocation(Long id) {
-		String sql = "DELETE FROM Location WHERE LocationId = ? and LocationId not in (SELECT LocationId FROM Airport);";
+		String sql = "DELETE FROM location WHERE LocationId = ? and LocationId not in (SELECT LocationId FROM airport);";
 		int res;
 		try {
 			res = jdbcTemplate.update(sql, id);
@@ -71,7 +71,7 @@ public class LocationRepositoryImpl implements LocationRepository {
 
 	@Override
 	public int addLocation(Location location, MultipartFile locationImage) {
-		String sql = "INSERT INTO Location(Country, City, Continent, LocationImage) VALUES (?, ?, ?, ?);";
+		String sql = "INSERT INTO location(Country, City, Continent, LocationImage) VALUES (?, ?, ?, ?);";
 		int res;
 		try {
 			byte[] image = locationImage.isEmpty() ? null : locationImage.getBytes();
@@ -89,7 +89,7 @@ public class LocationRepositoryImpl implements LocationRepository {
 
 	@Override
 	public int editLocation(Long id, Location location) {
-		String sql = "UPDATE Location SET City = ?, Country = ?, Continent = ? WHERE LocationId = ?;";
+		String sql = "UPDATE location SET City = ?, Country = ?, Continent = ? WHERE LocationId = ?;";
 		int res;
 		try {
 			res = jdbcTemplate.update(sql, location.getCity(), location.getCountry(), location.getContinent().ordinal(), id);		

@@ -83,10 +83,10 @@ public class ReportRepositoryImpl implements ReportRepository {
 	@Override
 	public int getTotalFlightSeats(Long flightId) {
 		String sql = "SELECT DISTINCT airplane.NumberOfRows * airplane.numberOfColumns 'Total seats'\r\n"
-				+ "FROM Airplane \r\n"
-				+ "LEFT JOIN Flight ON Airplane.airplaneId = Flight.airplaneId\r\n"
-				+ "LEFT JOIN Ticket ON Flight.flightId = Ticket.flightId\r\n"
-				+ "WHERE Flight.flightId = ?;";
+				+ "FROM airplane \r\n"
+				+ "LEFT JOIN Flight ON airplane.airplaneId = flight.airplaneId\r\n"
+				+ "LEFT JOIN Ticket ON flight.flightId = ticket.flightId\r\n"
+				+ "WHERE flight.flightId = ?;";
 		
 		Integer totalSeats;
 		try {
@@ -102,14 +102,14 @@ public class ReportRepositoryImpl implements ReportRepository {
 	public int getSoldFlightSeats(Long flightId) {
 		String sql = "SELECT \r\n"
 				+ "(SELECT DISTINCT airplane.NumberOfRows * airplane.numberOfColumns 'Total seats'\r\n"
-				+ "FROM Airplane \r\n"
-				+ "LEFT JOIN Flight ON Airplane.airplaneId = Flight.airplaneId\r\n"
-				+ "LEFT JOIN Ticket ON Flight.flightId = Ticket.flightId\r\n"
-				+ "WHERE Flight.flightId = ?)\r\n"
+				+ "FROM airplane \r\n"
+				+ "LEFT JOIN flight ON airplane.airplaneId = flight.airplaneId\r\n"
+				+ "LEFT JOIN ticket ON flight.flightId = ticket.flightId\r\n"
+				+ "WHERE flight.flightId = ?)\r\n"
 				+ "-\r\n"
 				+ "(SELECT airplane.numberOfRows * airplane.numberOfColumns - count(ticketId) 'Free seats'\r\n"
-				+ "FROM Airplane LEFT JOIN Flight ON Airplane.airplaneId = Flight.airplaneId\r\n"
-				+ "LEFT JOIN Ticket ON Flight.flightId = Ticket.flightId WHERE Flight.flightId = ?) 'Taken seats';";
+				+ "FROM airplane LEFT JOIN flight ON airplane.airplaneId = flight.airplaneId\r\n"
+				+ "LEFT JOIN ticket ON flight.flightId = ticket.flightId WHERE flight.flightId = ?) 'Taken seats';";
 		
 		int soldSeats;
 		try {
@@ -126,8 +126,8 @@ public class ReportRepositoryImpl implements ReportRepository {
 	public double getTotalIncomeByFlight(Long flightId) {
 		String sql = "SELECT SUM(TicketPrice) 'Total income'\r\n"
 				+ "FROM flight\r\n"
-				+ "LEFT JOIN Ticket on flight.flightId = Ticket.flightId\r\n"
-				+ "LEFT JOIN Discount on flight.flightId = Discount.flightId\r\n"
+				+ "LEFT JOIN ticket on flight.flightId = ticket.flightId\r\n"
+				+ "LEFT JOIN discount on flight.flightId = discount.flightId\r\n"
 				+ "WHERE flight.FlightId = ?;";
 		
 		Double totalIncome;

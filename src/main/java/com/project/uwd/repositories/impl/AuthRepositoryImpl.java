@@ -35,7 +35,7 @@ public class AuthRepositoryImpl implements AuthRepository{
 	
 	@Override
 	public User authenticateUser(String username, String password) {
-		String sql = "SELECT * FROM User WHERE username = ? and password = ?;";
+		String sql = "SELECT * FROM user WHERE username = ? and password = ?;";
 		User user;
 		try {
 			user = jdbcTemplate.queryForObject(sql, rowMapper, username, password);

@@ -29,14 +29,14 @@ public class AirplaneRepositoryImpl implements AirplaneRepository{
 	
 	@Override
 	public List<Airplane> getAllAirplanes() {
-		String sql = "SELECT * FROM Airplane;";
+		String sql = "SELECT * FROM airplane;";
 		List<Airplane> airplanes = _jdbcTemplate.query(sql, _airplaneRowMapper);
 		return airplanes;
 	}
 
 	@Override
 	public Airplane getAirplaneById(Long id) {
-		String sql = "SELECT * FROM Airplane WHERE AirplaneId = ?";
+		String sql = "SELECT * FROM airplane WHERE AirplaneId = ?";
 		Airplane airplane;
 		try {
 			airplane = _jdbcTemplate.queryForObject(sql, _airplaneRowMapper, id);
@@ -49,7 +49,7 @@ public class AirplaneRepositoryImpl implements AirplaneRepository{
 	@Override
 	public int addAirplane(Airplane airplane) {
 		int res = 0;
-		String sql = "INSERT INTO Airplane(name, numberOfColumns, numberOfRows) VALUES (?, ?, ?);";
+		String sql = "INSERT INTO airplane(name, numberOfColumns, numberOfRows) VALUES (?, ?, ?);";
 		
 		try {
 			res = _jdbcTemplate.update(sql, airplane.getName(), airplane.getNumberOfColumns(), airplane.getNumberOfRows());
@@ -63,7 +63,7 @@ public class AirplaneRepositoryImpl implements AirplaneRepository{
 	@Override
 	public int editAirplane(Long id, Airplane airplane) {
 		int res = 0;
-		String sql = "UPDATE Airplane SET name = ?, numberOfColumns = ?, numberOfRows = ? WHERE airplaneId = ?";
+		String sql = "UPDATE airplane SET name = ?, numberOfColumns = ?, numberOfRows = ? WHERE airplaneId = ?";
 		
 		try {
 			res = _jdbcTemplate.update(sql, airplane.getName(), airplane.getNumberOfColumns(), airplane.getNumberOfRows(), id);
@@ -77,7 +77,7 @@ public class AirplaneRepositoryImpl implements AirplaneRepository{
 	@Override
 	public int deleteAirplaneById(Long id) {
 		int res = 0;
-		String sql = "DELETE FROM Airplane WHERE AirplaneId = ? and AirplaneId not in (SELECT AirplaneId FROM Flight WHERE AirplaneId IS NOT NULL);";
+		String sql = "DELETE FROM airplane WHERE AirplaneId = ? and AirplaneId not in (SELECT AirplaneId FROM flight WHERE AirplaneId IS NOT NULL);";
 		
 		try {
 			res = _jdbcTemplate.update(sql, id);
@@ -90,8 +90,8 @@ public class AirplaneRepositoryImpl implements AirplaneRepository{
 
 	@Override
 	public List<Airplane> getAvailableAirplanes() {
-		String sql = "SELECT Airplane.AirplaneId, Name, NumberOfColumns, NumberOfRows FROM Airplane "
-				+ "LEFT JOIN Flight ON Flight.AirplaneId = Airplane.AirplaneId "
+		String sql = "SELECT airplane.AirplaneId, Name, NumberOfColumns, NumberOfRows FROM airplane "
+				+ "LEFT JOIN flight ON flight.AirplaneId = airplane.AirplaneId "
 				+ "WHERE DateOfDeparture < current_date() OR (DateOfDeparture > current_date() AND IsCancelled = 1);";
 		List<Airplane> airplanes;
 		

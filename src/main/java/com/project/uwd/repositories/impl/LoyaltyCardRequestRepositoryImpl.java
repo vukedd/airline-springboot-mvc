@@ -43,7 +43,7 @@ public class LoyaltyCardRequestRepositoryImpl implements LoyaltyCardRequestRepos
 		int rowsAffected = 0;
 		boolean successfullyAdded = false;
 		
-		String sql = "INSERT INTO LoyaltyCardRequest(UserId, Status) VALUES (?, ?)";
+		String sql = "INSERT INTO loyaltycardrequest(UserId, Status) VALUES (?, ?)";
 		if (!isLoyaltyCardRequestAlreadySent(userId)) {
 			try {
 				rowsAffected = _jdbcTemplate.update(sql, userId, Status.InProcess.ordinal());
@@ -62,7 +62,7 @@ public class LoyaltyCardRequestRepositoryImpl implements LoyaltyCardRequestRepos
 	public List<LoyaltyCardRequest> getLoyaltyCardRequestsById(Long userId) {
 		List<LoyaltyCardRequest> loyaltyCardRequests = null;
 		
-		String sql = "SELECT * FROM LoyaltyCardRequest WHERE UserId = ?;";
+		String sql = "SELECT * FROM loyaltycardrequest WHERE UserId = ?;";
 		try {
 			loyaltyCardRequests = _jdbcTemplate.query(sql, _rowMapper, userId);
 		} catch (Exception e) {
@@ -76,7 +76,7 @@ public class LoyaltyCardRequestRepositoryImpl implements LoyaltyCardRequestRepos
 	public boolean isLoyaltyCardRequestAlreadySent(Long userId) {
 		int countOfUnproccessedRequests = 0;
 		
-		String sql = "SELECT COUNT(*) FROM LoyaltyCardRequest WHERE UserId = ? and Status = 2;";
+		String sql = "SELECT COUNT(*) FROM loyaltycardrequest WHERE UserId = ? and Status = 2;";
 		try {
 			countOfUnproccessedRequests = _jdbcTemplate.queryForObject(sql, Integer.class, userId);
 		} catch (Exception e) {
@@ -93,7 +93,7 @@ public class LoyaltyCardRequestRepositoryImpl implements LoyaltyCardRequestRepos
 	@Override
 	public List<LoyaltyCardRequest> getLoyaltyCardRequests() {
 		List<LoyaltyCardRequest> requests = null;
-		String sql = "SELECT * FROM LoyaltyCardRequest WHERE Status = 2;";
+		String sql = "SELECT * FROM loyaltycardrequest WHERE Status = 2;";
 		
 		try {
 			requests = _jdbcTemplate.query(sql, _rowMapper);
@@ -113,9 +113,9 @@ public class LoyaltyCardRequestRepositoryImpl implements LoyaltyCardRequestRepos
 	@Transactional(rollbackFor=Exception.class)
 	@Override
 	public boolean approveLoyaltyCardRequest(Long requestId, Long userId) {
-		String sql1 = "UPDATE LoyaltyCardRequest SET Status = 0 WHERE RequestId = ?;";
-		String sql2 = "INSERT INTO LoyaltyCard(points) VALUES(5);";
-		String sql3 = "UPDATE User SET LoyaltyCardId = ? WHERE UserId = ?;";
+		String sql1 = "UPDATE loyaltycardrequest SET Status = 0 WHERE RequestId = ?;";
+		String sql2 = "INSERT INTO loyaltycard(points) VALUES(5);";
+		String sql3 = "UPDATE user SET LoyaltyCardId = ? WHERE UserId = ?;";
 		
 		int rowsAffected1 = 0;
 		int rowsAffected2 = 0;
@@ -146,7 +146,7 @@ public class LoyaltyCardRequestRepositoryImpl implements LoyaltyCardRequestRepos
 	@Override
 	public LoyaltyCardRequest getLoyaltyCardRequestById(Long requestId) {
 		LoyaltyCardRequest cardReq = null;
-		String sql = "SELECT * FROM LoyaltyCardRequest WHERE RequestId = ?;";
+		String sql = "SELECT * FROM loyaltycardrequest WHERE RequestId = ?;";
 		
 		try {
 			cardReq = _jdbcTemplate.queryForObject(sql, _rowMapper, requestId);
@@ -159,7 +159,7 @@ public class LoyaltyCardRequestRepositoryImpl implements LoyaltyCardRequestRepos
 	@Override
 	public boolean denyLoyaltyCardRequest(Long requestId) {
 		int rowsAffected = 0;
-		String sql = "UPDATE LoyaltyCardRequest SET Status = 1 WHERE RequestId = ?;";
+		String sql = "UPDATE loyaltycardrequest SET Status = 1 WHERE RequestId = ?;";
 		
 		try {
 			rowsAffected = _jdbcTemplate.update(sql, requestId);

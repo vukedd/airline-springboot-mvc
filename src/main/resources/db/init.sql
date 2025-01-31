@@ -1,4 +1,5 @@
 CREATE DATABASE Airline2024;
+USE Airline2024;
 
 CREATE TABLE `location` (
   `LocationId` bigint NOT NULL AUTO_INCREMENT,
@@ -24,7 +25,7 @@ CREATE TABLE `airplane` (
   `Name` varchar(30) DEFAULT NULL,
   `NumberOfColumns` smallint DEFAULT NULL,
   `NumberOfRows` smallint DEFAULT NULL,
-  PRIMARY KEY (`AirplaneId`)
+  PRIMARY KEY (`airplaneId`)
 );
 
 CREATE TABLE `flight` (
@@ -112,7 +113,7 @@ CREATE TABLE `discount` (
   `FlightId` bigint DEFAULT NULL,
   PRIMARY KEY (`DiscountId`),
   KEY `fk_discount_flight` (`FlightId`),
-  CONSTRAINT `fk_discount_flight` FOREIGN KEY (`FlightId`) REFERENCES `flight` (`FlightId`)
+  CONSTRAINT `fk_discount_flight` FOREIGN KEY (`FlightId`) REFERENCES `Flight` (`FlightId`)
 );
 
 CREATE TABLE `flightcancelation` (
@@ -142,3 +143,9 @@ CREATE TABLE `wishlistitem` (
   CONSTRAINT `wishlistitem_ibfk_1` FOREIGN KEY (`FlightId`) REFERENCES `flight` (`FlightId`),
   CONSTRAINT `wishlistitem_ibfk_2` FOREIGN KEY (`WishlistId`) REFERENCES `wishlist` (`WishlistId`)
 );
+
+INSERT INTO `user` (Username, Password, Email, FirstName, LastName, DateOfBirth, DateOfRegistration, Role, LoyaltyCardId,IsBlocked) 
+VALUES ('admin', 'admin', 'admin@mail.com', 'admin', 'admin', '2000-01-01', '2025-01-30', 0, NULL, 0);
+
+USE Airline2024;
+SHOW TABLES;

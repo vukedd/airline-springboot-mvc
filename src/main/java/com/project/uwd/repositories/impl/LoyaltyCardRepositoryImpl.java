@@ -25,7 +25,7 @@ public class LoyaltyCardRepositoryImpl implements LoyaltyCardRepository{
 	
 	@Override
 	public LoyaltyCard getLoyaltyCardById(Long id) {
-		String sql = "SELECT * FROM LoyaltyCard WHERE LoyaltyCardId = ?;";
+		String sql = "SELECT * FROM loyaltycard WHERE LoyaltyCardId = ?;";
 		LoyaltyCard card = null;
 		
 		try {

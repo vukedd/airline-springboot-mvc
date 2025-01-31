@@ -31,7 +31,7 @@ public class AirportRepositoryImpl implements AirportRepository{
 	
 	@Override
 	public List<Airport> getAllAiports() {
-		String sql = "SELECT * FROM Airport;";
+		String sql = "SELECT * FROM airport;";
 		List<Airport> airports = _jdbcTemplate.query(sql, _airportRowMapper);
 		for (Airport a : airports) {
 			a.setLocation(_locationRepository.getLocation(a.getLocationId()));
@@ -42,7 +42,7 @@ public class AirportRepositoryImpl implements AirportRepository{
 
 	@Override
 	public Airport getAirportById(Long id) {
-		String sql = "SELECT * FROM Airport WHERE AirportId = ?;";
+		String sql = "SELECT * FROM airport WHERE AirportId = ?;";
 		Airport airport;
 		try {
 			airport = _jdbcTemplate.queryForObject(sql, _airportRowMapper, id);
@@ -60,7 +60,7 @@ public class AirportRepositoryImpl implements AirportRepository{
 
 	@Override
 	public int addAirport(Airport airport) {
-		String sql = "INSERT INTO Airport(AirportCode, LocationId) VALUES (?, ?);";
+		String sql = "INSERT INTO airport(AirportCode, LocationId) VALUES (?, ?);";
 		int res = 0;
 		try {
 			res = _jdbcTemplate.update(sql, airport.getCode(), airport.getLocationId());
@@ -73,7 +73,7 @@ public class AirportRepositoryImpl implements AirportRepository{
 
 	@Override
 	public int deleteAirport(Long id) {
-		String sql = "DELETE FROM Airport WHERE AirportId = ? and AirportId not in (SELECT DepartureId FROM Flight WHERE DepartureId IS NOT NULL) and AirportId not in (SELECT DestinationId FROM Flight WHERE DestinationId IS NOT NULL);";
+		String sql = "DELETE FROM airport WHERE AirportId = ? and AirportId not in (SELECT DepartureId FROM flight WHERE DepartureId IS NOT NULL) and AirportId not in (SELECT DestinationId FROM flight WHERE DestinationId IS NOT NULL);";
 		int res = 0;
 
 		try {
@@ -87,7 +87,7 @@ public class AirportRepositoryImpl implements AirportRepository{
 
 	@Override
 	public int editAirport(Long id, Airport airport) {
-		String sql = "UPDATE Airport SET LocationId = ?, AirportCode = ? WHERE AirportId = ?";
+		String sql = "UPDATE airport SET LocationId = ?, AirportCode = ? WHERE AirportId = ?";
 		int res = 0;
 
 		try {

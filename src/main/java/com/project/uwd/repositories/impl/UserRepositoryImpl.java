@@ -39,12 +39,12 @@ public class UserRepositoryImpl implements UserRepository{
 	
 	@Override
 	public int addUser(User user) {
-		String sql = "INSERT INTO User(Username, Password, Email, FirstName, LastName, DateOfBirth, DateOfRegistration,Role) VALUES(?, ?, ?, ?, ?, ?, ?, ?);";
+		String sql = "INSERT INTO user (Username, Password, Email, FirstName, LastName, DateOfBirth, DateOfRegistration, Role, IsBlocked) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);";
 		user.setRole(Role.Tourist);
 		user.setDateOfRegistration(LocalDate.now());
 		int res;
 		try {
-			res = jdbcTemplate.update(sql, user.getUsername(), user.getPassword(), user.getEmail(), user.getFirstName(), user.getLastName(), user.getDateOfBirth(), user.getDateOfRegistration(), Role.Tourist.ordinal());
+			res = jdbcTemplate.update(sql, user.getUsername(), user.getPassword(), user.getEmail(), user.getFirstName(), user.getLastName(), user.getDateOfBirth(), user.getDateOfRegistration(), Role.Tourist.ordinal(), 0);
 		} catch (EmptyResultDataAccessException e) {
 			System.out.println("Error");
 			res = 0;
@@ -54,7 +54,7 @@ public class UserRepositoryImpl implements UserRepository{
 
 	@Override
 	public User getUserByUsername(String username) {
-		String sql = "SELECT * FROM User WHERE username = ?;";
+		String sql = "SELECT * FROM user WHERE username = ?;";
 		User user = jdbcTemplate.queryForObject(sql, rowMapper, username);
 		
 		return user;
@@ -62,7 +62,7 @@ public class UserRepositoryImpl implements UserRepository{
 
 	@Override
 	public int usernameExistsCheck(String username) {
-		String sql = "SELECT COUNT(*) FROM User WHERE username = ?;";
+		String sql = "SELECT COUNT(*) FROM user WHERE username = ?;";
 		int res = jdbcTemplate.queryForObject(sql, Integer.class, username);
 		
 		return (int)res;
@@ -71,7 +71,7 @@ public class UserRepositoryImpl implements UserRepository{
 	@Override
 	public User getUserById(Long id) {
 		User user = null;
-		String sql = "SELECT * FROM User WHERE UserId = ?;";
+		String sql = "SELECT * FROM user WHERE UserId = ?;";
 		
 		try {
 			user = jdbcTemplate.queryForObject(sql, rowMapper, id);
@@ -91,7 +91,7 @@ public class UserRepositoryImpl implements UserRepository{
 	@Override
 	public boolean editUserData(Long id, String username, String firstName, String lastName, LocalDate dateOfBirth, String email) {
 		boolean successfullyChanged = false;
-		String sql = "UPDATE User SET Username = ?, FirstName = ?, LastName = ?, Email = ?, DateOfBirth = ? WHERE UserId = ?";
+		String sql = "UPDATE user SET Username = ?, FirstName = ?, LastName = ?, Email = ?, DateOfBirth = ? WHERE UserId = ?";
 		
 		int rowsAffected = 0;
 		try {
@@ -109,7 +109,7 @@ public class UserRepositoryImpl implements UserRepository{
 
 	@Override
 	public int emailExistsCheck(String email) {
-		String sql = "SELECT COUNT(*) FROM User WHERE email = ?;";
+		String sql = "SELECT COUNT(*) FROM user WHERE email = ?;";
 		int res = jdbcTemplate.queryForObject(sql, Integer.class, email);
 		
 		return (int)res;
@@ -118,7 +118,7 @@ public class UserRepositoryImpl implements UserRepository{
 	@Override
 	public boolean editUserPassword(Long id, String newPassword) {
 		boolean successfullyChanged = false;
-		String sql = "UPDATE User SET password = ? WHERE UserId = ?;";
+		String sql = "UPDATE user SET password = ? WHERE UserId = ?;";
 		
 		int rowsAffected = 0;
 		try {
@@ -136,7 +136,7 @@ public class UserRepositoryImpl implements UserRepository{
 
 	@Override
 	public List<User> getAllUsers() {
-		String sql = "SELECT * FROM User;";
+		String sql = "SELECT * FROM user;";
 		List<User> users = new ArrayList<User>();
 		try {
 			users = jdbcTemplate.query(sql, rowMapper);
@@ -148,7 +148,7 @@ public class UserRepositoryImpl implements UserRepository{
 
 	@Override
 	public boolean blockUserById(Long id) {
-		String sql = "UPDATE User SET IsBlocked = 1 WHERE UserId = ?;";
+		String sql = "UPDATE user SET IsBlocked = 1 WHERE UserId = ?;";
 		
 		int rowsAffected = 0;
 		try {
@@ -166,7 +166,7 @@ public class UserRepositoryImpl implements UserRepository{
 
 	@Override
 	public boolean unblockUserById(Long id) {
-		String sql = "UPDATE User SET IsBlocked = 0 WHERE UserId = ?;";
+		String sql = "UPDATE user SET IsBlocked = 0 WHERE UserId = ?;";
 		
 		int rowsAffected = 0;
 		try {

@@ -39,7 +39,7 @@ public class ReservationRepositoryImpl implements ReservationRepository{
 	
 	@Override
 	public List<Reservation> getUserReservations(Long id) {
-		String sql = "SELECT * FROM Reservation WHERE UserId = ? ORDER BY ReservationDate desc;";
+		String sql = "SELECT * FROM reservation WHERE UserId = ? ORDER BY ReservationDate desc;";
 		List<Reservation> reservations = null;
 		
 		try {
@@ -67,14 +67,14 @@ public class ReservationRepositoryImpl implements ReservationRepository{
 		int rowsAffected3 = 0;
 		int rowsAffected4 = 0;
 		
-		String sql1 = "INSERT INTO Reservation(ReservationDate, TotalPrice, UserId) VALUES (current_date(), ?, ?);";
-		String sql2 = "INSERT INTO Ticket(SeatRow, SeatColumn, PassportNumber, FirstName, LastName, FlightId, ReservationId) VALUES(?, ?, ?, ?, ?, ?, ?);";
-		String sql3 = "UPDATE LoyaltyCard, User\r\n"
-				+ "SET LoyaltyCard.points = LoyaltyCard.points - ?\r\n"
-				+ "WHERE LoyaltyCard.LoyaltyCardId = User.LoyaltyCardId and User.userId = ?;";
-		String sql4 = "UPDATE LoyaltyCard, User\r\n"
-				+ "SET LoyaltyCard.points = LoyaltyCard.points + ?\r\n"
-				+ "WHERE LoyaltyCard.LoyaltyCardId = User.LoyaltyCardId and User.userId = ?;";
+		String sql1 = "INSERT INTO reservation(ReservationDate, TotalPrice, UserId) VALUES (current_date(), ?, ?);";
+		String sql2 = "INSERT INTO ticket(SeatRow, SeatColumn, PassportNumber, FirstName, LastName, FlightId, ReservationId) VALUES(?, ?, ?, ?, ?, ?, ?);";
+		String sql3 = "UPDATE loyaltycard, user\r\n"
+				+ "SET loyaltycard.points = loyaltycard.points - ?\r\n"
+				+ "WHERE loyaltycard.LoyaltycardId = user.LoyaltyCardId and user.userId = ?;";
+		String sql4 = "UPDATE loyaltycard, user\r\n"
+				+ "SET loyaltycard.points = loyaltycard.points + ?\r\n"
+				+ "WHERE loyaltycard.LoyaltyCardId = user.LoyaltyCardId and user.userId = ?;";
 		
 		GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         rowsAffected1 = _jdbcTemplate.update(new PreparedStatementCreator() {

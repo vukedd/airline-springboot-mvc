@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+ mysql-db:
+  image: mysql:8.0
+  container_name: rizzair-mysql
+  restart: always
+  environment:
+    MYSQL_ROOT_PASSWORD: root
+    MYSQL_DATABASE: Airline2024
+    MYSQL_USER: rizzair_user
+    MYSQL_PASSWORD: rizzair_pass
+  ports:
+    - "3307:3306"
+  volumes:
+    - mysql_data:/var/lib/mysql
+    - ./src/main/resources/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+  networks:
+    - rizzair-network
+  healthcheck:
+    test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+    interval: 30s
+    retries: 5
+    start_period: 30s
+    timeout: 30s
+
+ rizzair-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rizzair-app
+    restart: always
+    depends_on:
+      - mysql-db
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/Airline2024?allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: rizzair_user
+      SPRING_DATASOURCE_PASSWORD: rizzair_pass
+    networks:
+      - rizzair-network
+
+volumes:
+  mysql_data:
+
+networks:
+  rizzair-network:
+    driver: bridge

@@ -25,7 +25,7 @@ public class DiscountRepositoryImpl implements DiscountRepository {
 	
 	@Override
 	public boolean createDiscount(Discount discount) {
-		String sql = "INSERT INTO Discount(DiscountPercentage, DiscountValidDate, FlightId) VALUES(?, ?, ?);";
+		String sql = "INSERT INTO discount(DiscountPercentage, DiscountValidDate, FlightId) VALUES(?, ?, ?);";
 		
 		try {
 			_jdbcTemplate.update(sql, discount.getDiscountPercentage(), discount.getValidUntill(), discount.getDiscountedFlightId());
@@ -38,7 +38,7 @@ public class DiscountRepositoryImpl implements DiscountRepository {
 
 	@Override
 	public Discount getDiscountByFlightId(Long flightId) {
-		String sql = "SELECT * FROM Discount WHERE FlightId = ? AND DiscountValidDate > current_date();";
+		String sql = "SELECT * FROM discount WHERE FlightId = ? AND DiscountValidDate > CURRENT_DATE();";
 		Discount discount = null;
 		try {
 			discount = _jdbcTemplate.queryForObject(sql, _discountRowMapper, flightId);

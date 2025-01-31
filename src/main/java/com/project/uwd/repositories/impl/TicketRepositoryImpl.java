@@ -32,7 +32,7 @@ public class TicketRepositoryImpl implements TicketRepository{
 
 	@Override
 	public List<Ticket> getTicketsByReservationId(Long reservationId) {
-		String sql = "SELECT * FROM Ticket WHERE ReservationId = ?;";
+		String sql = "SELECT * FROM ticket WHERE ReservationId = ?;";
 		List<Ticket> tickets = null;
 		
 		try {
@@ -53,7 +53,7 @@ public class TicketRepositoryImpl implements TicketRepository{
 	public List<Ticket> getTicketsByFlightId(Long flightId) {
 		List<Ticket> tickets = new ArrayList<>();
 		String sql = "SELECT * \r\n"
-				+ "FROM airline2024.ticket\r\n"
+				+ "FROM ticket\r\n"
 				+ "WHERE FlightId = ?;";
 		
 		try {
@@ -67,7 +67,7 @@ public class TicketRepositoryImpl implements TicketRepository{
 
 	@Override
 	public boolean isSeatAlreadyTaken(Ticket t) {
-		String sql = "SELECT Count(*) FROM Ticket WHERE FlightId = ? and SeatRow = ? and SeatColumn = ?;";
+		String sql = "SELECT Count(*) FROM ticket WHERE FlightId = ? and SeatRow = ? and SeatColumn = ?;";
 		int count = 0;
 		try {
 			count = _jdbcTemplate.queryForObject(sql, new Object[] {t.getFlightId(), t.getRowNumber(), t.getColumnNumber()}, Integer.class);
