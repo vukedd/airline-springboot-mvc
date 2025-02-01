@@ -84,8 +84,8 @@ public class ReportRepositoryImpl implements ReportRepository {
 	public int getTotalFlightSeats(Long flightId) {
 		String sql = "SELECT DISTINCT airplane.NumberOfRows * airplane.numberOfColumns 'Total seats'\r\n"
 				+ "FROM airplane \r\n"
-				+ "LEFT JOIN Flight ON airplane.airplaneId = flight.airplaneId\r\n"
-				+ "LEFT JOIN Ticket ON flight.flightId = ticket.flightId\r\n"
+				+ "LEFT JOIN flight ON airplane.airplaneId = flight.airplaneId\r\n"
+				+ "LEFT JOIN ticket ON flight.flightId = ticket.flightId\r\n"
 				+ "WHERE flight.flightId = ?;";
 		
 		Integer totalSeats;
@@ -128,7 +128,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 				+ "FROM flight\r\n"
 				+ "LEFT JOIN ticket on flight.flightId = ticket.flightId\r\n"
 				+ "LEFT JOIN discount on flight.flightId = discount.flightId\r\n"
-				+ "WHERE flight.FlightId = ?;";
+				+ "WHERE ticket.FlightId = ?;";
 		
 		Double totalIncome;
 		try {
@@ -138,6 +138,10 @@ public class ReportRepositoryImpl implements ReportRepository {
 			totalIncome = 0.0;
 		}
 		
+		if (totalIncome == null)
+		{
+			return 0.0;
+		}
 		return totalIncome;
 	}
 

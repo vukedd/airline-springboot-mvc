@@ -307,6 +307,8 @@ public class FlightRepositoryImpl implements FlightRepository {
 		try {
 			wishlist = _jdbcTemplate.query(sql, _flightRowMapper, userId);
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			System.out.println("Error");
 			System.out.println("There are no items in this wishlist!");
 		}
 

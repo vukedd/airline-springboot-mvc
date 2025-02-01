@@ -101,7 +101,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="data : ${dataSet}">
+					<tr th:each="data : ${dataSet}" th:if="${data[1]} != 0">
 						<td><a style="color:black;text-decoration:bold;" th:href="@{/flight/details?id={flightId}(flightId=${data[0]})}" th:text="${data[0]}"></a></td>
 						<td th:text="${data[1]}"></td>
 						<td th:text="${data[2]}"></td>

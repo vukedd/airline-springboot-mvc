@@ -24,7 +24,11 @@ public class AuthController {
 	AuthService _authService;
 	
 	@GetMapping("/login")
-	public String getLogIn(@RequestParam(required=false)String register, @RequestParam(required=false)String login, @RequestParam(required=false) String blocked, Model model) {
+	public String getLogIn(@RequestParam(required=false)String register, @RequestParam(required=false)String login, @RequestParam(required=false) String blocked, Model model, HttpSession session) {
+		if (session.getAttribute("loggedIn") != null) {
+			return "redirect:/";
+		}
+		
 		if (register != null && register.equals("success")) {
 			model.addAttribute("register", register);
 		}
@@ -66,8 +70,11 @@ public class AuthController {
 	
 	@GetMapping("/logout")
 	public String postLogOut(HttpSession session) {
-		session.removeAttribute("loggedIn");
-		session.invalidate();
+		if (session.getAttribute("loggedIn") != null) {
+			session.removeAttribute("loggedIn");
+			session.invalidate();
+		}
+		
 		return "redirect:/auth/login";
 	}
 }
