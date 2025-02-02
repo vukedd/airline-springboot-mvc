@@ -32,9 +32,7 @@ public class WishlistRepositoryImpl implements WishlistRepository {
 	
 	@Override
 	public boolean addWishlistItem(Long flightId, Long userId) {
-		String sql = "INSERT INTO wishlistitem(FlightId, WishlistId) VALUES (?, (SELECT WishlistId\r\n"
-				+ "FROM wishlist\r\n"
-				+ "WHERE UserId = ?));";
+		String sql = "INSERT INTO wishlistitem (FlightId, WishlistId) SELECT ?, WishlistId FROM wishlist WHERE UserId = ? LIMIT 1;";
 		
 		try {
 			_jdbcTemplate.update(sql, flightId, userId);
@@ -50,7 +48,7 @@ public class WishlistRepositoryImpl implements WishlistRepository {
 
 	@Override
 	public boolean removeWishlistItemById(Long userId, Long flightId) {
-		String sql = "DELETE FROM wishlistitem WHERE WishlistId = (SELECT WishlistId FROM wishlist WHERE UserId = ?) AND FlightId = ?;";
+		String sql = "DELETE FROM wishlistitem WHERE WishlistId IN (SELECT WishlistId FROM wishlist WHERE UserId = ?) AND FlightId = ?;";
 		
 		try {
 			_jdbcTemplate.update(sql, userId, flightId);
@@ -65,9 +63,7 @@ public class WishlistRepositoryImpl implements WishlistRepository {
 	@Override
 	public Wishlist getWishlistByUserId(Long userId) {
 		Wishlist wishlist = null;
-		String sql = "SELECT *\r\n"
-					+ "FROM wishlist\r\n"
-					+ "WHERE UserId = ?;";
+		String sql = "SELECT * FROM wishlist WHERE UserId = ?;";
 		
 		try {
 			wishlist = _jdbcTemplate.queryForObject(sql, _wishlistRowMapper, userId);

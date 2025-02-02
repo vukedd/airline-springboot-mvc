@@ -44,11 +44,13 @@
 				  <div class="form-group">
 				    <label for="dateOfBirth" th:text="#{register.dob}"></label>
 				    <input type="date" class="form-control" id="dateOfBirth" aria-describedby="dateOfBirth" th:placeholder="#{register.dob.placeholder}" name="dateOfBirth" th:value="${user.dateOfBirth}" required>
+				   	<small class="form-text text-muted" th:text="#{user.notice}"></small>
+				    
 				  </div>
 				  <div class="form-group">
 				    <label for="email" th:text="#{register.email}"></label>
 				    <input type="email" class="form-control" id="email" aria-describedby="email" th:placeholder="#{register.email.placeholder}" name="email" th:value="${user.email}">
-				    <small id="emailHelp" class="form-text text-muted" th:text="#{email.notice}"></small>
+				    <small class="form-text text-muted" th:text="#{email.notice}"></small>
 				    <p th:if="${email} != null"style='color:red;font-size:12px;margin:0;padding:0;' th:text="#{email.validation}"></p>
 				  </div>
 				  <div class="form-group">
@@ -70,5 +72,6 @@
 			</div>
 		</div>
 	</div>
+	<script src="/js/register.js"></script>
 </body>
 </html>
