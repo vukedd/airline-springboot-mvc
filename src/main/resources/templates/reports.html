@@ -120,6 +120,8 @@
 			<h4 style="text-align: center; color: red" th:if="${dataSet} == null and ${session.reportGenerated}" th:text="#{empty.report}"></h4>
 		</div>
 	</div>
+	<footer th:replace="~{fragments :: footer}"></footer>
+	
 	<script src="/js/user-list.js"></script>
 	<script src="/js/table-sort.js"></script>
 	<script src="/js/report-fields-validation.js"></script>

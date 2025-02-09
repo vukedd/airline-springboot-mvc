@@ -69,7 +69,7 @@
 	  <div class="d-flex justify-content-center">
 	  	  <h2 th:text="#{index.head}"></h2>
 	  </div>
-	    <form class="search-bar" method="POST" action="search">
+	    <form class="search-bar" method="GET" action="search">
 	      <div class="row gy-2 gx-3 align-items-center">
 	        <div class="col-12 col-md-3">
 	          <input type="text" class="form-control" name="departure" th:placeholder="#{search.bar.departure.ph}" th:value="${session.departureSearch}" th:if="${session.searchInitialized} != null">
@@ -145,6 +145,7 @@
 		</div>
 	</div>
 </div>
+<footer th:replace="~{fragments :: footer}"></footer>
 	<script src="/js/index.js"></script>
 </body>
 </html>

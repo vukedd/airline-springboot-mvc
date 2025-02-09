@@ -45,7 +45,6 @@ public class LocationController {
 	@GetMapping("/")
 	public String getLocations(@RequestParam(required=false) String actionStatus, Model model) {
 		String currentLocation = "/location/";
-		model.addAttribute("currentLocation", currentLocation);
 		List<Location> locations = _locationService.getLocations();
 		model.addAttribute("locations", locations);
 		if (actionStatus != null) {

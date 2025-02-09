@@ -30,15 +30,13 @@ public class IndexController {
 		return "index";
 	}
 	
-	@PostMapping("search")
+	@GetMapping("search")
 	public String searchFlights(@RequestParam(required=false) String departure, @RequestParam(required=false) String destination, @RequestParam(required=false) LocalDate dateOfDeparture, @RequestParam(required=false, defaultValue="0") int numberOfSeats, @RequestParam(required=false) boolean similarFlights, Model model, HttpSession session) {
 		if (session.getAttribute("loggedIn") == null) {
 			session.setAttribute("searchForceRedirect", true);
 			return "redirect:/auth/login";
 		}
-		
-		System.out.println(similarFlights);
-		
+				
 		List<Flight> flights = _flightService.searchFlight(departure, destination, dateOfDeparture, numberOfSeats, similarFlights);
 		if (flights.size() > 0) {
 			model.addAttribute("flights", flights);
@@ -75,6 +73,10 @@ public class IndexController {
 		} else {
 			session.setAttribute("similarFlightsSearch", false);
 		}
+		
+		String currentLocation = "/search?departure=&destination=&dateOfDeparture=&numberOfSeats=1";
+		model.addAttribute("currentElement", currentLocation);
+		model.addAttribute("idparam", "1");
 		
 		return "index";
 	}
